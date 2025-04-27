@@ -1,0 +1,41 @@
+.contactHeader {
+  position: relative;
+  background-image: url("/Pages/ContactUs/contact.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.contactHeader::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(224, 167, 94, 0.5),
+    rgba(0, 0, 0, 0.5)
+  );
+  z-index: 1;
+}
+.contactHeader > * {
+  position: relative;
+  z-index: 2;
+}
+.no-scroll {
+  overflow: hidden;
+}
+.gradient-border-bottom::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 34%;
+  height: 2px;
+  background: linear-gradient(to right, #e0a75e, rgba(0, 0, 0, 0));
+}

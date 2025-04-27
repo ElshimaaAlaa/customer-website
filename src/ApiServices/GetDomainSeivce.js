@@ -13,6 +13,8 @@ export const getDomain = async (email) => {
       console.log("Domain fetched successfully", response.data.data);
       localStorage.setItem("live_shop_domain", response.data.data.domain);
       localStorage.setItem("live_domain_email", response.data.data.email);
+      localStorage.setItem("role" , response.data.data.role);
+
       return response.data.data;
     }
   } catch (error) {
