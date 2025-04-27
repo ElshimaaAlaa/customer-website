@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import GetDomain from "./Auth/Get Domain/GetDomain";
+import Login from "./Auth/Login/Login";
+import ForgotPassword from "./Auth/Forgot Password/ForgotPassword";
+import VerifayPassword from "./Auth/Verivation Code/VerifayPassword";
+import CreateNewPassword from "./Auth/Create Password/CreateNewPassword";
+import Register from "./Auth/Register/Register";
+import Main from "./Pages/Home Page/Main";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<GetDomain />} />
+        {/* Auth */}
+        <Route path="/Login" element={<Login />} />
+        <Route path="/Login/ForgotPassword" element={<ForgotPassword />} />
+        <Route path="/Login/VerifayPassword" element={<VerifayPassword />} />
+        <Route
+          path="/Login/CreateNewPassword"
+          element={<CreateNewPassword />}
+        />
+        <Route path="/Register" element={<Register />} />
+        {/* Home page */}
+        <Route path="/Main" element={<Main />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
-
 export default App;
