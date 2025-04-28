@@ -4,6 +4,7 @@ import TopSection from "../../Components/Navbar/TopSection";
 import { Outlet } from "react-router-dom";
 import BottomSection from "../../Components/Navbar/BottomSection";
 import Footer from "../../Components/Footer/Footer";
+import Quality from "../../Sections/Quality Section/Quality";
 
 function Main() {
   return (
@@ -15,6 +16,7 @@ function Main() {
         <TopSection />
         <BottomSection />
         <Outlet />
+        {/* <Quality /> */}
         <Footer />
       </div>
     </div>

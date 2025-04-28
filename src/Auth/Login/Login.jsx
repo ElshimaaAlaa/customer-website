@@ -55,7 +55,7 @@ function Login() {
         localStorage.removeItem("password");
       }
       setTimeout(() => {
-        navigate("/Main");
+        navigate("/Home");
       }, 1500);
     } catch (error) {
       console.error(error);

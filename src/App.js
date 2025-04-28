@@ -9,6 +9,8 @@ import Main from "./Pages/Home Page/Main";
 import Faqs from "./Pages/Faqs/Faqs";
 import AboutUs from "./Pages/AboutUs/AboutUs";
 import ContactUs from "./Pages/ContactUs/ContactUs";
+import UserProfile from "./Profile/UserProfile/UserProfile";
+import Home from "./Pages/Home Page/Home";
 function App() {
   return (
     <BrowserRouter>
@@ -22,11 +24,13 @@ function App() {
           element={<CreateNewPassword />}
         />
         <Route path="/Register" element={<Register />} />
-
-        <Route path="/Main" element={<Main />}>
-          <Route path="/Main/Faqs" element={<Faqs />} />
-          <Route path="/Main/AboutUs" element={<AboutUs />} />
-          <Route path="/Main/ContactUs" element={<ContactUs/>}/>
+        {/* pages */}
+        <Route path="/Home" element={<Main />}>
+          <Route path="/Home/Homepage" element={<Home />} />
+          <Route path="/Home/Faqs" element={<Faqs />} />
+          <Route path="/Home/AboutUs" element={<AboutUs />} />
+          <Route path="/Home/ContactUs" element={<ContactUs />} />
+          <Route path="/Home/UserProfile" element={<UserProfile />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -3,7 +3,6 @@ import { Helmet } from "react-helmet";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { getFaqs } from "../../ApiServices/AllFaqs";
 import "./faqsStyle.scss";
-
 function Faqs() {
   const [openIndex, setOpenIndex] = useState(null);
   const [faqsData, setFaqsData] = useState([]);

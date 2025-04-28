@@ -97,7 +97,7 @@ function ContactUs() {
         <title>Contact Us | VERTEX</title>
       </Helmet>
       <div className="contactHeader w-full h-[65vh] flex flex-col justify-center items-center text-center text-white">
-        <h1 className="text-3xl font-bold mb-4">Contac tUs</h1>
+        <h1 className="text-3xl font-bold mb-4">Contact Us</h1>
         <p className="text-14 font-light w-96 leading-normal">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do Lorem
           ipsum dolor
