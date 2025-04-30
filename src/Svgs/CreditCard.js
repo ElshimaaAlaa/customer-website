@@ -1,7 +1,7 @@
 import * as React from "react";
 const CreditCard = (props) => (
   <svg
-    width={56}
+    width={40}
     height={33}
     viewBox="0 0 56 33"
     fill="none"

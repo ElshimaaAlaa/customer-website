@@ -1,7 +1,7 @@
 import * as React from "react";
 const Visa = (props) => (
   <svg
-    width={77}
+    width={55}
     height={33}
     viewBox="0 0 77 33"
     fill="none"

@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { MdPhone } from "react-icons/md";
-import { Settings } from "../../ApiServices/GeneralSettings";
 import Facebook from "../../Svgs/facebook";
 import Instegram from "../../Svgs/instegram";
 import WhatsApp from "../../Svgs/WhatsApp";
 import { FaXTwitter } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import { settings } from "../../ApiServices/GeneralSettings";
 function TopSection() {
   const navigate = useNavigate();
   const [shopData, setShopData] = useState([]);
   useEffect(() => {
     const getVertexData = async () => {
-      const response = await Settings();
+      const response = await settings();
       setShopData(response);
     };
     getVertexData();
@@ -20,7 +20,10 @@ function TopSection() {
     <section className="bg-black text-white px-20 py-3 flex items-center justify-between">
       <div className="flex items-center gap-2">
         <MdPhone size={20} />
-        <p className="text-15 font-bold">Contact us : <span className="underline font-light ms-1">{shopData.phone}</span> </p>
+        <p className="text-15 font-bold">
+          Contact us :{" "}
+          <span className="underline font-light ms-1">{shopData.phone}</span>{" "}
+        </p>
       </div>
       <div>
         <p className="text-14 font-light">

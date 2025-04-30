@@ -9,7 +9,6 @@
   justify-content: center;
   flex-direction: column;
 }
-
 .faqHeader::before {
   content: "";
   position: absolute;
@@ -20,7 +19,6 @@
   background: linear-gradient(to right, rgba(224, 167, 94,0.5), rgba(0, 0, 0, 0.5));
   z-index: 1;
 }
-
 .faqHeader > * {
   position: relative;
   z-index: 2;

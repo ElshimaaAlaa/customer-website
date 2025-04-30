@@ -6,7 +6,7 @@ import { Formik, Form, Field } from "formik";
 import { SendSupport } from "../../ApiServices/sendContact";
 import AuthInputField from "../../Components/AuthInput Field/AuthInputField";
 import MainBtn from "../../Components/Main Button/MainBtn";
-import { Settings } from "../../ApiServices/GeneralSettings";
+import { settings } from "../../ApiServices/GeneralSettings";
 import SuccessModal from "../../Components/Modal/Success Modal/SuccessModal";
 import { LuSend } from "react-icons/lu";
 import { ClipLoader } from "react-spinners";
@@ -71,7 +71,7 @@ function ContactUs() {
   };
   useEffect(() => {
     const getSettings = async () => {
-      const data = await Settings();
+      const data = await settings();
       console.log("settings data", data);
       setSettingData(data);
     };

@@ -26,5 +26,4 @@ function UserAcc() {
     </div>
   );
 }
-
 export default UserAcc;

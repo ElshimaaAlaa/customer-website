@@ -1,7 +1,7 @@
 import * as React from "react";
 const GooglePay = (props) => (
   <svg
-    width={54}
+    width={50}
     height={33}
     viewBox="0 0 54 33"
     fill="none"

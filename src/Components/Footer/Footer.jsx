@@ -6,13 +6,12 @@ import Facebook from "../../Svgs/facebook";
 import Instegram from "../../Svgs/instegram";
 import WhatsApp from "../../Svgs/WhatsApp";
 import { FaXTwitter } from "react-icons/fa6";
-import { Settings } from "../../ApiServices/GeneralSettings";
-
+import { settings } from "../../ApiServices/GeneralSettings";
 function Footer() {
   const [shopData, setShopData] = useState([]);
   useEffect(() => {
     const getVertexData = async () => {
-      const response = await Settings();
+      const response = await settings();
       setShopData(response);
     };
     getVertexData();

@@ -6,7 +6,7 @@ import Qualityicon from "../../Svgs/quality";
 function Quality() {
   return (
     <section className="flex gap-6 px-20 py-10">
-      <div className="flex gap-3 bg-customOrange-mediumOrange rounded-xl py-5 px-8 w-full ">
+      <div className="flex gap-3 bg-customOrange-lightOrange rounded-xl py-5 px-8 w-full ">
         <Delivary />
         <div className="flex flex-col gap-2">
           <h2 className="font-bold text-17 mt-1">Quick Delivery</h2>
@@ -15,7 +15,7 @@ function Quality() {
           </p>
         </div>
       </div>
-      <div className="flex gap-3 bg-customOrange-mediumOrange rounded-xl py-5 px-8 w-full">
+      <div className="flex gap-3 bg-customOrange-lightOrange rounded-xl py-5 px-8 w-full">
         <Pay />
         <div className="flex flex-col gap-2">
           <h2 className="font-bold text-17 mt-1">Flexible Payment</h2>
@@ -24,7 +24,7 @@ function Quality() {
           </p>
         </div>
       </div>
-      <div className="flex gap-3 bg-customOrange-mediumOrange rounded-xl py-5 px-8 w-full">
+      <div className="flex gap-3 bg-customOrange-lightOrange rounded-xl py-5 px-8 w-full">
         <Qualityicon />
         <div className="flex flex-col gap-2">
           <h2 className="font-bold text-17 mt-1">24 X 7 Support</h2>

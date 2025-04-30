@@ -1,0 +1,94 @@
+import { Form, Formik } from "formik";
+import React, { useState } from "react";
+import PasswordInput from "../../Components/Password Input/PasswordInput";
+import * as Yup from "yup";
+import SuccessModal from "../../Components/Modal/Success Modal/SuccessModal";
+import { handleUpdatePassword } from "../../ApiServices/UpdatePassword";
+import { ClipLoader } from "react-spinners";
+import { FaCircleCheck } from "react-icons/fa6";
+import "./style.scss";
+import { useNavigate } from "react-router-dom";
+function ChangePassword() {
+  const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const [error, setError] = useState(false);
+  const initialValues = {
+    password: "",
+    password_confirmation: "",
+  };
+  const validationSchema = Yup.object({
+    password: Yup.string()
+      .min(8, "Password must be at least 8 characters long")
+      .required("Password is required"),
+    password_confirmation: Yup.string()
+      .oneOf([Yup.ref("password"), null], "Passwords must match")
+      .required("Confirm Password is required"),
+  });
+  const handleSubmit = async (values) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      await handleUpdatePassword(values.password, values.password_confirmation);
+      setShowModal(true);
+      setTimeout(() => {
+        setShowModal(false);
+        navigate("/Home/UserProfile");
+      }, 2500);
+    } catch (error) {
+      console.error("Failed to update password", error);
+      setError("Failed to update password. Please try again.");
+    } finally {
+      setIsLoading(false);
+      setError(error);
+    }
+  };
+  if (showModal) {
+    document.body.classList.add("no-scroll");
+  } else {
+    document.body.classList.remove("no-scroll");
+  }
+
+  return (
+    <div>
+      <h1 className="font-bold text-[18px] mt-5">Change Password</h1>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        <Form className="w-500px">
+          <PasswordInput name={"password"} placeholder={"New Password"} />
+          <PasswordInput
+            name={"password_confirmation"}
+            placeholder={"Confirm Password"}
+          />
+          <div className="flex justify-end mt-4">
+            <button className="flex items-center gap-1 rounded-md w-48 p-3 text-16 justify-center bg-primary text-white">
+              {isLoading ? (
+                <ClipLoader color="#fff" size={23} />
+              ) : (
+                <>
+                  <FaCircleCheck />
+                  Change Password
+                </>
+              )}
+            </button>
+          </div>
+        </Form>
+      </Formik>
+      {/* Success Modal */}
+      <SuccessModal isOpen={showModal} onClose={() => setShowModal(false)}>
+        <div className="flex flex-col items-center justify-center gap-3 w-350 p-5">
+          <img
+            src="/assets/images/success.png"
+            alt="success"
+            className="w-32 mt-6"
+          />
+          <h1 className="font-bold">Password Updated Successfully</h1>
+        </div>
+      </SuccessModal>
+    </div>
+  );
+}
+export default ChangePassword;

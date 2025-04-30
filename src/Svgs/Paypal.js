@@ -1,7 +1,7 @@
 import * as React from "react";
 const Paypal = (props) => (
   <svg
-    width={86}
+    width={60}
     height={33}
     viewBox="0 0 86 33"
     fill="none"
