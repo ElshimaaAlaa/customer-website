@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { PulseLoader } from "react-spinners";
 
@@ -27,6 +27,7 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Simulate loading delay (e.g. 2 seconds)
     const timer = setTimeout(() => setLoading(false), 2000);
     return () => clearTimeout(timer);
   }, []);
@@ -49,13 +50,14 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Redirect root path to /Home/Homepage */}
-        <Route path="/" element={<Navigate to="/Home/Homepage" replace />} />
-
+        <Route path="/" element={<GetDomain />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/Login/ForgotPassword" element={<ForgotPassword />} />
         <Route path="/Login/VerifayPassword" element={<VerifayPassword />} />
-        <Route path="/Login/CreateNewPassword" element={<CreateNewPassword />} />
+        <Route
+          path="/Login/CreateNewPassword"
+          element={<CreateNewPassword />}
+        />
         <Route path="/Register" element={<Register />} />
 
         <Route path="/Home" element={<Main />}>
@@ -75,9 +77,6 @@ function App() {
             <Route path="Payment" element={<Payment />} />
           </Route>
         </Route>
-
-        {/* Optional: 404 Not Found route */}
-        <Route path="*" element={<div style={{ padding: 40, textAlign: "center" }}>404 - Page Not Found</div>} />
       </Routes>
     </BrowserRouter>
   );
