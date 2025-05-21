@@ -1,14 +1,11 @@
 import { useState, useEffect } from "react";
 import { getHomeData } from "../../ApiServices/Home";
 import { ClipLoader } from "react-spinners";
-import { IoIosHeartEmpty } from "react-icons/io";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "./offerStyle.scss";
-// import { IoIosArrowRoundForward } from "react-icons/io";
-// import { IoIosArrowRoundBack } from "react-icons/io";
 
 function Offers() {
   const [isLoading, setIsLoading] = useState(false);
@@ -121,16 +118,6 @@ function Offers() {
               </SwiperSlide>
             ))}
           </Swiper>
-
-          {/* Custom navigation buttons */}
-          {/* <div className="flex justify-end mt-4 gap-6">
-            <button className="custom-swiper-button-prev bg-primary p-2 rounded-full text-white">
-              <IoIosArrowRoundBack size={25} />
-            </button>
-            <button className="custom-swiper-button-next bg-primary p-2 rounded-full text-white">
-              <IoIosArrowRoundForward size={25} />
-            </button>
-          </div> */}
         </div>
       )}
     </div>

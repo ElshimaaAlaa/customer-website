@@ -106,5 +106,4 @@ function WishList() {
     </div>
   );
 }
-
 export default WishList;
