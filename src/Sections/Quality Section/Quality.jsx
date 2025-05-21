@@ -1,4 +1,3 @@
-import React from "react";
 import Delivary from "../../Svgs/delivary";
 import Pay from "../../Svgs/pay";
 import Qualityicon from "../../Svgs/quality";

@@ -1,8 +1,7 @@
-import * as React from "react";
 const About3 = (props) => (
   <svg
-    width={40}
-    height={40}
+    width={38}
+    height={38}
     viewBox="0 0 57 56"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"

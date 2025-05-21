@@ -6,7 +6,7 @@ export const register = async (
   password,
   email,
   password_confirmation,
-  agreeToTerms,
+  agreeToTerms
 ) => {
   try {
     const payload = {
@@ -21,7 +21,11 @@ export const register = async (
       `${API_BASE_URL}${live_shop_domain}/api/register`,
       payload
     );
-    return response.data;
+    if (response.status === 200) {
+      localStorage.setItem("register token", response.data.token);
+      console.log("register token", response.data.data.token);
+      return response.data.data;
+    }
   } catch (error) {
     console.error("API Response Error:", error.response?.data || error);
     throw error;

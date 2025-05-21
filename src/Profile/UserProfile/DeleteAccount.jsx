@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import FailedModal from "../../Components/Modal/Failed Modal/FailedModal";
 import { ClipLoader } from "react-spinners";
 import axios from "axios";
@@ -7,7 +7,6 @@ import "./style.scss";
 function DeleteAccount() {
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
   const handelDeleteAccount = async () => {
     setIsLoading(true);
     try {
@@ -15,7 +14,7 @@ function DeleteAccount() {
         url: "https://demo.vrtex.duckdns.org/api/delete-account",
         method: "GET",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")} `,
+          Authorization: `Bearer ${localStorage.getItem("user token")} `,
           "Content-Type": "application/json",
           Accept: "application/json",
           "Accept-Language": "ar",

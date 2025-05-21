@@ -8,7 +8,7 @@ export const Profile = async () => {
       method: "GET",
       headers: {
         "Accept-Language": "en",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${localStorage.getItem("user token")}`,
       },
     });
     if (response.status === 200) {

@@ -1,5 +1,5 @@
 import { Form, Formik } from "formik";
-import React, { useState } from "react";
+import { useState } from "react";
 import PasswordInput from "../../Components/Password Input/PasswordInput";
 import * as Yup from "yup";
 import SuccessModal from "../../Components/Modal/Success Modal/SuccessModal";
@@ -8,15 +8,20 @@ import { ClipLoader } from "react-spinners";
 import { FaCircleCheck } from "react-icons/fa6";
 import "./style.scss";
 import { useNavigate } from "react-router-dom";
+
 function ChangePassword() {
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const [error, setError] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const initialValues = {
     password: "",
     password_confirmation: "",
   };
+
   const validationSchema = Yup.object({
     password: Yup.string()
       .min(8, "Password must be at least 8 characters long")
@@ -25,6 +30,7 @@ function ChangePassword() {
       .oneOf([Yup.ref("password"), null], "Passwords must match")
       .required("Confirm Password is required"),
   });
+
   const handleSubmit = async (values) => {
     setIsLoading(true);
     setError(null);
@@ -40,9 +46,9 @@ function ChangePassword() {
       setError("Failed to update password. Please try again.");
     } finally {
       setIsLoading(false);
-      setError(error);
     }
   };
+
   if (showModal) {
     document.body.classList.add("no-scroll");
   } else {
@@ -58,13 +64,24 @@ function ChangePassword() {
         onSubmit={handleSubmit}
       >
         <Form className="w-500px">
-          <PasswordInput name={"password"} placeholder={"New Password"} />
-          <PasswordInput
-            name={"password_confirmation"}
-            placeholder={"Confirm Password"}
+          <PasswordInput 
+            name="password" 
+            placeholder="New Password"
+            showPassword={showPassword}
+            togglePasswordVisibility={() => setShowPassword(!showPassword)}
           />
-          <div className="flex justify-end mt-4">
-            <button className="flex items-center gap-1 rounded-md w-48 p-3 text-16 justify-center bg-primary text-white">
+          <PasswordInput
+            name="password_confirmation"
+            placeholder="Confirm Password"
+            showPassword={showConfirmPassword}
+            togglePasswordVisibility={() => setShowConfirmPassword(!showConfirmPassword)}
+          />
+          <div className="flex justify-start mt-4">
+            <button 
+              type="submit"
+              className="flex items-center gap-1 rounded-md w-48 p-3 text-16 justify-center bg-primary text-white"
+              disabled={isLoading}
+            >
               {isLoading ? (
                 <ClipLoader color="#fff" size={23} />
               ) : (

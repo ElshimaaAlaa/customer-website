@@ -1,5 +1,5 @@
 import { Form, Formik } from "formik";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Helmet } from "react-helmet";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
@@ -82,7 +82,7 @@ function EditInfo() {
             <Form>
               <div className="my-3 gap-3">
                 {selectedImage || personalInfo?.image ? (
-                  <div className="flex flex-col md:flex-row justify-between items-center gap-4 border rounded-md p-5">
+                  <div className="flex flex-col md:flex-row justify-between items-center gap-4 border rounded-md p-3">
                     <img
                       src={
                         selectedImage
@@ -90,7 +90,7 @@ function EditInfo() {
                           : personalInfo.image
                       }
                       alt="Profile"
-                      className="rounded-xl w-32 h-24 md:w:20 md:h-20 object-cover"
+                      className="rounded-md w-32 h-24 md:w:20 md:h-20 object-cover"
                     />
                     <div className="flex items-center gap-5 font-bold">
                       <input
@@ -132,12 +132,12 @@ function EditInfo() {
                   <p className="text-gray-500">No image available</p>
                 )}
               </div>
-              <div className="border p-5 rounded-md bg-gray-50 w-full">
+              <div className="border p-3 rounded-md bg-gray-50 w-full">
                 <div className="flex flex-col md:flex-row gap-4">
                   <InputField placeholder="Name" name="name" />
                   <InputField placeholder="Email" name="email" />
                 </div>
-                <div className="mt-3">
+                <div className="mt-2">
                   <InputField placeholder="Phone" name="phone" />
                 </div>
               </div>

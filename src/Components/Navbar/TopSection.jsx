@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { MdPhone } from "react-icons/md";
 import Facebook from "../../Svgs/facebook";
 import Instegram from "../../Svgs/instegram";

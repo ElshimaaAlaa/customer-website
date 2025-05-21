@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import PaymentMethod from "../../Svgs/PaymentMethod";
 import Profile from "../../Svgs/Profile";

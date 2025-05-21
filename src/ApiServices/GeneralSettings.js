@@ -11,7 +11,7 @@ export const settings = async () => {
         "Content-Type": "application/json",
         Accept: "application/json",
         "Accept-Language": "ar",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${localStorage.getItem("user token")}`,
       },
     });
     if (response.status === 200) {

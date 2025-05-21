@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import "./contactStyle.scss";
 import * as Yup from "yup";
@@ -106,7 +106,7 @@ function ContactUs() {
       <div className="flex px-20 justify-center gap-4">
         <div>
           <section className="bg-white border rounded-md drop-shadow-lg w-[430px] md:w-[430px] lg:w-500 p-5 h-72 mt-10">
-            <h2 className="font-bold text-17 mb-3 mt-2 relative pb-1 gradient-border-bottom">
+            <h2 className="font-bold text-16 mb-3 mt-2 relative pb-1 gradient-border-bottom">
               Contact information
             </h2>
             <ContactCard
@@ -122,7 +122,7 @@ function ContactUs() {
             />
           </section>
           <section className="bg-white rounded-md border drop-shadow-lg w-[430px] md:w-[430px] lg:w-500 p-5 h-32 mt-3">
-            <h2 className="font-bold text-17 mb-3 mt-2 relative pb-1 gradient-border-bottom">
+            <h2 className="font-bold text-16 mb-3 mt-2 relative pb-1 gradient-border-bottom">
               Follow our social network
             </h2>
             <div className="flex  items-center gap-3">
@@ -133,7 +133,6 @@ function ContactUs() {
             </div>
           </section>
         </div>
-
         <section className="bg-customOrange-mediumOrange p-5 mt-10 w-[430px] md:w-[430px] lg:w-500 rounded-md">
           <div className="flex justify-center">
             <img
@@ -148,7 +147,6 @@ function ContactUs() {
           <p className="text-gray-400 text-13 text-center mb-2">
             We are here to help you
           </p>
-
           <Formik
             initialValues={initialValues}
             onSubmit={handleSubmit}
@@ -203,7 +201,7 @@ function ContactUs() {
           />
           <p className="font-bold mt-5">Message sent successfully!</p>
           <button
-            className="bg-primary text-white p-2 w-40 mt-4 rounded-md"
+            className="bg-primary font-bold text-white p-2 w-40 mt-4 rounded-md"
             type="button"
             onClick={() => setShowModal(false)}
           >

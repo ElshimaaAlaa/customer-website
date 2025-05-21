@@ -106,14 +106,23 @@ function Register() {
               />
               
               <div className="flex items-start mt-3">
-                <label className="inline-flex items-start cursor-pointer">
+                <label className="inline-flex items-center cursor-pointer">
                   <Field
                     type="checkbox"
                     name="agreeToTerms"
                     id="agreeToTerms"
-                    className="mr-2 mt-1 w-4 h-4 border-2 border-gray-300 rounded focus:ring-primary"
+                    className="hidden peer"
                   />
-                  <span className="text-11 lg:text-14 text-gray-500">
+                  <span className="w-4 h-4 border-2 border-gray-300 rounded flex items-center justify-center transition-all duration-200 peer-checked:bg-primary peer-checked:border-primary">
+                    <svg
+                      className="w-3 h-3 text-white transition-all duration-200 peer-checked:opacity-100"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
+                    </svg>
+                  </span>
+                  <span className="text-11 lg:text-14 text-gray-500 ms-2">
                     I agree with the Terms & Conditions of Clarity
                   </span>
                 </label>
@@ -162,5 +171,4 @@ function Register() {
     </div>
   );
 }
-
 export default Register;

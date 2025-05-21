@@ -7,7 +7,7 @@ export const handleUpdatePassword = async (password, password_confirmation) => {
       url: `${API_BASE_URL}${live_shop_domain}/api/update-password`,
       method: "POST",
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${localStorage.getItem("user token")}`,
       },
       data: {
         password,

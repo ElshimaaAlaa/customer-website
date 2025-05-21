@@ -1,5 +1,5 @@
 import { Form, Formik } from "formik";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Helmet } from "react-helmet";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
@@ -60,7 +60,7 @@ function EditAddress() {
         <title>Manage Address</title>
       </Helmet>
       <section>
-        <h1 className="font-bold text-[18px] mb-5">Manage Address</h1>
+        <h1 className="font-bold text-[18px] mb-2">Manage Address</h1>
         <Formik
           initialValues={initialValues}
           enableReinitialize
@@ -68,12 +68,12 @@ function EditAddress() {
         >
           {({ setFieldValue }) => (
             <Form>
-              <div className="border p-4 rounded-md bg-gray-50 w-full">
-                <div className="flex flex-col md:flex-row gap-4">
+              <div className="border p-3 rounded-md bg-gray-50 w-full">
+                <div className="flex flex-col md:flex-row gap-2">
                   <InputField placeholder="Country" name="country" />
                   <InputField placeholder="City" name="city" />
                 </div>
-                <div className="mt-3">
+                <div className="mt-2">
                   <InputField placeholder="Address" name="address" />
                 </div>
               </div>

@@ -1,4 +1,3 @@
-import React from "react";
 import { Helmet } from "react-helmet";
 import "./style.scss";
 import { FaCircleDollarToSlot } from "react-icons/fa6";

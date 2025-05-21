@@ -1,4 +1,3 @@
-import React from "react";
 import { Helmet } from "react-helmet";
 import "./aboutusStyle.scss";
 import AboutInspire from "../../Svgs/about1";
@@ -30,7 +29,7 @@ function AboutUs() {
         </p>
         <div className="flex mt-5 gap-6">
           <div className="flex flex-col items-center gap-3 border-1 border-gray-200 rounded-xl py-5 px-10">
-            <AboutInspire />
+            <AboutInspire className="mt-5" />
             <h3 className="font-bold text-15">Global Inspiration</h3>
             <p className="text-gray-400 text-12 text-center w-52">
               Influenced by global trends, we bring you a diverse and dynamic
@@ -38,7 +37,7 @@ function AboutUs() {
             </p>
           </div>
           <div className="flex flex-col items-center gap-4 border-1 border-gray-200 rounded-xl py-5 px-10">
-            <About2 />
+            <About2 className="mt-5" />
             <h3 className="font-bold text-15">Empowering Your Style</h3>
             <p className="text-gray-400 text-12 text-center w-52">
               Beyond clothing, Klothink is a lifestyle. Join us on a journey of
@@ -46,7 +45,7 @@ function AboutUs() {
             </p>
           </div>
           <div className="flex flex-col items-center gap-4 border-1 border-gray-200 rounded-xl py-5 px-10">
-            <About3 />
+            <About3 className="mt-5" />
             <h3 className="font-bold text-15">Passionate Craftsmanship</h3>
             <p className="text-gray-400 text-12 text-center w-52">
               Every garment at Klothink is crafted with passion, reflecting our

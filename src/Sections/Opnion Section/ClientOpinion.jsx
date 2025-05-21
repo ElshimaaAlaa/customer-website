@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 const testimonials = [
@@ -47,7 +47,6 @@ function OpinionSection() {
   return (
     <section className="px-20 mt-6">
       <h2 className="font-bold text-[19px]">Our Clients Opinion</h2>
-      {/* Carousel */}
       <div className="carousel-container mt-3">
         <Carousel
           responsive={responsive}

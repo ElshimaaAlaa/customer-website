@@ -1,28 +1,26 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Address() {
   const navigate = useNavigate();
   const [addressData, setAddressData] = useState([]);
-  
   const handleEditClick = () => {
     navigate("/Home/UserProfile/EditAddress", { state: addressData });
   };
-
   return (
     <section>
-      <div className="flex flex-col md:flex-row items-center justify-between mb-4">
+      <div className="flex flex-col md:flex-row items-center justify-between mb-2">
         <h1 className="font-bold text-[18px]">Address</h1>
         <button
           onClick={handleEditClick}
-          className="text-white font-semibold flex items-center justify-center gap-3 bg-primary p-3 w-24 rounded-md"
+          className="text-white font-semibold flex items-center justify-center gap-3 bg-primary p-2 w-24 rounded-md"
           aria-label="Edit personal information"
         >
           <img src="/assets/svgs/edit.svg" alt="Edit" className="w-7" />
           Edit
         </button>
       </div>
-      <div className="border rounded-md p-5 w-full bg-gray-50">
+      <div className="border rounded-md p-3 w-full bg-gray-50">
         <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-96">
           <div>
             <p className="text-gray-400 text-15">Country</p>

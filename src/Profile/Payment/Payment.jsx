@@ -1,4 +1,3 @@
-import React from "react";
 import CreditCard from "../../Svgs/CreditCard";
 import Paypal from "../../Svgs/Paypal";
 import Visa from "../../Svgs/Visa";
@@ -49,13 +48,13 @@ function Payment() {
         <h3 className="text-16 font-bold mb-3">Add New Credit/ Debit Card</h3>
         <Formik>
           <Form>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               <InputField name="card_cvv" placeholder="CVV" />
               <Field
                 name="expiration_date"
                 placeholder="MM/YY"
                 type="date"
-                className={`w-full h-14 p-3 border-2 rounded-md outline-none transition-all duration-200 placeholder:text-14 focus:border-primary`}
+                className={`w-full h-12 p-3 border-2 rounded-md outline-none transition-all duration-200 placeholder:text-14 focus:border-primary`}
                 onChange={(e) => {
                   let value = e.target.value;
                   if (value.length === 2 && !value.includes("/")) {
@@ -65,7 +64,7 @@ function Payment() {
                 }}
               />
             </div>
-            <div className="flex items-center gap-3 mt-3">
+            <div className="flex items-center gap-2 mt-3">
               <InputField
                 name="card_holder_name"
                 placeholder="Card Holder Name"

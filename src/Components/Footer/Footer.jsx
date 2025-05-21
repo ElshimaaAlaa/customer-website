@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import PhoneNum from "../../Svgs/PhoneNum";
 import EmailAddress from "../../Svgs/EmailAddress";
 import Location from "../../Svgs/Location";
@@ -7,8 +7,10 @@ import Instegram from "../../Svgs/instegram";
 import WhatsApp from "../../Svgs/WhatsApp";
 import { FaXTwitter } from "react-icons/fa6";
 import { settings } from "../../ApiServices/GeneralSettings";
+import { useNavigate } from "react-router-dom";
 function Footer() {
   const [shopData, setShopData] = useState([]);
+  const navigate = useNavigate();
   useEffect(() => {
     const getVertexData = async () => {
       const response = await settings();
@@ -37,16 +39,16 @@ function Footer() {
           <h2 className="font-bold text-lg mb-2">Support</h2>
           <ul className="list-none text-sm space-y-2">
             <li>Safety Tips</li>
-            <li>Contact us</li>
+            <li onClick={() => navigate("ContactUs")} className="cursor-pointer">Contact us</li>
             <li>Privacy Policy</li>
             <li>Terms and Conditions</li>
-            <li>FAQs</li>
+            <li className="cursor-pointer" onClick={()=>navigate("Faqs")}>FAQs</li>
           </ul>
         </div>
         <div className="space-y-4">
           <h2 className="font-bold text-lg mb-2">Company</h2>
           <ul className="list-none text-sm space-y-2">
-            <li>About us</li>
+            <li className="cursor-pointer" onClick={()=>navigate("AboutUs")}>About us</li>
             <li>Blogs</li>
           </ul>
         </div>
