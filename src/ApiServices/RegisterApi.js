@@ -7,7 +7,6 @@ export const register = async (
   email,
   password_confirmation,
   agreeToTerms,
-  domain
 ) => {
   try {
     const payload = {
@@ -16,7 +15,6 @@ export const register = async (
       email,
       password_confirmation,
       agreeToTerms,
-      domain,
     };
     console.log("Request Payload:", payload);
     const response = await axios.post(

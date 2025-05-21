@@ -81,7 +81,7 @@ function BottomSection() {
       <div className="flex items-center gap-4">
         <div className="flex gap-3 items-center">
           <CiSearch size={21} />
-          <GoHeart size={20} />
+          <GoHeart size={20}  className="cursor-pointer"  onClick={()=>navigate('/Home/WishList')}/>
           <GrCart size={18} />
         </div>
         <UserAcc/>

@@ -22,6 +22,7 @@ import EditAddress from "./Profile/Address/EditAddress";
 import UserOrder from "./Profile/User Orders/UserOrder";
 import Payment from "./Profile/Payment/Payment";
 import OrderDetails from "./Profile/User Orders/OrderDetail";
+import WishList from "./Pages/WishList/WishList";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -65,7 +66,7 @@ function App() {
           <Route path="Faqs" element={<Faqs />} />
           <Route path="AboutUs" element={<AboutUs />} />
           <Route path="ContactUs" element={<ContactUs />} />
-
+          <Route path="WishList" element={<WishList/>}/>
           <Route path="UserProfile" element={<UserProfile />}>
             <Route index element={<PersonalInformation />} />
             <Route path="EditInfo" element={<EditInfo />} />

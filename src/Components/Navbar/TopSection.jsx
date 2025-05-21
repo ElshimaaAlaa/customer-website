@@ -21,8 +21,8 @@ function TopSection() {
       <div className="flex items-center gap-2">
         <MdPhone size={20} />
         <p className="text-15 font-bold">
-          Contact us :{" "}
-          <span className="underline font-light ms-1">{shopData.phone}</span>{" "}
+          Contact us :
+          <span className="underline font-light ms-1">{shopData.phone}</span>
         </p>
       </div>
       <div>

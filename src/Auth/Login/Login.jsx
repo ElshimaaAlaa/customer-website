@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
@@ -50,8 +50,10 @@ function Login() {
       await loginService(values.email, values.password);
       console.log("Logged in successfully");
       if (values.rememberMe) {
+        localStorage.setItem("Email", values.email);
         localStorage.setItem("password", values.password);
       } else {
+        localStorage.removeItem("Email");
         localStorage.removeItem("password");
       }
       setTimeout(() => {
@@ -79,10 +81,10 @@ function Login() {
         <img
           src="/assets/svgs/vertex.svg"
           alt="logo"
-          className="w-48 h-11 mb-5"
+          className="w-48 h-10 mb-3"
         />
         <div className="flex items-center gap-3 mt-3">
-          <h1 className="font-bold text-[21px]">Welcome Back</h1>
+          <h1 className="font-bold text-[20px]">Welcome Back</h1>
           <img
             src="/assets/images/waving-hand_svgrepo.com.png"
             alt="welcome-back"
@@ -95,8 +97,8 @@ function Login() {
           validationSchema={validationSchema}
           enableReinitialize
         >
-          {({ errors, touched, values, setFieldValue }) => (
-            <Form className="loginForm mt-4">
+          {({ errors, touched, values }) => (
+            <Form className="loginForm mt-2">
               <AuthInputField
                 name={"email"}
                 placeholder={"Email"}
@@ -119,12 +121,10 @@ function Login() {
                       type="checkbox"
                       name="rememberMe"
                       className="hidden peer"
-                      checked={values.rememberMe}
-                      onChange={() => setFieldValue("rememberMe", !values.rememberMe)}
                     />
-                    <span className="w-4 h-4 border-2 border-gray-300 rounded flex items-center justify-center transition-all duration-200 ">
+                    <span className="w-4 h-4 border-2 border-gray-300 rounded flex items-center justify-center transition-all duration-200 peer-checked:bg-primary peer-checked:border-primary">
                       <svg
-                        className="w-3 h-3 text-primary opacity-0 transition-all duration-200 peer-checked:opacity-100"
+                        className="w-3 h-3 text-white  transition-all duration-200 peer-checked:opacity-100"
                         viewBox="0 0 20 20"
                         fill="currentColor"
                       >
@@ -163,10 +163,10 @@ function Login() {
           <div className="border-t border-gray-300 flex-grow"></div>
         </div>
         <OAuth />
-        <p className="text-center text-gray-400 text-14 mt-5">
+        <p className="text-center text-gray-400 text-15 mt-5">
           Don't Have An Account ?
           <span
-            className="ms-1 text-primary font-bold text-15 cursor-pointer"
+            className="ms-2 text-primary font-bold text-15 cursor-pointer"
             onClick={() => navigate("/Register")}
           >
             Register
