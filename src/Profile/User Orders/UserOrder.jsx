@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Orders } from "../../ApiServices/Orders";
 import { useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
@@ -6,6 +6,7 @@ import { IoCalendarNumberOutline } from "react-icons/io5";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import ReactPaginate from "react-paginate";
 import { Search } from "lucide-react";
+
 function UserOrder() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -27,27 +28,11 @@ function UserOrder() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearchQuery(searchQuery);
+      setIsSearching(false);
     }, 300);
 
     return () => clearTimeout(timer);
   }, [searchQuery]);
-  //
-  const filteredOrders = Array.isArray(orders)
-    ? orders.filter((order) => {
-        if (!debouncedSearchQuery) return true;
-        const searchTerm = debouncedSearchQuery.toLowerCase();
-        const fieldsToSearch = [
-          order.order_number?.toString().toLowerCase() || "",
-          order.status_name?.toString().toLowerCase() || "",
-          order.payment_status?.toString().toLowerCase() || "",
-          order.total?.toString().toLowerCase() || "",
-          order.date?.toString().toLowerCase() || "",
-          order.items_count?.toString().toLowerCase() || "",
-        ];
-
-        return fieldsToSearch.some((field) => field.includes(searchTerm));
-      })
-    : [];
 
   useEffect(() => {
     const fetchReceivedOrder = async () => {
@@ -55,14 +40,23 @@ function UserOrder() {
       setError(false);
       try {
         const response = await Orders(pagination.current_page);
-        setOrders(response);
+        
+        // Check if response has data property or is the array itself
+        const ordersData = response.data || response;
+        
+        // Ensure we're working with an array
+        const ordersArray = Array.isArray(ordersData) ? ordersData : [];
+        
+        setOrders(ordersArray);
+        
+        // Set pagination from response or default
         setPagination(
           response.pagination || {
-            total: response?.length || 0,
-            count: response?.length || 0,
+            total: ordersArray.length,
+            count: ordersArray.length,
             per_page: 5,
             current_page: 1,
-            total_pages: 1,
+            total_pages: Math.ceil(ordersArray.length / 5),
             next_page_url: null,
             prev_page_url: null,
           }
@@ -78,15 +72,30 @@ function UserOrder() {
     fetchReceivedOrder();
   }, [pagination.current_page]);
 
+  const filteredOrders = orders.filter((order) => {
+    if (!debouncedSearchQuery) return true;
+    const searchTerm = debouncedSearchQuery.toLowerCase();
+    const fieldsToSearch = [
+      order.order_number?.toString().toLowerCase() || "",
+      order.status_name?.toString().toLowerCase() || "",
+      order.payment_status?.toString().toLowerCase() || "",
+      order.total?.toString().toLowerCase() || "",
+      order.date?.toString().toLowerCase() || "",
+      order.items_count?.toString().toLowerCase() || "",
+    ];
+    return fieldsToSearch.some((field) => field.includes(searchTerm));
+  });
+
   const handlePageClick = ({ selected }) => {
     setPagination((prev) => ({
       ...prev,
       current_page: selected + 1,
     }));
   };
+
   return (
     <div>
-      <h1 className="font-bold text-[18px] mb-5">My Orders</h1>
+      <h1 className="font-bold text-[18px] mb-2">My Orders</h1>
       {isSearching && debouncedSearchQuery !== searchQuery && (
         <div className="text-center py-2">
           <ClipLoader size={20} color="#E0A75E" />
@@ -105,7 +114,7 @@ function UserOrder() {
             setSearchQuery(e.target.value);
             setIsSearching(true);
           }}
-          className="w-full pl-10 pr-10 py-4 bg-muted/50 rounded-md text-sm focus:outline-none border-2 border-gray-200 bg-gray-50 placeholder:text-15 focus:border-primary"
+          className="w-full h-12 pl-10 pr-10 py-4 bg-muted/50 rounded-md text-sm focus:outline-none border-2 border-gray-200 bg-gray-50 placeholder:text-15 focus:border-primary"
         />
         {searchQuery && (
           <button
@@ -120,7 +129,7 @@ function UserOrder() {
         )}
       </div>
       {error ? (
-        <div className="text-red-500 text-center mt-10">
+        <div className="text-red-500 text-15 text-center mt-10">
           Failed to fetch data. Please try again.
         </div>
       ) : isLoading ? (
@@ -128,7 +137,7 @@ function UserOrder() {
           <ClipLoader color="#E0A75E" />
         </div>
       ) : filteredOrders.length === 0 ? (
-        <div className="text-gray-400 text-center mt-10">
+        <div className="text-gray-400 text-15 text-center mt-10">
           {debouncedSearchQuery
             ? "No orders match your search."
             : "No orders found."}
@@ -165,7 +174,7 @@ function UserOrder() {
                       navigate(`/Dashboard/RecivedOrders/${order.id}`)
                     }
                   >
-                    <td className="px-3  py-3 border-t border-r border-b text-gray-600 text-14">
+                    <td className="px-3 py-3 border-t border-r border-b text-gray-600 text-14">
                       <p className="flex items-center gap-2">
                         <input
                           type="checkbox"
@@ -246,4 +255,5 @@ function UserOrder() {
     </div>
   );
 }
+
 export default UserOrder;

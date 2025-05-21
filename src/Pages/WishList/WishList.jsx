@@ -1,4 +1,3 @@
-import React from "react";
 import { Helmet } from "react-helmet";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { FaHeart } from "react-icons/fa6";

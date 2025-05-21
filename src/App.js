@@ -1,7 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { PulseLoader } from "react-spinners";
-
 import GetDomain from "./Auth/Get Domain/GetDomain";
 import Login from "./Auth/Login/Login";
 import ForgotPassword from "./Auth/Forgot Password/ForgotPassword";

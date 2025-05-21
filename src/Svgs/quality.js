@@ -1,8 +1,7 @@
-import * as React from "react";
 const Qualityicon = (props) => (
   <svg
-    width={55}
-    height={55}
+    width={50}
+    height={50}
     viewBox="0 0 73 73"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"

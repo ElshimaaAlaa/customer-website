@@ -8,12 +8,12 @@ export const Orders = async () => {
       {
         headers: {
           "Accept-Language": "en",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem("user token")}`,
         },
       }
     );
     if (response.status === 200) {
-      console.log(response.data);
+      console.log("orders data",response.data.data);
       return response.data.data;
     }
   } catch (error) {

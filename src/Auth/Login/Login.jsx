@@ -26,10 +26,10 @@ function Login() {
     const savedEmail = localStorage.getItem("Email");
     const savedPassword = localStorage.getItem("password");
     if (savedEmail && savedPassword) {
-      setInitialValues({ 
-        email: savedEmail, 
+      setInitialValues({
+        email: savedEmail,
         password: savedPassword,
-        rememberMe: true 
+        rememberMe: true,
       });
     }
   }, []);

@@ -14,7 +14,8 @@ import { useNavigate } from "react-router-dom";
 function Register() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false);
+  const [showPasswordConfirmation, setShowPasswordConfirmation] =
+    useState(false);
   const navigate = useNavigate();
   const [error, setError] = useState(null);
 
@@ -104,7 +105,7 @@ function Register() {
                 showPassword={showPassword}
                 togglePasswordVisibility={() => setShowPassword(!showPassword)}
               />
-              
+
               <div className="flex items-start mt-3">
                 <label className="inline-flex items-center cursor-pointer">
                   <Field
@@ -142,19 +143,19 @@ function Register() {
                   disabled={loading}
                 />
               </div>
-              
+
               {error && (
                 <p className="text-red-500 text-sm mb-3 text-center">{error}</p>
               )}
-              
+
               <div className="flex items-center justify-center w-full">
                 <div className="border-t border-gray-300 flex-grow"></div>
                 <span className="mx-4 text-gray-400 text-13 font-bold">OR</span>
                 <div className="border-t border-gray-300 flex-grow"></div>
               </div>
-              
+
               <OAuth />
-              
+
               <p className="text-center text-gray-400 mt-3 text-15">
                 Have An Account ?
                 <span

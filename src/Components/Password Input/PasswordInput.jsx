@@ -2,7 +2,12 @@ import { Field, ErrorMessage } from "formik";
 import { FaRegEye, FaEyeSlash } from "react-icons/fa";
 import clsx from "clsx";
 
-function PasswordInput({ name, placeholder, showPassword, togglePasswordVisibility }) {
+function PasswordInput({
+  name,
+  placeholder,
+  showPassword,
+  togglePasswordVisibility,
+}) {
   return (
     <div className="relative mt-3 w-full">
       <Field name={name}>
@@ -33,7 +38,11 @@ function PasswordInput({ name, placeholder, showPassword, togglePasswordVisibili
           </div>
         )}
       </Field>
-      <ErrorMessage name={name} component="p" className="text-red-500 text-sm mt-1" />
+      <ErrorMessage
+        name={name}
+        component="p"
+        className="text-red-500 text-sm mt-1"
+      />
     </div>
   );
 }
