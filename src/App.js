@@ -59,7 +59,6 @@ function App() {
           element={<CreateNewPassword />}
         />
         <Route path="/Register" element={<Register />} />
-
         <Route path="/Home" element={<Main />}>
           <Route path="Homepage" element={<Home />} />
           <Route path="Faqs" element={<Faqs />} />

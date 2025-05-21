@@ -1,12 +1,19 @@
-import React from "react";
 import Quality from "../../Sections/Quality Section/Quality";
 import OpinionSection from "../../Sections/Opnion Section/ClientOpinion";
 import Header from "../../Components/Header/Header";
+import FeaturedCategories from "../../Sections/Featured Categories/FeaturedCategories";
+import LatestProducts from "../../Sections/Latest Products/LatestProducts";
+import BestSalesProducts from "../../Sections/Best Selling/BestSellingProducts";
+import Offers from "../../Sections/Offers/Offers";
 
 function Home() {
   return (
     <div>
       <Header />
+      <FeaturedCategories />
+      <LatestProducts />
+      <Offers />
+      <BestSalesProducts />
       <OpinionSection />
       <Quality />
     </div>

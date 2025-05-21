@@ -1,6 +1,9 @@
 import { useRef } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import { IoIosArrowRoundForward } from "react-icons/io";
+import { IoIosArrowRoundBack } from "react-icons/io";
+
 const testimonials = [
   {
     id: 1,
@@ -100,9 +103,7 @@ function OpinionSection() {
                   className="mt-3 w-24 md:w-28 lg:w-52"
                 />
                 <div className="flex gap-3 items-center mt-2">
-                  <p className="font-bold text-13">
-                    {testimonial.name}
-                  </p>
+                  <p className="font-bold text-13">{testimonial.name}</p>
                   <p className="text-gray-500 text-12 mt-0.5">
                     {testimonial.role}
                   </p>
@@ -121,18 +122,18 @@ function OpinionSection() {
       {/* Navigation Arrows */}
       <div className="flex items- justify-center mt-5 mb-8 gap-5">
         <button
-          className="bg-primary text-white p-2 w-12 h-12 font-bold rounded-full text-lg md:text-2xl"
+          className="bg-primary text-white p-2 w-10 h-10 font-bold rounded-full text-lg md:text-2xl"
           onClick={handlePrev}
           aria-label="Previous testimonial"
         >
-          &#8592;
+          <IoIosArrowRoundBack size={25} />
         </button>
         <button
-          className="bg-primary text-white p-2 w-12 h-12 font-bold rounded-full text-lg md:text-2xl"
+          className="bg-primary text-white p-2 w-10 h-10 font-bold rounded-full text-lg md:text-2xl"
           onClick={handleNext}
           aria-label="Next testimonial"
         >
-          &#8594;
+          <IoIosArrowRoundForward size={25} />
         </button>
       </div>
     </section>
