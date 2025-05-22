@@ -165,7 +165,7 @@ function UserOrder() {
                   <tr
                     key={order.id}
                     className="hover:bg-gray-50 cursor-pointer"
-                   onClick={() => navigate(`/Home/UserProfile/UserOrder/${order.id}`)}
+                   onClick={() => navigate(`/Home/UserOrder/${order.id}`)}
 
                   >
                     <td className="px-3 py-3 border-t border-r border-b text-gray-600 text-14">

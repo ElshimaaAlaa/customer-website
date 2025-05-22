@@ -63,8 +63,8 @@ function App() {
           <Route path="Faqs" element={<Faqs />} />
           <Route path="AboutUs" element={<AboutUs />} />
           <Route path="ContactUs" element={<ContactUs />} />
-          <Route path="Products" element={<Products/>}/>
-          <Route path="WishList" element={<WishList/>}/>
+          <Route path="Products" element={<Products />} />
+          <Route path="WishList" element={<WishList />} />
           <Route path="UserProfile" element={<UserProfile />}>
             <Route index element={<PersonalInformation />} />
             <Route path="EditInfo" element={<EditInfo />} />
@@ -72,9 +72,10 @@ function App() {
             <Route path="Address" element={<Address />} />
             <Route path="EditAddress" element={<EditAddress />} />
             <Route path="UserOrder" element={<UserOrder />} />
-            <Route path="UserOrder/:id" element={<OrderDetails />} />
+            {/* <Route path="UserOrder/:id" element={<OrderDetails />} /> */}
             <Route path="Payment" element={<Payment />} />
           </Route>
+          <Route path="UserOrder/:id" element={<OrderDetails />} />
         </Route>
       </Routes>
     </BrowserRouter>
