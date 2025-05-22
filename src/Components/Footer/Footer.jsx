@@ -8,6 +8,7 @@ import WhatsApp from "../../Svgs/WhatsApp";
 import { FaXTwitter } from "react-icons/fa6";
 import { settings } from "../../ApiServices/GeneralSettings";
 import { useNavigate } from "react-router-dom";
+
 function Footer() {
   const [shopData, setShopData] = useState([]);
   const navigate = useNavigate();
@@ -55,13 +56,13 @@ function Footer() {
         <div className="space-y-4">
           <h2 className="font-bold text-lg mb-2">Get in touch</h2>
           <ul className="list-none text-sm space-y-2">
-            <li className="flex items-center gap-2">
+            <li className="flex items-center gap-2 underline">
               <PhoneNum /> {shopData.phone}
             </li>
-            <li className="flex items-center gap-2">
+            <li className="flex items-center gap-2 underline">
               <EmailAddress /> {shopData.email}
             </li>
-            <li className="flex items-center gap-2">
+            <li className="flex items-center gap-2 underline">
               <Location /> {shopData.address || "Saudi arabia , alreyad"}
             </li>
           </ul>

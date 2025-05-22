@@ -1,25 +1,35 @@
 import { useState, useEffect } from "react";
 import { getHomeData } from "../../ApiServices/Home";
+import { toggleWishlist } from "../../ApiServices/ToggleWishlist";
 import { ClipLoader } from "react-spinners";
-import { IoIosHeartEmpty } from "react-icons/io";
+import { IoIosHeartEmpty, IoIosHeart } from "react-icons/io";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
-import { IoIosArrowRoundForward } from "react-icons/io";
-import { IoIosArrowRoundBack } from "react-icons/io";
+import { IoIosArrowRoundForward, IoIosArrowRoundBack } from "react-icons/io";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 function LatestProducts() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [latestProducts, setLatestProducts] = useState([]);
-
+  const [wishlistItems, setWishlistItems] = useState([]);
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchProducts = async () => {
       setIsLoading(true);
       try {
         const response = await getHomeData();
         setLatestProducts(response.latest_products || []);
+
+        // Initialize wishlist items from localStorage
+        const storedWishlist = localStorage.getItem("wishlistItems");
+        if (storedWishlist) {
+          setWishlistItems(JSON.parse(storedWishlist));
+        }
       } catch (error) {
         setError(error);
       } finally {
@@ -29,15 +39,63 @@ function LatestProducts() {
     fetchProducts();
   }, []);
 
+  const handleWishlistToggle = async (productId) => {
+    try {
+      // Optimistic UI update
+      const isInWishlist = wishlistItems.includes(productId);
+      const updatedWishlist = isInWishlist
+        ? wishlistItems.filter((id) => id !== productId)
+        : [...wishlistItems, productId];
+
+      setWishlistItems(updatedWishlist);
+      localStorage.setItem("wishlistItems", JSON.stringify(updatedWishlist));
+
+      // Call API endpoint
+      const response = await toggleWishlist(productId);
+
+      if (!response.success) {
+        throw new Error(response.message || "Failed to update wishlist");
+      }
+
+      // Show success message
+      toast.success(
+        isInWishlist
+          ? "Product removed from wishlist"
+          : "Product added to wishlist",
+        {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        }
+      );
+    } catch (error) {
+      setWishlistItems((prev) =>
+        prev.includes(productId)
+          ? prev.filter((id) => id !== productId)
+          : [...prev, productId]
+      );
+      toast.error(error.message || "Failed to update wishlist", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+      console.error("Wishlist error:", error);
+    }
+  };
+
   return (
     <div className="px-4 md:px-20 py-10 relative">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-bold mb-6">Latest Products</h1>
-        <button className="text-primary w-32 flex items-center rounded-md justify-center font-bold p-3 gap-2">
+        <button
+          className="text-primary w-32 flex items-center rounded-md justify-center font-bold p-3 gap-2"
+            onClick={() => navigate("/Home/Products")}
+        >
           View All <IoIosArrowRoundForward size={25} />
         </button>
       </div>
-
       {error ? (
         <div className="text-red-500 text-15 text-center mt-10">
           Failed to fetch data. Please try again.
@@ -70,45 +128,73 @@ function LatestProducts() {
             {latestProducts.map((product) => (
               <SwiperSlide key={product.id}>
                 <div className="rounded-md">
-                  <div className="relative bg-gray-50 border rounded-md flex justify-center">
-                    <button className="absolute top-1 right-1 p-1">
-                      <IoIosHeartEmpty size={23} className="text-black" />
+                  <div className="relative bg-gray-50 border rounded-md flex justify-center h-72">
+                    <button
+                      className="absolute top-3 right-3 p-2 bg-white rounded-full"
+                      onClick={() => handleWishlistToggle(product.id)}
+                    >
+                      {wishlistItems.includes(product.id) ? (
+                        <IoIosHeart size={20} className="text-red-500" />
+                      ) : (
+                        <IoIosHeartEmpty
+                          size={20}
+                          className="text-gray-600 hover:text-red-500"
+                        />
+                      )}
                     </button>
-                    {product.images?.[0]?.src && (
-                      <img
-                        src={product.images[0].src}
-                        alt={product.name}
-                        className="w-48 h-72 py-3 rounded-md"
-                        onError={(e) => {
-                          e.target.onerror = null;
-                          e.target.src = "/path/to/placeholder-image.png";
-                        }}
-                      />
-                    )}
-                  </div>
-                  <div className="text-left ms-1">
-                    <h3 className="font-bold text-16 mt-3">{product.name}</h3>
-                    <div className="flex items-center gap-3">
-                      <img
-                        src="/assets/svgs/rate.svg"
-                        alt="rate"
-                        className="w-20 h-6"
-                      />
-                      <p className="text-12 ">4.5 / 5 </p>
+
+                    <div className="flex items-center justify-center h-full p-4">
+                      {product.images?.[0]?.src ? (
+                        <img
+                          src={product.images[0].src}
+                          alt={product.name}
+                          className="max-h-full max-w-full object-contain"
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = "/placeholder-product.png";
+                          }}
+                        />
+                      ) : (
+                        <div className="text-gray-400 text-14 flex items-center justify-center h-full">
+                          No image available
+                        </div>
+                      )}
                     </div>
-                    <div className="flex items-center gap-2 mt-2">
+                  </div>
+                  <div className="ms-2 mt-2">
+                    <h3 className="font-bold text-17">
+                      {product.name}
+                    </h3>
+                    <div className="flex items-center gap-2 mt-1">
+                      <div className="flex">
+                        {[...Array(5)].map((_, i) => (
+                          <svg
+                            key={i}
+                            className={`w-4 h-4 ${
+                              i < 4.5 ? "text-yellow-400" : "text-gray-300"
+                            }`}
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                        ))}
+                      </div>
+                      <span className="text-13">4.5</span>
+                    </div>
+                    <div className="flex items-center gap-2 mt-1">
                       {product.price_after_discount ? (
                         <>
-                          <span className="text-primary text-17 font-bold">
-                            ${product.price}
+                          <span className="text-17 font-bold text-primary">
+                            ${product.price_after_discount.toFixed(2)}
                           </span>
-                          <span className="text-gray-500 text-14 line-through">
-                            ${product.price_after_discount}
+                          <span className="text-14 text-gray-400 line-through">
+                            ${product.price.toFixed(2)}
                           </span>
                         </>
                       ) : (
-                        <span className="text-primary font-bold">
-                          ${product.price}
+                        <span className="text-lg font-bold text-gray-900">
+                          ${product.price.toFixed(2)}
                         </span>
                       )}
                     </div>
@@ -118,13 +204,12 @@ function LatestProducts() {
             ))}
           </Swiper>
 
-          {/* Custom navigation buttons */}
-          <div className="flex justify-end mt-4 gap-6">
-            <button className="custom-swiper-button-prev bg-primary p-2 rounded-full text-white">
-              <IoIosArrowRoundBack size={25} />
+          <div className="flex justify-end mt-6 gap-4">
+            <button className="custom-swiper-button-prev bg-primary p-2 rounded-full text-white hover:bg-primary-dark transition-colors">
+              <IoIosArrowRoundBack size={24} />
             </button>
-            <button className="custom-swiper-button-next bg-primary p-2 rounded-full text-white">
-              <IoIosArrowRoundForward size={25} />
+            <button className="custom-swiper-button-next bg-primary p-2 rounded-full text-white hover:bg-primary-dark transition-colors">
+              <IoIosArrowRoundForward size={24} />
             </button>
           </div>
         </div>
@@ -132,4 +217,5 @@ function LatestProducts() {
     </div>
   );
 }
+
 export default LatestProducts;

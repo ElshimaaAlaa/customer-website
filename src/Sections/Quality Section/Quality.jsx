@@ -4,7 +4,7 @@ import Qualityicon from "../../Svgs/quality";
 
 function Quality() {
   return (
-    <section className="flex gap-6 px-20 py-10">
+    <section className="flex gap-6 px-20 py-6">
       <div className="flex gap-3 bg-customOrange-lightOrange rounded-xl py-5 px-8 w-full ">
         <Delivary />
         <div className="flex flex-col gap-2">

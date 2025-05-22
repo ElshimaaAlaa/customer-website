@@ -5,12 +5,14 @@ import FeaturedCategories from "../../Sections/Featured Categories/FeaturedCateg
 import LatestProducts from "../../Sections/Latest Products/LatestProducts";
 import BestSalesProducts from "../../Sections/Best Selling/BestSellingProducts";
 import Offers from "../../Sections/Offers/Offers";
+import AboutExpiredPromo from "../../Sections/About Expitred Promotion/AboutExpiredPromo";
 
 function Home() {
   return (
     <div>
       <Header />
       <FeaturedCategories />
+      <AboutExpiredPromo/>
       <LatestProducts />
       <Offers />
       <BestSalesProducts />

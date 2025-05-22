@@ -28,9 +28,8 @@ function Offers() {
   }, []);
 
   return (
-    <div className="px-4 md:px-20 py-10 relative">
+    <div className="px-4 md:px-20 py-5 relative">
       <h1 className="text-xl font-bold mb-6">Offers</h1>
-
       {error ? (
         <div className="text-red-500 text-15 text-center mt-10">
           Failed to fetch data. Please try again.
@@ -66,7 +65,7 @@ function Offers() {
                   <div className="relative bg-gray-50 border rounded-md flex justify-center">
                     <div className="absolute rounded-md overlay-div">
                       <div className="flex justify-end mx-2 my-2">
-                        <p className="bg-red-600 text-white rounded-2xl p-2 text-center ">
+                        <p className="bg-red-600 text-14 text-white rounded-2xl p-2 text-center ">
                           Offer - {product.discount_percentage}%
                         </p>
                       </div>
@@ -81,9 +80,9 @@ function Offers() {
                               alt="rate"
                               className="w-20 h-6"
                             />
-                            <p className="text-12 text-white">4.5 / 5 </p>
+                            <p className="text-13 text-white">4.5 / 5 </p>
                           </div>
-                          <div className="flex items-center gap-2 mt-2">
+                          <div className="flex items-center gap-2 mt-1">
                             {product.price_after_discount ? (
                               <>
                                 <span className="text-white text-lg font-bold">

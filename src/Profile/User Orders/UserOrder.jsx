@@ -11,6 +11,7 @@ function UserOrder() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [orders, setOrders] = useState([]);
+  const [product, setProduct] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
@@ -40,16 +41,10 @@ function UserOrder() {
       setError(false);
       try {
         const response = await Orders(pagination.current_page);
-        
-        // Check if response has data property or is the array itself
         const ordersData = response.data || response;
-        
-        // Ensure we're working with an array
         const ordersArray = Array.isArray(ordersData) ? ordersData : [];
-        
+        setProduct(response.products);
         setOrders(ordersArray);
-        
-        // Set pagination from response or default
         setPagination(
           response.pagination || {
             total: ordersArray.length,
@@ -144,11 +139,11 @@ function UserOrder() {
         </div>
       ) : (
         <>
-          <div className="border border-gray-200 rounded-lg mt-4 overflow-hidden">
+          <div className="border border-gray-200 rounded-lg mt-2 overflow-hidden">
             <table className="bg-white min-w-full table">
               <thead>
                 <tr>
-                  <th className="px-3 py-3 border-t border-b text-left cursor-pointer">
+                  <th className="px-3 py-3 border-b text-left cursor-pointer">
                     <p className="flex items-center gap-3">
                       <input
                         type="checkbox"
@@ -158,11 +153,11 @@ function UserOrder() {
                       Order ID
                     </p>
                   </th>
-                  <th className="px-6 py-3 text-left border">Date</th>
-                  <th className="px-6 py-3 text-left border">Price</th>
-                  <th className="px-6 py-3 text-left border">Items</th>
-                  <th className="px-6 py-3 text-left border">Payment</th>
-                  <th className="px-6 py-3 text-left border">Status</th>
+                  <th className="px-3 py-3 text-left border-l">Date</th>
+                  <th className="px-3 py-3 text-left border-r">Price</th>
+                  <th className="px-3 py-3 text-left border-l">Items</th>
+                  <th className="px-3 py-3 text-left border-l">Payment</th>
+                  <th className="px-3 py-3 text-left border-l">Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -170,9 +165,8 @@ function UserOrder() {
                   <tr
                     key={order.id}
                     className="hover:bg-gray-50 cursor-pointer"
-                    onClick={() =>
-                      navigate(`/Dashboard/RecivedOrders/${order.id}`)
-                    }
+                   onClick={() => navigate(`/Home/UserProfile/UserOrder/${order.id}`)}
+
                   >
                     <td className="px-3 py-3 border-t border-r border-b text-gray-600 text-14">
                       <p className="flex items-center gap-2">
@@ -184,17 +178,20 @@ function UserOrder() {
                         {order.order_number}
                       </p>
                     </td>
-                    <td className="flex items-center gap-2 px-6 py-3 border-t border-r text-gray-600 text-14">
-                      <IoCalendarNumberOutline color="#69ABB5" />
-                      {order.date}
+                    <td className="flex items-center gap-2 px-6 py-3 border-t border-r text-gray-600 text-13">
+                      <IoCalendarNumberOutline color="#69ABB5" size={16} />
+                      {order.date || "N/A"}
                     </td>
-                    <td className="px-6 py-3 border-t border-r text-gray-600 text-14">
+                    <td className="px-3 py-3 border-t border-r text-gray-600 text-14">
                       {order.total} $
                     </td>
-                    <td className="px-6 py-3 border-t border-r text-gray-600 text-14">
-                      {order.items_count}
+                    <td className="px-3 py-3 border-t border-r text-gray-600 text-14">
+                      {order.products.reduce(
+                        (total, product) => total + product.quantity,
+                        0
+                      )}
                     </td>
-                    <td className="px-6 py-3 border-t border-r">
+                    <td className="px-3 py-3 border-t border-r">
                       <span
                         className={`px-2 py-2 rounded-md text-14 ${
                           order.payment_status === "unpaid"
@@ -209,7 +206,7 @@ function UserOrder() {
                         {order.payment_status}
                       </span>
                     </td>
-                    <td className="px-6 py-3 border-t">
+                    <td className="px-3 py-3 border-t">
                       <span
                         className={`px-2 py-2 rounded-md text-14 ${
                           order.status === 8
@@ -233,11 +230,11 @@ function UserOrder() {
             pageCount={pagination.total_pages}
             onPageChange={handlePageClick}
             forcePage={pagination.current_page - 1}
-            containerClassName="flex items-center justify-end mt-5 space-x-1"
-            pageClassName="px-3 py-1 rounded hover:bg-gray-200"
+            containerClassName="flex items-center justify-end mt-5 "
+            pageClassName="px-3 py-1 rounded-md"
             activeClassName="bg-customOrange-lightOrange text-primary"
-            previousLabel={<ChevronLeft className="w-4 h-4" />}
-            nextLabel={<ChevronRight className="w-4 h-4" />}
+            previousLabel={<ChevronLeft className="w-5 h-5 text-primary" />}
+            nextLabel={<ChevronRight className="w-5 h-5 text-primary" />}
             previousClassName={`px-3 py-1 rounded ${
               !pagination.prev_page_url
                 ? "opacity-50 cursor-not-allowed"
@@ -255,5 +252,4 @@ function UserOrder() {
     </div>
   );
 }
-
 export default UserOrder;

@@ -22,12 +22,11 @@ import UserOrder from "./Profile/User Orders/UserOrder";
 import Payment from "./Profile/Payment/Payment";
 import OrderDetails from "./Profile/User Orders/OrderDetail";
 import WishList from "./Pages/WishList/WishList";
-
+import Products from "./Pages/Products/Products";
 function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate loading delay (e.g. 2 seconds)
     const timer = setTimeout(() => setLoading(false), 2000);
     return () => clearTimeout(timer);
   }, []);
@@ -64,6 +63,7 @@ function App() {
           <Route path="Faqs" element={<Faqs />} />
           <Route path="AboutUs" element={<AboutUs />} />
           <Route path="ContactUs" element={<ContactUs />} />
+          <Route path="Products" element={<Products/>}/>
           <Route path="WishList" element={<WishList/>}/>
           <Route path="UserProfile" element={<UserProfile />}>
             <Route index element={<PersonalInformation />} />
@@ -80,5 +80,4 @@ function App() {
     </BrowserRouter>
   );
 }
-
 export default App;

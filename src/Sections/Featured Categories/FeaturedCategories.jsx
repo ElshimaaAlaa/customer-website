@@ -21,8 +21,8 @@ function FeaturedCategories() {
     fetchCatgories();
   }, []);
   return (
-    <div className=" px-20 py-10">
-      <h1 className="font-bold text-xl mb-3">Featured Categories</h1>
+    <div className=" px-20 pt-14 pb-10">
+      <h1 className="font-bold text-xl mb-5">Featured Categories</h1>
       <div>
         {error ? (
           <div className="text-red-500 text-15 text-center mt-10">
@@ -37,7 +37,7 @@ function FeaturedCategories() {
             No Featured Categories founded.
           </div>
         ) : (
-          <div className="flex items-center justify-between mt-5">
+          <div className="flex items-center justify-between mt-7">
             {featuredCategories?.map((cat) => (
               <div>
                 <div>
@@ -56,5 +56,4 @@ function FeaturedCategories() {
     </div>
   );
 }
-
 export default FeaturedCategories;

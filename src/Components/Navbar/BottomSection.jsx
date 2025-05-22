@@ -3,11 +3,13 @@ import { CiSearch } from "react-icons/ci";
 import { GoHeart } from "react-icons/go";
 import { GrCart } from "react-icons/gr";
 import UserAcc from "../../Profile/User Acc/UserAcc";
+import { useEffect, useState } from "react";
+import { getWishListData } from "../../ApiServices/Wishlist";
 
 function BottomSection() {
   const navigate = useNavigate();
   const location = useLocation();
-
+  const [data, setData] = useState([]);
   const isActive = (path) => {
     if (path === "/Main") {
       return location.pathname === "/Main";
@@ -17,10 +19,20 @@ function BottomSection() {
     }
     return location.pathname === path;
   };
-
+  useEffect(() => {
+    const fetchProductNumInWishlist = async () => {
+      try {
+        const response = await getWishListData();
+        setData(response);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchProductNumInWishlist();
+  }, []);
   return (
     <div className="flex items-center justify-between py-5 px-20">
-      <div>
+      <div onClick={()=>navigate('/Home/HomePage')} className="cursor-pointer">
         <img src="/assets/svgs/vertex.svg" alt="logo" className="w-36" />
       </div>
       <div>
@@ -41,9 +53,9 @@ function BottomSection() {
                 ? "text-primary font-bold border-b-3 border-primary"
                 : ""
             }`}
-            onClick={() => navigate("/Categories")}
+            onClick={() => navigate("/Home/Products")}
           >
-            Categories
+            Products
           </li>
           <li
             className={`cursor-pointer ${
@@ -80,11 +92,14 @@ function BottomSection() {
       <div className="flex items-center gap-4">
         <div className="flex gap-3 items-center">
           <CiSearch size={21} />
-          <GoHeart
-            size={20}
-            className="cursor-pointer"
-            onClick={() => navigate("/Home/WishList")}
-          />
+          <div className=" relative">
+            <p className="bg-red-600 absolute text-white text-10 h-4 w-4 -top-2 -right-2  rounded-full text-center">{data.length}</p>
+            <GoHeart
+              size={20}
+              className="cursor-pointer"
+              onClick={() => navigate("/Home/WishList")}
+            />
+          </div>
           <GrCart size={18} />
         </div>
         <UserAcc />
@@ -92,5 +107,4 @@ function BottomSection() {
     </div>
   );
 }
-
 export default BottomSection;
