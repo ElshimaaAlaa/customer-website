@@ -72,7 +72,6 @@ function App() {
             <Route path="Address" element={<Address />} />
             <Route path="EditAddress" element={<EditAddress />} />
             <Route path="UserOrder" element={<UserOrder />} />
-            {/* <Route path="UserOrder/:id" element={<OrderDetails />} /> */}
             <Route path="Payment" element={<Payment />} />
           </Route>
           <Route path="UserOrder/:id" element={<OrderDetails />} />
