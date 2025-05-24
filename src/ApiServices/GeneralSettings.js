@@ -5,7 +5,7 @@ const role = localStorage.getItem("role");
 export const settings = async () => {
   try {
     const response = await axios({
-      url: `${API_BASE_URL}demo.vrtex.duckdns.org/api/${role}/settings`,
+      url: `${API_BASE_URL}demo.vrtex.duckdns.org/api/shop/settings`,
       method: "GET",
       headers: {
         "Content-Type": "application/json",
