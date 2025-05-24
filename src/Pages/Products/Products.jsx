@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Filter, Star, StarHalf, ShoppingCart, Heart, ChevronLeft, ChevronRight } from "lucide-react"
 // import "./App.css"
 import './style.scss'
+import Header from "../../Components/Header/Header"
 function Products() {
   const [selectedCategory, setSelectedCategory] = useState("clothes")
   const [priceRange, setPriceRange] = useState(50)
@@ -99,7 +100,8 @@ function Products() {
   }
 
   return (
-    <div className="container">
+    <div className="">
+      <Header/>
       <div className="product-page">
         {/* Filters Section */}
         <div className="filters-section">

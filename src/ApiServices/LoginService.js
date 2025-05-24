@@ -13,8 +13,8 @@ export const loginService = async (email, password) => {
     });
     if (response.status === 200) {
       localStorage.setItem("user token", response.data.data.token);
-      localStorage.setItem("Email", response.data.data.email);
-      localStorage.setItem("admin name", response.data.data.name);
+      localStorage.setItem("user email", response.data.data.email);
+      localStorage.setItem("user name", response.data.data.name);
       console.log(response.data.data);
       return response.data.data;
     }
