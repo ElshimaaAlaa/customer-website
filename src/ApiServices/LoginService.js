@@ -4,7 +4,7 @@ const live_customer_domain = localStorage.getItem("live_customer_domain");
 export const loginService = async (email, password) => {
   try {
     const response = await axios({
-      url: `${API_BASE_URL}${live_customer_domain}/api/login`,
+      url: `${API_BASE_URL}demo.vrtex.duckdns.org/api/login`,
       method: "POST",
       data: {
         email,

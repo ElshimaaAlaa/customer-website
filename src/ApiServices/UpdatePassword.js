@@ -4,7 +4,7 @@ const live_customer_domain = localStorage.getItem("live_customer_domain");
 export const handleUpdatePassword = async (password, password_confirmation) => {
   try {
     const response = await axios({
-      url: `${API_BASE_URL}${live_customer_domain}/api/update-password`,
+      url: `${API_BASE_URL}demo.vrtex.duckdns.org/api/update-password`,
       method: "POST",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("user token")}`,

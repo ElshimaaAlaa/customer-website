@@ -5,7 +5,7 @@ export const toggleWishlist = async (productId) => {
   try {
     const response = await axios({
       method: "GET",
-      url: `${API_BASE_URL}${live_customer_domain}/api/wishlist/toggle/${productId}`,
+      url: `${API_BASE_URL}demo.vrtex.duckdns.org/api/wishlist/toggle/${productId}`,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("user token")}`,

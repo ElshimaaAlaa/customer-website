@@ -8,7 +8,7 @@ export const CreateNewPasswordService = async (
 ) => {
   try {
     const response = await axios({
-      url: `${API_BASE_URL}${live_customer_domain}/api/reset-password`,
+      url: `${API_BASE_URL}demo.vrtex.duckdns.org/api/reset-password`,
       method: "POST",
       data: {
         password,

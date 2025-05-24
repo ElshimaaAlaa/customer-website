@@ -18,7 +18,7 @@ export const register = async (
     };
     console.log("Request Payload:", payload);
     const response = await axios.post(
-      `${API_BASE_URL}${live_customer_domain}/api/register`,
+      `${API_BASE_URL}demo.vrtex.duckdns.org/api/register`,
       payload
     );
     if (response.status === 200) {

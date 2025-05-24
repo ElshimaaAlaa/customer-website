@@ -5,7 +5,7 @@ const role = localStorage.getItem("role");
 export const logOut = async () => {
   try {
     const response = await axios({
-      url: `${API_BASE_URL}${live_customer_domain}/api/${role}/logout`,
+      url: `${API_BASE_URL}demo.vrtex.duckdns.org/api/${role}/logout`,
       method: "POST",
     });
     if (response.status === 200) {

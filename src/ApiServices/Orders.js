@@ -4,7 +4,7 @@ const live_customer_domain = localStorage.getItem("live_customer_domain");
 export const Orders = async () => {
   try {
     const response = await axios.get(
-      `${API_BASE_URL}${live_customer_domain}/api/orders`,
+      `${API_BASE_URL}demo.vrtex.duckdns.org/api/orders`,
       {
         headers: {
           "Accept-Language": "en",

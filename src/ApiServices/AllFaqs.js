@@ -5,7 +5,7 @@ const role = localStorage.getItem("role");
 export const getFaqs = async () => {
   try {
     const response = await axios({
-      url: `${API_BASE_URL}/${live_customer_domain}/api/${role}/faqs`,
+      url: `${API_BASE_URL}${live_customer_domain}/api/${role}/faqs`,
       method: "GET",
       headers: {
         "Accept-Language": "en",

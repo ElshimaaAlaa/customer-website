@@ -6,7 +6,7 @@ export const ForgotPasswordService = async (email) => {
   try {
     const response = await axios({
       method: "POST",
-      url: `${API_BASE_URL}${live_customer_domain}/api/send-otp`,
+      url: `${API_BASE_URL}demo.vrtex.duckdns.org/api/send-otp`,
       data: { email },
       headers: {
         "Content-Type": "application/json",
