@@ -1,10 +1,10 @@
 import axios from "axios";
 const API_BASE_URL = "https://";
-const live_shop_domain = localStorage.getItem("live_shop_domain");
+const live_customer_domain = localStorage.getItem("live_customer_domain");
 export const getHomeData = async () => {
   try {
     const response = await axios({
-      url: `${API_BASE_URL}/${live_shop_domain}/api/home`,
+      url: `${API_BASE_URL}/${live_customer_domain}/api/home`,
       method: "GET",
       headers: {
         "Accept-Language": "en",

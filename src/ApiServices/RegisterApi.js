@@ -1,6 +1,6 @@
 import axios from "axios";
 const API_BASE_URL = "https://";
-const live_shop_domain = localStorage.getItem("live_shop_domain");
+const live_customer_domain = localStorage.getItem("live_customer_domain");
 export const register = async (
   name,
   password,
@@ -18,7 +18,7 @@ export const register = async (
     };
     console.log("Request Payload:", payload);
     const response = await axios.post(
-      `${API_BASE_URL}${live_shop_domain}/api/register`,
+      `${API_BASE_URL}${live_customer_domain}/api/register`,
       payload
     );
     if (response.status === 200) {

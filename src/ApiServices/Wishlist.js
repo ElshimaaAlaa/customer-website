@@ -1,10 +1,10 @@
 import axios from "axios";
 const API_BASE_URL = "https://";
-const live_shop_domain = localStorage.getItem("live_shop_domain");
+const live_customer_domain = localStorage.getItem("live_customer_domain");
 export const getWishListData = async () => {
   try {
     const response = await axios({
-      url: `${API_BASE_URL}/${live_shop_domain}/api/wishlist`,
+      url: `${API_BASE_URL}/${live_customer_domain}/api/wishlist`,
       method: "GET",
       headers: {
         "Accept-Language": "en",
