@@ -4,7 +4,7 @@ const live_customer_domain = localStorage.getItem("live_customer_domain");
 export const getWishListData = async () => {
   try {
     const response = await axios({
-      url: `${API_BASE_URL}/${live_customer_domain}/api/wishlist`,
+      url: `${API_BASE_URL}${live_customer_domain}/api/wishlist`,
       method: "GET",
       headers: {
         "Accept-Language": "en",

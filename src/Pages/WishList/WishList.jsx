@@ -137,10 +137,10 @@ function WishList() {
         </div>
       )}
       <div className="flex justify-end gap-3">
-        <button className="rounded-md p-3 bg-gray-100 text-gray-400 w-44 text-center">
+        <button className="rounded-md p-3 font-bold bg-gray-100 text-gray-400 w-44 text-center">
           Clear All
         </button>
-        <button className="bg-primary text-white p-3 rounded-md w-44 text-center">
+        <button className="bg-primary font-bold text-white p-3 rounded-md w-44 text-center">
           Add All To Cart
         </button>
       </div>

@@ -153,7 +153,7 @@ function ContactUs() {
             validationSchema={validationSchema}
           >
             {({ errors, touched }) => (
-              <Form className="flex flex-col gap-3">
+              <Form className="flex flex-col gap-2">
                 <AuthInputField name="name" placeholder="Name" />
                 <AuthInputField name="email" placeholder="Email" />
                 <AuthInputField name="phone" placeholder="Phone Number" />
