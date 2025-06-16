@@ -3,6 +3,8 @@ import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
 import { Profile } from "../../ApiServices/Profile";
 import { IoCopyOutline } from "react-icons/io5";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; 
 
 function PersonalInformation() {
   const navigate = useNavigate();
@@ -23,19 +25,47 @@ function PersonalInformation() {
     };
     getInfo();
   }, []);
+
   const copyPhoneNumber = () => {
     if (personalInfo.phone) {
       navigator.clipboard
         .writeText(personalInfo.phone)
         .then(() => {
-          alert("Phone number copied to clipboard!");
+          toast.success("Phone number copied to clipboard!", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
         })
         .catch((err) => {
           console.error("Failed to copy phone number: ", err);
-          alert("Failed to copy phone number");
+          toast.error("Failed to copy phone number", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
         });
+    } else {
+      toast.warn("No phone number available to copy", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   };
+
   return (
     <div>
       <Helmet>
@@ -79,7 +109,7 @@ function PersonalInformation() {
             <h2 className="font-semibold text-16 mt-3">
               {personalInfo?.name || "N/A"}
             </h2>
-            <p className="text-gray-400 tetx-13">
+            <p className="text-gray-400 text-13">
               {personalInfo?.role || "Vertex CEO"}
             </p>
           </div>
@@ -100,22 +130,32 @@ function PersonalInformation() {
             <p className="text-gray-400 text-15">Phone</p>
             <div className="flex items-center gap-3">
               <p className="font-medium text-13">
-                {personalInfo.phone || "Not provided"}
+                {personalInfo.phone || "not provided"}
               </p>
-              {personalInfo.phone && (
-                <button
-                  onClick={copyPhoneNumber}
-                  className="text-blue-500 hover:text-blue-700 text-sm flex items-center gap-1"
-                  title="Copy phone number"
-                >
-                  <IoCopyOutline color="#E0A75E" size={16} />
-                </button>
-              )}
+              <button
+                onClick={copyPhoneNumber}
+                className="text-blue-500 hover:text-blue-700 text-sm flex items-center gap-1"
+                title="Copy phone number"
+              >
+                <IoCopyOutline color="#E0A75E" size={16} />
+              </button>
             </div>
           </div>
         </div>
       </section>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 }
+
 export default PersonalInformation;

@@ -1,15 +1,11 @@
 import axios from "axios";
-const API_BASE_URL = "https://";
-const live_customer_domain = localStorage.getItem("live_customer_domain");
-// const role = localStorage.getItem("role");
 export const getFaqs = async () => {
   try {
     const response = await axios({
-      url: `${API_BASE_URL}demo.vrtex.duckdns.org/api/shop/faqs`,
+      url: `https://demo.vrtex.duckdns.org/api/faqs`,
       method: "GET",
       headers: {
         "Accept-Language": "en",
-        Authorization: `Bearer ${localStorage.getItem("user token")}`,
       },
     });
     if (response.status === 200) {

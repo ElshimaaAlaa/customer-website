@@ -13,7 +13,6 @@ function ChangePassword() {
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const [error, setError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -33,7 +32,6 @@ function ChangePassword() {
 
   const handleSubmit = async (values) => {
     setIsLoading(true);
-    setError(null);
     try {
       await handleUpdatePassword(values.password, values.password_confirmation);
       setShowModal(true);
@@ -43,7 +41,6 @@ function ChangePassword() {
       }, 2500);
     } catch (error) {
       console.error("Failed to update password", error);
-      setError("Failed to update password. Please try again.");
     } finally {
       setIsLoading(false);
     }

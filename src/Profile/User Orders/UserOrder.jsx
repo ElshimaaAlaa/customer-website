@@ -90,7 +90,7 @@ function UserOrder() {
 
   return (
     <div>
-      <h1 className="font-bold text-[18px] mb-2">My Orders</h1>
+      <h1 className="font-bold text-[17px] mb-2">My Orders</h1>
       {isSearching && debouncedSearchQuery !== searchQuery && (
         <div className="text-center py-2">
           <ClipLoader size={20} color="#E0A75E" />
@@ -109,7 +109,7 @@ function UserOrder() {
             setSearchQuery(e.target.value);
             setIsSearching(true);
           }}
-          className="w-full h-12 pl-10 pr-10 py-4 bg-muted/50 rounded-md text-sm focus:outline-none border-2 border-gray-200 bg-gray-50 placeholder:text-15 focus:border-primary"
+          className="w-full h-12 pl-10 pr-10 py-4 bg-muted/50 rounded-md text-sm focus:outline-none border-1 border-gray-200 bg-gray-50 placeholder:text-15 focus:border-2 focus:border-primary"
         />
         {searchQuery && (
           <button
@@ -143,7 +143,7 @@ function UserOrder() {
             <table className="bg-white min-w-full table">
               <thead>
                 <tr>
-                  <th className="px-3 py-3 border-b text-left cursor-pointer">
+                  <th className="px-3 py-3 border-b text-left cursor-pointer text-14">
                     <p className="flex items-center gap-3">
                       <input
                         type="checkbox"
@@ -153,11 +153,11 @@ function UserOrder() {
                       Order ID
                     </p>
                   </th>
-                  <th className="px-3 py-3 text-left border-l">Date</th>
-                  <th className="px-3 py-3 text-left border-r">Price</th>
-                  <th className="px-3 py-3 text-left border-l">Items</th>
-                  <th className="px-3 py-3 text-left border-l">Payment</th>
-                  <th className="px-3 py-3 text-left border-l">Status</th>
+                  <th className="px-3 py-3 text-left border-l text-14 w-300">Date</th>
+                  <th className="px-3 py-3 text-left border-r border-l text-14">Price</th>
+                  <th className="px-3 py-3 text-left border-l text-14">Items</th>
+                  <th className="px-3 py-3 text-left border-l text-14">Payment</th>
+                  <th className="px-3 py-3 text-left border-l text-14">Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -168,7 +168,7 @@ function UserOrder() {
                    onClick={() => navigate(`/Home/UserOrder/${order.id}`)}
 
                   >
-                    <td className="px-3 py-3 border-t border-r border-b text-gray-600 text-14">
+                    <td className="px-3 py-3 border-t border-r border-b text-gray-600 text-13">
                       <p className="flex items-center gap-2">
                         <input
                           type="checkbox"
@@ -178,7 +178,7 @@ function UserOrder() {
                         {order.order_number}
                       </p>
                     </td>
-                    <td className="flex items-center gap-2 px-6 py-3 border-t border-r text-gray-600 text-13">
+                    <td className="flex items-center gap-2 px-6 py-3 border-t border-r text-gray-600 text-13 ">
                       <IoCalendarNumberOutline color="#69ABB5" size={16} />
                       {order.date || "N/A"}
                     </td>
@@ -193,10 +193,10 @@ function UserOrder() {
                     </td>
                     <td className="px-3 py-3 border-t border-r">
                       <span
-                        className={`px-2 py-2 rounded-md text-14 ${
-                          order.payment_status === "unpaid"
+                        className={`px-2 py-2 rounded-md text-13 ${
+                          order.payment_status === "unpaid" || "غير مدفوع"
                             ? "bg-gray-100 text-gray-400"
-                            : order.payment_status === "paid"
+                            : order.payment_status === "paid" || "مدفوع"
                             ? "text-[#28A513] bg-[#E7F6E5]"
                             : order.payment_status === "refund"
                             ? "text-red-600 bg-red-50"
@@ -208,7 +208,7 @@ function UserOrder() {
                     </td>
                     <td className="px-3 py-3 border-t">
                       <span
-                        className={`px-2 py-2 rounded-md text-14 ${
+                        className={`px-2 py-2 rounded-md text-13 ${
                           order.status === 8
                             ? "bg-red-50 text-red-600"
                             : order.status === 2

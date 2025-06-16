@@ -14,13 +14,9 @@ function EditInfo() {
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
   const { state } = useLocation();
   const personalInfo = state || {};
-  const API_BASE_URL = "https://";
-  const live_shop_domain = localStorage.getItem("live_shop_domain");
-
   const initialValues = {
     name: personalInfo?.name || "",
     email: personalInfo?.email || "",
@@ -30,7 +26,6 @@ function EditInfo() {
 
   const handleSubmit = async (values) => {
     setIsLoading(true);
-    setError(null);
     try {
       const formData = new FormData();
       formData.append("name", values.name);
@@ -40,14 +35,14 @@ function EditInfo() {
         formData.append("image", selectedImage);
       }
       const response = await axios.post(
-        `${API_BASE_URL}${live_shop_domain}/api/update-profile`,
+        `https://demo.vrtex.duckdns.org/api/update-profile`,
         formData,
         {
           headers: {
             Accept: "application/json",
             "Accept-Language": "ar",
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${localStorage.getItem("user token")}`,
           },
         }
       );
@@ -55,7 +50,6 @@ function EditInfo() {
       setShowModal(true);
     } catch (error) {
       console.error("Failed to update profile:", error);
-      setError("Failed to update profile. Please try again.");
     } finally {
       setIsLoading(false);
     }

@@ -20,16 +20,16 @@ function Footer() {
     getVertexData();
   }, []);
   return (
-    <section className="bg-black text-white py-8 px-20">
+    <section className="bg-black text-white py-10 mt-5 px-20">
       {/* footer items */}
-      <div className="grid grid-cols-4 gap-4 px-4 container mx-auto">
+      <div className="grid grid-cols-4 gap-4  ">
         <div className="space-y-5">
           <img
             src="/assets/svgs/Footer logo.svg"
             alt="footer logo"
             className="h-10"
           />
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <FaXTwitter size={21} />
             <WhatsApp />
             <Facebook />
@@ -39,18 +39,18 @@ function Footer() {
         <div className="space-y-4">
           <h2 className="font-bold text-lg mb-2">Support</h2>
           <ul className="list-none text-sm space-y-2">
-            <li>Safety Tips</li>
-            <li onClick={() => navigate("ContactUs")} className="cursor-pointer">Contact us</li>
-            <li>Privacy Policy</li>
-            <li>Terms and Conditions</li>
-            <li className="cursor-pointer" onClick={()=>navigate("Faqs")}>FAQs</li>
+            <li className="cursor-pointer hover:text-primary">Safety Tips</li>
+            <li onClick={() => navigate("ContactUs")} className="cursor-pointer hover:text-primary">Contact us</li>
+            <li className="cursor-pointer hover:text-primary">Privacy Policy</li>
+            <li className="cursor-pointer hover:text-primary">Terms and Conditions</li>
+            <li className="cursor-pointer hover:text-primary" onClick={()=>navigate("Faqs")}>FAQs</li>
           </ul>
         </div>
         <div className="space-y-4">
           <h2 className="font-bold text-lg mb-2">Company</h2>
           <ul className="list-none text-sm space-y-2">
-            <li className="cursor-pointer" onClick={()=>navigate("AboutUs")}>About us</li>
-            <li>Blogs</li>
+            <li className="cursor-pointer hover:text-primary" onClick={()=>navigate("AboutUs")}>About us</li>
+            <li className="cursor-pointer hover:text-primary">Blogs</li>
           </ul>
         </div>
         <div className="space-y-4">

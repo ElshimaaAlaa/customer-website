@@ -1,8 +1,7 @@
-import * as React from "react";
 const Acc = (props) => (
   <svg
-    width={35}
-    height={35}
+    width={29}
+    height={29}
     viewBox="0 0 38 39"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"

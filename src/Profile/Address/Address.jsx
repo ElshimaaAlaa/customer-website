@@ -1,9 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Profile } from "../../ApiServices/Profile";
 
 function Address() {
   const navigate = useNavigate();
   const [addressData, setAddressData] = useState([]);
+  //fetch address data from profilr service
+  useEffect(() => {
+    const getInfo = async () => {
+      try {
+        const data = await Profile();
+        setAddressData(data);
+      } catch (error) {
+        console.error("Failed to fetch personal info:", error);
+      }
+    };
+    getInfo();
+  }, []);
   const handleEditClick = () => {
     navigate("/Home/UserProfile/EditAddress", { state: addressData });
   };
@@ -41,5 +54,4 @@ function Address() {
     </section>
   );
 }
-
 export default Address;

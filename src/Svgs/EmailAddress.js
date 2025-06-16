@@ -1,8 +1,8 @@
 const EmailAddress = ({ width = 22, height = 26, fill = "#3E67C6", ...props }) => {
   return (
     <svg
-      width="32"
-      height="32"
+      width="29"
+      height="29"
       viewBox="0 0 48 49"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

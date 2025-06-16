@@ -1,10 +1,8 @@
 import axios from "axios";
-const API_BASE_URL = "https://";
-const live_customer_domain = localStorage.getItem("live_customer_domain");
 export const Profile = async () => {
   try {
     const response = await axios({
-      url: `${API_BASE_URL}demo.vrtex.duckdns.org/api/profile`,
+      url: `https://demo.vrtex.duckdns.org/api/profile`,
       method: "GET",
       headers: {
         "Accept-Language": "en",

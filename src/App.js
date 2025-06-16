@@ -1,7 +1,6 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { PulseLoader } from "react-spinners";
-import GetDomain from "./Auth/Get Domain/GetDomain";
 import Login from "./Auth/Login/Login";
 import ForgotPassword from "./Auth/Forgot Password/ForgotPassword";
 import VerifayPassword from "./Auth/Verivation Code/VerifayPassword";
@@ -23,6 +22,7 @@ import Payment from "./Profile/Payment/Payment";
 import OrderDetails from "./Profile/User Orders/OrderDetail";
 import WishList from "./Pages/WishList/WishList";
 import Products from "./Pages/Products/Products";
+
 function App() {
   const [loading, setLoading] = useState(true);
 
@@ -49,7 +49,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<GetDomain />} />
+        <Route path="/" element={<Navigate to="/Home/Homepage" />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/Login/ForgotPassword" element={<ForgotPassword />} />
         <Route path="/Login/VerifayPassword" element={<VerifayPassword />} />
@@ -58,6 +58,7 @@ function App() {
           element={<CreateNewPassword />}
         />
         <Route path="/Register" element={<Register />} />
+
         <Route path="/Home" element={<Main />}>
           <Route path="Homepage" element={<Home />} />
           <Route path="Faqs" element={<Faqs />} />
@@ -80,4 +81,5 @@ function App() {
     </BrowserRouter>
   );
 }
+
 export default App;

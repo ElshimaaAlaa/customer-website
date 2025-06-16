@@ -1,12 +1,10 @@
 import axios from "axios";
 import React from "react";
 function ResendCode() {
-  const API_BASE_URL = "https://";
-  const live_shop_domain = localStorage.getItem("live_shop_domain");
   const resndCode = async () => {
     const email = localStorage.getItem("Email");
     const response = await axios({
-      url: `${API_BASE_URL}${live_shop_domain}/api/send-otp`,
+      url: `https://https://demo.vrtex.duckdns.org/api/send-otp`,
       method: "POST",
       headers: {
         "Content-Type": "application/json",

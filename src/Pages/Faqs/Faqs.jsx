@@ -87,7 +87,7 @@ function Faqs() {
           {displayCount < faqsData.length && (
             <button
               onClick={showMoreFaqs}
-              className="text-center text-15 bg-primary text-white cursor-pointer w-44 px-4 py-2 rounded-lg hover:bg-opacity-90 transition"
+              className="text-center text-15 bg-primary font-bold text-white cursor-pointer w-44 px-4 py-2 rounded-lg hover:bg-opacity-90 transition"
             >
               Show More (5)
             </button>
@@ -95,7 +95,7 @@ function Faqs() {
           {displayCount > 5 && (
             <button
               onClick={showLessFaqs}
-              className="text-center text-15 bg-gray-50 text-gray-500 cursor-pointer w-44 px-4 py-2 rounded-lg hover:bg-opacity-90 transition"
+              className="text-center text-15 bg-gray-50 font-bold text-gray-500 cursor-pointer w-44 px-4 py-2 rounded-lg hover:bg-opacity-90 transition"
             >
               Show Less
             </button>

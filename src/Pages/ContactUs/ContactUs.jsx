@@ -6,22 +6,15 @@ import { Formik, Form, Field } from "formik";
 import { SendSupport } from "../../ApiServices/sendContact";
 import AuthInputField from "../../Components/AuthInput Field/AuthInputField";
 import MainBtn from "../../Components/Main Button/MainBtn";
-import { settings } from "../../ApiServices/GeneralSettings";
 import SuccessModal from "../../Components/Modal/Success Modal/SuccessModal";
 import { LuSend } from "react-icons/lu";
 import { ClipLoader } from "react-spinners";
-import EmailAddress from "../../Svgs/EmailAddress";
-import PhoneNum from "../../Svgs/PhoneNum";
-import { BsArrowRight } from "react-icons/bs";
-import Facebook from "../../Svgs/facebook";
-import Instegram from "../../Svgs/instegram";
-import WhatsApp from "../../Svgs/WhatsApp";
-import { FaSquareXTwitter } from "react-icons/fa6";
+import ContactInfo from "./ContactInfo";
+
 function ContactUs() {
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState(null);
-  const [settingData, setSettingData] = useState([]);
   const initialValues = {
     name: "",
     email: "",
@@ -52,7 +45,7 @@ function ContactUs() {
       document.body.classList.remove("no-scroll");
     }
   }, [showModal]);
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values, { resetForm }) => {
     setIsLoading(true);
     setError(null);
     try {
@@ -63,34 +56,12 @@ function ContactUs() {
         values.message
       );
       setShowModal(true);
+      resetForm(); 
     } catch (error) {
       setError("Failed to send the message. Please try again.");
     } finally {
       setIsLoading(false);
-    }
-  };
-  useEffect(() => {
-    const getSettings = async () => {
-      const data = await settings();
-      console.log("settings data", data);
-      setSettingData(data);
-    };
-    getSettings();
-  }, []);
-  const ContactCard = ({ icon, title, value, link }) => (
-    <div className="flex items-center justify-between bg-gray-50 p-4 rounded-md mb-6">
-      <div className="flex gap-4">
-        <div className="w-10 h-10 flex items-center justify-center">{icon}</div>
-        <div>
-          <h3 className="font-bold text-16 mb-1">{title}</h3>
-          <a href={link} className="text-gray-400 mt-3 text-14">
-            {value}
-          </a>
-        </div>
-      </div>
-      <BsArrowRight size={25} color="#E0A75E" />
-    </div>
-  );
+    }}
   return (
     <section className="bg-white pb-10">
       <Helmet>
@@ -104,35 +75,7 @@ function ContactUs() {
         </p>
       </div>
       <div className="flex px-20 justify-center gap-4">
-        <div>
-          <section className="bg-white border rounded-md drop-shadow-lg w-[430px] md:w-[430px] lg:w-500 p-5 h-72 mt-10">
-            <h2 className="font-bold text-16 mb-3 mt-2 relative pb-1 gradient-border-bottom">
-              Contact information
-            </h2>
-            <ContactCard
-              icon={<PhoneNum />}
-              title="Call us"
-              value={settingData.phone}
-            />
-            <ContactCard
-              icon={<EmailAddress />}
-              title="Email"
-              value={settingData.email}
-              link="mailto:Vertex@gmail.com"
-            />
-          </section>
-          <section className="bg-white rounded-md border drop-shadow-lg w-[430px] md:w-[430px] lg:w-500 p-5 h-32 mt-3">
-            <h2 className="font-bold text-16 mb-3 mt-2 relative pb-1 gradient-border-bottom">
-              Follow our social network
-            </h2>
-            <div className="flex  items-center gap-3">
-              <FaSquareXTwitter size={23}/>
-              <WhatsApp />
-              <Facebook />
-              <Instegram />
-            </div>
-          </section>
-        </div>
+        <ContactInfo/>
         <section className="bg-customOrange-mediumOrange p-5 mt-10 w-[430px] md:w-[430px] lg:w-500 rounded-md">
           <div className="flex justify-center">
             <img

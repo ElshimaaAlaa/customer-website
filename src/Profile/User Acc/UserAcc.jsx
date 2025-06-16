@@ -3,6 +3,7 @@ import { Profile } from "../../ApiServices/Profile";
 import { useNavigate } from "react-router-dom";
 
 function UserAcc() {
+  //on navbar to go to user profile.
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   useEffect(() => {

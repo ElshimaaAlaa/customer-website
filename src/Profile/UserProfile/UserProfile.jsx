@@ -4,7 +4,19 @@ import { FaCircleDollarToSlot } from "react-icons/fa6";
 import { TbCirclePlus } from "react-icons/tb";
 import InfoSideBar from "../MainInfo/InfoSideBar";
 import { Outlet } from "react-router-dom";
+import { Profile } from "../../ApiServices/Profile";
+import { useState } from "react";
 function UserProfile() {
+  const [data, setData] = useState([]);
+  const getUserData = async () => {
+    try {
+      const response = await Profile();
+      setData(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  getUserData();
   return (
     <div className="bg-white pb-10">
       <Helmet>
@@ -16,13 +28,13 @@ function UserProfile() {
           Manage your account , and view your orders ...
         </p>
       </section>
-      <section className="p-8 bg-customOrange-lightOrange flex items-center justify-between px-20">
+      <section className="p-8 bg-customOrange-lightOrange flex items-center justify-between px-28">
         <div className="flex items-center gap-2">
           <FaCircleDollarToSlot color="#E0A75E" size={22} />
           <p className="text-gray-600 text-15">
             Current Balance:
             <span className="text-black text-[18px] font-bold ms-2">
-              $ 2,322
+              $ {data.balance}
             </span>
           </p>
         </div>

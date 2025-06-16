@@ -27,7 +27,13 @@ function TopSection() {
       </div>
       <div>
         <p className="text-14 font-light">
-          Sign up to submit your first order.
+          Submit your first order.
+          <span
+            className="text-primary font-light underline ms-2 cursor-pointer"
+            onClick={() => navigate("/Login")}
+          >
+            Login
+          </span>
           <span
             className="text-primary font-light underline ms-2 cursor-pointer"
             onClick={() => navigate("/Register")}
