@@ -6,7 +6,8 @@ export const ForgotPasswordService = async (email) => {
       url: `https://demo.vrtex.duckdns.org/api/send-otp`,
       data: { email },
       headers: {
-        "Content-Type": "application/json",
+        Accept: "application/json",
+        "Accept-Language": "ar",
       },
     });
 

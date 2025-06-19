@@ -22,7 +22,7 @@ function FeaturedCategories() {
   }, []);
   return (
     <div className=" px-20 pt-14 pb-10">
-      <h1 className="font-bold text-xl mb-5">Featured Categories</h1>
+      <h1 className="font-bold text-lg mb-5">Featured Categories</h1>
       <div>
         {error ? (
           <div className="text-red-500 text-15 text-center mt-10">
@@ -47,7 +47,7 @@ function FeaturedCategories() {
                     className="w-28 h-28 rounded-full"
                   />
                 </div>
-                <p className="text-13 text-center mt-1">{cat.name}</p>
+                <p className="text-13 font-bold text-center mt-1">{cat.name}</p>
               </div>
             ))}
           </div>

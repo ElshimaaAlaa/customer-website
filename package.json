@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fontsource/inter": "^5.2.6",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
@@ -11,6 +12,7 @@
     "clsx": "^2.1.1",
     "firebase": "^11.6.1",
     "formik": "^2.4.6",
+    "inter-ui": "^4.1.0",
     "lucide-react": "^0.503.0",
     "postcss-loader": "^8.1.1",
     "react": "^19.1.0",

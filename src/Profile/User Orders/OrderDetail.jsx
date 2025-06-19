@@ -10,11 +10,9 @@ import { FaCircleDollarToSlot } from "react-icons/fa6";
 import { TbCirclePlus } from "react-icons/tb";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { ClipLoader } from "react-spinners";
-import { Profile } from "../../ApiServices/Profile";
 
 function OrderDetails() {
   const [orderDetail, setOrderDetails] = useState(null);
-  const [userData, setUserData] = useState([]);
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
   const navigate = useNavigate();
@@ -42,17 +40,7 @@ function OrderDetails() {
     };
     fetchOrderDetails();
   }, [id]);
-  useEffect(() => {
-    const getInfo = async () => {
-      try {
-        const data = await Profile();
-        setUserData(data);
-      } catch (error) {
-        console.error("Failed to fetch personal info:", error);
-      }
-    };
-    getInfo();
-  }, []);
+
   const icons = [
     { icon: <PhoneNum /> },
     { icon: <EmailAddress /> },
@@ -100,7 +88,7 @@ function OrderDetails() {
           <p className="text-gray-600 text-15">
             Current Balance:
             <span className="text-black text-[18px] font-bold ms-2">
-              $ {userData.balance}
+              $ {orderDetail.balance}
             </span>
           </p>
         </div>
@@ -142,6 +130,15 @@ function OrderDetails() {
                   {orderDetail.status_name}
                 </p>
               </div>
+              <div className="mt-4 mb-6">
+                <div className="flex justify-end text-xs text-gray-500 mb-1"></div>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div
+                    className="bg-primary h-2 rounded-full"
+                    style={{ width: `${orderDetail.progress}%` }}
+                  ></div>
+                </div>
+              </div>
               <div className="mt-5 space-y-4">
                 {orderDetail.history?.map((statusItem, index) => {
                   const statusDisplayMap = {
@@ -154,7 +151,7 @@ function OrderDetails() {
                   const displayName =
                     statusDisplayMap[statusItem.status_name] ||
                     statusItem.status_name;
-                  const dateToShow = statusItem.date || "not provided"; 
+                  const dateToShow = statusItem.date || "not provided";
 
                   return (
                     <div
@@ -263,7 +260,7 @@ function OrderDetails() {
                 <div className="flex items-center justify-between">
                   <p className="text-15">Shipping</p>
                   <p className="text-gray-400 text-15">
-                    $ {orderDetail.shipping || 0}
+                    $ {orderDetail.shipping_price || 0}
                   </p>
                 </div>
                 <div className="flex items-center justify-between border-t-2">
@@ -339,7 +336,9 @@ function OrderDetails() {
                 <div className="bg-gray-50 border border-gray-200 rounded-md p-2">
                   <div className="flex justify-between items-center">
                     <p className="text-15">Order Total</p>
-                    <p className="text-gray-400 text-15">0</p>
+                    <p className="text-gray-400 text-15">
+                      $ {orderDetail.total || 0}
+                    </p>
                   </div>
                   <div className="flex justify-between items-center mt-5">
                     <p className="text-15">Return Total</p>
@@ -362,7 +361,9 @@ function OrderDetails() {
                         (customer owes you)
                       </span>
                     </div>
-                    <p className="text-gray-400 text-15">0</p>
+                    <p className="text-gray-400 text-15">
+                      $ {orderDetail.balance || 0}
+                    </p>
                   </div>
                 </div>
               </section>

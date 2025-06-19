@@ -53,7 +53,7 @@ function Faqs() {
           {faqsData.slice(0, displayCount).map((item, index) => (
             <div
               key={index}
-              className={`mt-5 p-5 bg-gray-50 rounded-lg transition-all duration-300 ${
+              className={`mt-5 p-5  bg-gray-50 rounded-lg transition-all duration-300 ${
                 openIndex === index ? "border-2 border-primary" : ""
               }`}
             >

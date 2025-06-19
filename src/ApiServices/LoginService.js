@@ -4,6 +4,10 @@ export const loginService = async (email, password) => {
     const response = await axios({
       url: `https://demo.vrtex.duckdns.org/api/login`,
       method: "POST",
+      headers: {
+        "Accept-Language": "en",
+        Accept: "application/json",
+      },
       data: {
         email,
         password,

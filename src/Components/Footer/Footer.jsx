@@ -20,7 +20,7 @@ function Footer() {
     getVertexData();
   }, []);
   return (
-    <section className="bg-black text-white py-10 mt-5 px-20">
+    <section className="bg-black text-white pt-10 pb-6 mt-5 px-20">
       {/* footer items */}
       <div className="grid grid-cols-4 gap-4  ">
         <div className="space-y-5">
@@ -37,32 +37,32 @@ function Footer() {
           </div>
         </div>
         <div className="space-y-4">
-          <h2 className="font-bold text-lg mb-2">Support</h2>
+          <h2 className="font-bold text-17 mb-2">Support</h2>
           <ul className="list-none text-sm space-y-2">
             <li className="cursor-pointer hover:text-primary">Safety Tips</li>
-            <li onClick={() => navigate("ContactUs")} className="cursor-pointer hover:text-primary">Contact us</li>
-            <li className="cursor-pointer hover:text-primary">Privacy Policy</li>
-            <li className="cursor-pointer hover:text-primary">Terms and Conditions</li>
-            <li className="cursor-pointer hover:text-primary" onClick={()=>navigate("Faqs")}>FAQs</li>
+            <li onClick={() => navigate("ContactUs")} className="cursor-pointer hover:text-primary text-13">Contact us</li>
+            <li className="cursor-pointer hover:text-primary text-13">Privacy Policy</li>
+            <li className="cursor-pointer hover:text-primary text-13">Terms and Conditions</li>
+            <li className="cursor-pointer hover:text-primary text-13" onClick={()=>navigate("Faqs")}>FAQs</li>
           </ul>
         </div>
         <div className="space-y-4">
-          <h2 className="font-bold text-lg mb-2">Company</h2>
+          <h2 className="font-bold text-17 mb-2">Company</h2>
           <ul className="list-none text-sm space-y-2">
-            <li className="cursor-pointer hover:text-primary" onClick={()=>navigate("AboutUs")}>About us</li>
-            <li className="cursor-pointer hover:text-primary">Blogs</li>
+            <li className="cursor-pointer hover:text-primary text-13" onClick={()=>navigate("AboutUs")}>About us</li>
+            <li className="cursor-pointer hover:text-primary text-13">Blogs</li>
           </ul>
         </div>
         <div className="space-y-4">
-          <h2 className="font-bold text-lg mb-2">Get in touch</h2>
+          <h2 className="font-bold text-17 mb-2">Get in touch</h2>
           <ul className="list-none text-sm space-y-2">
-            <li className="flex items-center gap-2 underline">
+            <li className="flex items-center text-13 gap-2 underline">
               <PhoneNum /> {shopData.phone}
             </li>
-            <li className="flex items-center gap-2 underline">
+            <li className="flex items-center gap-2 text-13 underline">
               <EmailAddress /> {shopData.email}
             </li>
-            <li className="flex items-center gap-2 underline">
+            <li className="flex items-center gap-2 text-13 underline">
               <Location /> {shopData.address || "Saudi arabia , alreyad"}
             </li>
           </ul>

@@ -17,8 +17,15 @@ export const register = async (
     console.log("Request Payload:", payload);
     const response = await axios.post(
       `https://demo.vrtex.duckdns.org/api/register`,
-      payload
+      payload,
+      {
+        headers: {
+          Accept: "application/json",
+          "Accept-Language": "ar",
+        },
+      }
     );
+
     if (response.status === 200) {
       localStorage.setItem("register token", response.data.token);
       console.log("register token", response.data.data.token);

@@ -88,7 +88,7 @@ function LatestProducts() {
   return (
     <div className="px-4 md:px-20 py-10 relative">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold mb-6">Latest Products</h1>
+        <h1 className="text-lg font-bold mb-6">Latest Products</h1>
         <button
           className="text-primary w-32 flex items-center rounded-md justify-center font-bold p-3 gap-2"
             onClick={() => navigate("/Home/Products")}
@@ -109,7 +109,7 @@ function LatestProducts() {
           No products found.
         </div>
       ) : (
-        <div className="relative">
+        <div className="relative rounded-lg">
           <Swiper
             modules={[Navigation, Autoplay]}
             spaceBetween={20}
@@ -126,24 +126,24 @@ function LatestProducts() {
             }}
           >
             {latestProducts.map((product) => (
-              <SwiperSlide key={product.id}>
-                <div className="rounded-md">
-                  <div className="relative bg-gray-50 border rounded-md flex justify-center h-72">
+              <SwiperSlide key={product.id} className="rounded-lg">
+                <div className="rounded-lg">
+                  <div className="relative bg-gray-50 border rounded-lg">
                     <button
-                      className="absolute top-3 right-3 p-2 bg-white rounded-full"
+                      className="absolute top-1 right-1 p-2  rounded-full"
                       onClick={() => handleWishlistToggle(product.id)}
                     >
                       {wishlistItems.includes(product.id) ? (
-                        <IoIosHeart size={20} className="text-red-500" />
+                        <IoIosHeart size={27} className="text-red-500" />
                       ) : (
                         <IoIosHeartEmpty
-                          size={20}
-                          className="text-gray-600 hover:text-red-500"
+                          size={27}
+                          className="text-black hover:text-red-500"
                         />
                       )}
                     </button>
 
-                    <div className="flex items-center justify-center h-full p-4">
+                    <div className=" rounded-lg h-56 flex justify-center py-5">
                       {product.images?.[0]?.src ? (
                         <img
                           src={product.images[0].src}
@@ -180,12 +180,12 @@ function LatestProducts() {
                           </svg>
                         ))}
                       </div>
-                      <span className="text-13">4.5</span>
+                      <span className="text-14">{product.rate || 5}</span>
                     </div>
                     <div className="flex items-center gap-2 mt-1">
                       {product.price_after_discount ? (
                         <>
-                          <span className="text-17 font-bold text-primary">
+                          <span className="text-lg font-bold text-primary">
                             ${product.price_after_discount.toFixed(2)}
                           </span>
                           <span className="text-14 text-gray-400 line-through">

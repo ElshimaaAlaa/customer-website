@@ -98,7 +98,7 @@ function PersonalInformation() {
         )}
         <div className="bg-gray-50 flex flex-col md:flex-row items-center gap-5 my-3 border rounded-md p-3 w-full">
           <img
-            src={personalInfo.image || "/assets/images/default-profile.png"}
+            src={personalInfo.image || "/assets/images/userPic.jpg"}
             alt="User profile"
             className="rounded-xl w-32 h-24 md:w:20 md:h-20 object-cover"
             onError={(e) => {

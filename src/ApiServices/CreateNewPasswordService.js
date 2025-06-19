@@ -8,6 +8,10 @@ export const CreateNewPasswordService = async (
     const response = await axios({
       url: `https://demo.vrtex.duckdns.org/api/reset-password`,
       method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Accept-Language": "ar",
+      },
       data: {
         password,
         password_confirmation,

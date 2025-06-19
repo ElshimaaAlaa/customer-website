@@ -4,7 +4,7 @@ import Header from "../../Components/Header/Header";
 import FeaturedCategories from "../../Sections/Featured Categories/FeaturedCategories";
 import LatestProducts from "../../Sections/Latest Products/LatestProducts";
 import BestSalesProducts from "../../Sections/Best Selling/BestSellingProducts";
-import Offers from "../../Sections/Offers/Offers";
+import Promotions from "../../Sections/Promotions/Promotions";
 import AboutExpiredPromo from "../../Sections/About Expitred Promotion/AboutExpiredPromo";
 
 function Home() {
@@ -14,7 +14,7 @@ function Home() {
       <FeaturedCategories />
       <AboutExpiredPromo/>
       <LatestProducts />
-      <Offers />
+      <Promotions />
       <BestSalesProducts />
       <OpinionSection />
       <Quality />

@@ -1,41 +1,44 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { IoIosArrowRoundForward } from "react-icons/io";
 import { IoIosArrowRoundBack } from "react-icons/io";
-
-const testimonials = [
-  {
-    id: 1,
-    userImage: "/assets/images/user.png",
-    quoteIcon: "/assets/images/icon.png",
-    ratingImage: "/assets/images/rate.png",
-    logoImage: "/assets/svgs/vertex.svg",
-    name: "Jenny Wilson",
-    role: "Co-Founder of",
-    company: "VERTEX",
-    testimonial: "I use this Website to easily get my Products",
-  },
-];
+import { getHomeData } from "../../ApiServices/Home";
 
 function OpinionSection() {
   const carouselRef = useRef();
+  const [clientData, setClientData] = useState([]);
+  
+  useEffect(() => {
+    const fetchClientsOpinions = async () => {
+      try {
+        const data = await getHomeData();
+        setClientData(data.client_opinions);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchClientsOpinions();
+  }, []);
 
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
       items: 3,
       slidesToSlide: 1,
+      partialVisibilityGutter: 40 
     },
     tablet: {
       breakpoint: { max: 1024, min: 768 },
       items: 2,
       slidesToSlide: 1,
+      partialVisibilityGutter: 40 
     },
     mobile: {
       breakpoint: { max: 768, min: 0 },
       items: 1,
       slidesToSlide: 1,
+      partialVisibilityGutter: 40 
     },
   };
 
@@ -47,10 +50,22 @@ function OpinionSection() {
     carouselRef.current.next();
   };
 
+  const renderStars = (rating) => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <span key={i} className={i <= rating ? "text-yellow-400 text-14" : "text-gray-300 text-14"}>
+          ★
+        </span>
+      );
+    }
+    return stars;
+  };
+
   return (
-    <section className="px-20 mt-6">
-      <h2 className="font-bold text-[19px]">Our Clients Opinion</h2>
-      <div className="carousel-container mt-3">
+    <section className="px-4 md:px-8 lg:px-20 mt-6 mb-10"> 
+      <h2 className="font-bold text-[19px] mb-6">Our Clients Opinion</h2>
+      <div className="carousel-container mt-3 relative">
         <Carousel
           responsive={responsive}
           infinite={true}
@@ -59,22 +74,23 @@ function OpinionSection() {
           arrows={false}
           showDots={false}
           containerClass="carousel"
-          itemClass="carousel-item"
+          itemClass="px-2"
+          partialVisible={false}
         >
-          {testimonials.map((testimonial) => (
+          {clientData.map((opinion, index) => (
             <div
-              key={testimonial.id}
-              className="flex flex-col items-start justify-center lg:flex-row gap-4 bg-gray-50 rounded-lg p-3 md:items-center lg:items-center w-full md:w-400 lg:w-550"
+              key={index}
+              className="flex flex-col items-start border border-gray-200 justify-center lg:flex-row gap-4 bg-white rounded-lg p-3 md:items-center lg:items-center w-full h-full mx-2 shadow-sm hover:shadow-md transition-shadow duration-300"
             >
               <div className="flex-shrink-0 justify-center flex items-center">
                 <img
-                  src={testimonial.userImage}
-                  alt={`${testimonial.name}'s profile`}
+                  src={opinion.user_image || "/assets/images/user.png"}
+                  alt={`${opinion.user_name}'s profile`}
                   loading="lazy"
                   className="w-24 h-24 object-cover rounded-full lg:rounded-md md:rounded-md md:w-330 md:object-fill md:h-52 lg:w-48 lg:h-48"
                 />
               </div>
-              <div className="flex-1">
+              <div className="flex-1 space-y-4"> 
                 <svg
                   viewBox="0 0 52 52"
                   fill="none"
@@ -92,27 +108,17 @@ function OpinionSection() {
                     fill="white"
                   />
                 </svg>
-
-                <h3 className="mt-2 text-sm md:text-14=5 font-bold w-full lg:w-44 leading-6">
-                  {testimonial.testimonial}
+                <h3 className="text-sm md:text-[14.5px] font-medium w-full lg:w-44 leading-6">
+                  {opinion.comment}
                 </h3>
-                <img
-                  src={testimonial.ratingImage}
-                  alt={`${testimonial.name}'s rating`}
-                  loading="lazy"
-                  className="mt-3 w-24 md:w-28 lg:w-52"
-                />
-                <div className="flex gap-3 items-center mt-2">
-                  <p className="font-bold text-13">{testimonial.name}</p>
-                  <p className="text-gray-500 text-12 mt-0.5">
-                    {testimonial.role}
+                <div className="flex gap-1 text-xl">
+                  {renderStars(opinion.rate)}
+                </div>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                  <p className="font-semibold text-[13px]">{opinion.user_name}</p>
+                  <p className="text-gray-500 text-[11px]">
+                    {opinion.date}
                   </p>
-                  <img
-                    src={testimonial.logoImage}
-                    alt={`${testimonial.company} logo`}
-                    loading="lazy"
-                    className="w-16 md:w-20 bg-white rounded-xl p-2"
-                  />
                 </div>
               </div>
             </div>
@@ -120,16 +126,16 @@ function OpinionSection() {
         </Carousel>
       </div>
       {/* Navigation Arrows */}
-      <div className="flex items- justify-center mt-5 mb-8 gap-5">
+      <div className="flex justify-center mt-8 gap-5">
         <button
-          className="bg-primary text-white p-2 w-10 h-10 font-bold rounded-full text-lg md:text-2xl"
+          className="bg-primary text-white p-2 w-10 h-10 font-bold rounded-full text-lg md:text-2xl hover:bg-primary-dark transition-colors"
           onClick={handlePrev}
           aria-label="Previous testimonial"
         >
           <IoIosArrowRoundBack size={25} />
         </button>
         <button
-          className="bg-primary text-white p-2 w-10 h-10 font-bold rounded-full text-lg md:text-2xl"
+          className="bg-primary text-white p-2 w-10 h-10 font-bold rounded-full text-lg md:text-2xl hover:bg-primary-dark transition-colors"
           onClick={handleNext}
           aria-label="Next testimonial"
         >
@@ -139,4 +145,5 @@ function OpinionSection() {
     </section>
   );
 }
+
 export default OpinionSection;

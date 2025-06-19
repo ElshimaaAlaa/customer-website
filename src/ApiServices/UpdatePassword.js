@@ -6,6 +6,7 @@ export const handleUpdatePassword = async (password, password_confirmation) => {
       url: `https://demo.vrtex.duckdns.org/api/update-password`,
       method: "POST",
       headers: {
+        "Accept-Language": "en",
         Authorization: `Bearer ${localStorage.getItem("user token")}`,
       },
       data: {

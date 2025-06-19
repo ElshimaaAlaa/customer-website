@@ -1,5 +1,4 @@
 import axios from "axios";
-import React from "react";
 function ResendCode() {
   const resndCode = async () => {
     const email = localStorage.getItem("Email");
@@ -7,7 +6,8 @@ function ResendCode() {
       url: `https://https://demo.vrtex.duckdns.org/api/send-otp`,
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        Accept: "application/json",
+        "Accept-Language": "ar",
       },
       data: { email },
     });

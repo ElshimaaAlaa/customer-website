@@ -5,7 +5,7 @@ import { Profile } from "../../ApiServices/Profile";
 function Address() {
   const navigate = useNavigate();
   const [addressData, setAddressData] = useState([]);
-  //fetch address data from profilr service
+  //fetch address data from profile service
   useEffect(() => {
     const getInfo = async () => {
       try {

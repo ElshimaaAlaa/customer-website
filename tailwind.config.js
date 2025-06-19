@@ -2,21 +2,24 @@
 module.exports = {
   content: ["./src/**/*.{html,js,jsx,ts,tsx}"],
   theme: {
+    fontFamily: {
+      sans: ["Inter", "sans-serif"],
+    },
     extend: {
       colors: {
         lightgray: "#F7F7F7",
-        darkRed:"#AA0000",
+        darkRed: "#AA0000",
         primary: "#E0A75E",
-        primatyOpacity:"#e0a75e80",
+        primatyOpacity: "#e0a75e80",
         customred: "#DC2626",
-        burgandy:"#AF4B4B",
-        lightBurgandy:"#F7EDED",
-        green:"#589E67",
-        lightGreen:"#EEF5F0",
-        purble:"#954BAF",
-        lightBurble:"#F4EDF7",
-        blue:"#4976F4",
-        lightBlue:"#EDF2FE",
+        burgandy: "#AF4B4B",
+        lightBurgandy: "#F7EDED",
+        green: "#589E67",
+        lightGreen: "#EEF5F0",
+        purble: "#954BAF",
+        lightBurble: "#F4EDF7",
+        blue: "#4976F4",
+        lightBlue: "#EDF2FE",
         customOrange: {
           lightOrange: "#FCEFDB",
           mediumOrange: "#EFD9A466",
@@ -38,7 +41,7 @@ module.exports = {
       width: {
         1: "1px",
         "60px": "60px",
-        180:"180px",
+        180: "180px",
         "300px": "300px",
         "360px": "360px",
         "460px": "460px",
@@ -100,7 +103,7 @@ module.exports = {
         900: "900px",
       },
       height: {
-        "51px":"51px",
+        "51px": "51px",
         "78vh": "78vh",
         "80vh": "80vh",
         "90vh": "90vh",
@@ -117,7 +120,7 @@ module.exports = {
       },
       borderWidth: {
         1: "1px",
-        3:"3px",
+        3: "3px",
       },
       fontSize: {
         8: "8px",
@@ -132,8 +135,8 @@ module.exports = {
       },
       gap: {
         "360px": "360px",
-        100:"100",
-        400:"400px"
+        100: "100",
+        400: "400px",
       },
     },
   },
