@@ -73,9 +73,9 @@ function Register() {
         <img
           src="/assets/svgs/vertex.svg"
           alt="logo"
-          className="w-48 h-10 mb-3"
+          className="w-48 h-10 mb-4"
         />
-        <h1 className="font-bold text-[20px] mt-3">Create New Account</h1>
+        <h1 className="font-bold text-2xl mt-3">Create New Account</h1>
         <Formik
           initialValues={initialValues}
           onSubmit={handleSubmit}
@@ -160,7 +160,7 @@ function Register() {
                 Have An Account ?
                 <span
                   onClick={() => navigate("/Login")}
-                  className="ms-2 text-primary font-bold text-15 cursor-pointer"
+                  className="ms-2 text-primary font-bold text-17 cursor-pointer"
                 >
                   Login
                 </span>

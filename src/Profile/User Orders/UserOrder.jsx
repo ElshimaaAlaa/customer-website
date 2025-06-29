@@ -90,7 +90,7 @@ function UserOrder() {
 
   return (
     <div>
-      <h1 className="font-bold text-[17px] mb-2">My Orders</h1>
+      <h1 className="font-bold text-xl mb-2">My Orders</h1>
       {isSearching && debouncedSearchQuery !== searchQuery && (
         <div className="text-center py-2">
           <ClipLoader size={20} color="#E0A75E" />
@@ -193,7 +193,7 @@ function UserOrder() {
                     </td>
                     <td className="px-3 py-3 border-t border-r">
                       <span
-                        className={`px-2 py-2 rounded-md text-13 ${
+                        className={`px-2 py-2 rounded-md text-14 text-center ${
                           order.payment_status === "unpaid" || "غير مدفوع"
                             ? "bg-gray-100 text-gray-400"
                             : order.payment_status === "paid" || "مدفوع"
@@ -208,7 +208,7 @@ function UserOrder() {
                     </td>
                     <td className="px-3 py-3 border-t">
                       <span
-                        className={`px-2 py-2 rounded-md text-13 ${
+                        className={`px-2 py-2 rounded-md text-14 text-center  ${
                           order.status === 8
                             ? "bg-red-50 text-red-600"
                             : order.status === 2

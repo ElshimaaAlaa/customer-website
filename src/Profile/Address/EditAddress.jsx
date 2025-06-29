@@ -55,7 +55,7 @@ function EditAddress() {
         <title>Manage Address</title>
       </Helmet>
       <section>
-        <h1 className="font-bold text-[18px] mb-2">Manage Address</h1>
+        <h1 className="font-bold text-xl mb-2">Manage Address</h1>
         <Formik
           initialValues={initialValues}
           enableReinitialize
@@ -75,20 +75,20 @@ function EditAddress() {
               <div className="mt-5 flex items-center justify-end gap-3">
                 <button
                   type="button"
-                  className="bg-gray-100 text-gray-400 font-bold p-3 w-32 rounded-md"
+                  className="bg-gray-100 text-17 text-gray-400 font-bold p-3 w-32 rounded-md"
                   onClick={() => navigate("/Home/UserProfile/Address")}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="bg-primary font-bold text-white flex items-center justify-center gap-2 rounded-md p-3 w-32"
+                  className="bg-primary text-17 font-bold text-white flex items-center justify-center gap-2 rounded-md p-3 w-32"
                 >
                   {isLoading ? (
                     <ClipLoader color="#fff" size={22} />
                   ) : (
                     <>
-                      <FaCircleCheck /> Save
+                      <FaCircleCheck size={21}/> Save
                     </>
                   )}
                 </button>
@@ -106,13 +106,13 @@ function EditAddress() {
             className="w-32 mt-6"
           />
           <p className="font-bold mt-5 text-center">
-            Profile updated successfully!
+            Address Data updated successfully!
           </p>
           <button
             className="bg-primary text-white rounded-md p-2 text-14 mt-4 w-60 "
             onClick={() => navigate("/Home/UserProfile/Address")}
           >
-            Done ! Updated Successfully
+            Done 
           </button>
         </div>
       </SuccessModal>

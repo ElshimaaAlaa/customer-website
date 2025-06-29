@@ -56,13 +56,13 @@ function CreateNewPassword() {
         <meta charSet="utf-8" />
         <title>Create New Password</title>
       </Helmet>
-      <div className="CreateNewPasswordContainer lg:w-450 md:w-450 sm:w-450 xs:w-450 s:w-450 bg-gray-50">
+      <div className="CreateNewPasswordContainer w-96 lg:w-450 md:w-450 sm:w-450 xs:w-450 s:w-450 bg-gray-50">
         <img
           src="/assets/svgs/vertex.svg"
           alt="logo"
-          className="w-48 h-10 mb-3"
+          className="w-48 h-10 mb-4"
         />
-        <h1 className="font-bold mt-3 text-[20px]">Create New Password</h1>
+        <h1 className="font-bold mt-3 text-2xl">Create New Password</h1>
         <Formik
           initialValues={initialValues}
           onSubmit={handleSubmit}

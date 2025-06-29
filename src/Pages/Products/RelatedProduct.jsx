@@ -12,18 +12,20 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 
-function BestSalesProducts() {
+function RelatedProduct() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [bestProducts, setBestProducts] = useState([]);
+  const [latestProducts, setLatestProducts] = useState([]);
   const [wishlistItems, setWishlistItems] = useState([]);
   const navigate = useNavigate();
   useEffect(() => {
-    const fetchBestProducts = async () => {
+    const fetchProducts = async () => {
       setIsLoading(true);
       try {
         const response = await getHomeData();
-        setBestProducts(response.best_selling_products || []);
+        setLatestProducts(response.latest_products || []);
+
+        // Initialize wishlist items from localStorage
         const storedWishlist = localStorage.getItem("wishlistItems");
         if (storedWishlist) {
           setWishlistItems(JSON.parse(storedWishlist));
@@ -34,7 +36,7 @@ function BestSalesProducts() {
         setIsLoading(false);
       }
     };
-    fetchBestProducts();
+    fetchProducts();
   }, []);
 
   const handleWishlistToggle = async (productId) => {
@@ -47,11 +49,15 @@ function BestSalesProducts() {
 
       setWishlistItems(updatedWishlist);
       localStorage.setItem("wishlistItems", JSON.stringify(updatedWishlist));
+
+      // Call API endpoint
       const response = await toggleWishlist(productId);
+
       if (!response.success) {
         throw new Error(response.message || "Failed to update wishlist");
       }
 
+      // Show success message
       toast.success(
         isInWishlist
           ? "Product removed from wishlist"
@@ -78,7 +84,7 @@ function BestSalesProducts() {
       console.error("Wishlist error:", error);
     }
   };
-  //rating
+  // rating
   const renderRating = (rating) => {
     if (!rating)
       return (
@@ -146,17 +152,16 @@ function BestSalesProducts() {
     );
   };
   return (
-    <div className="px-4 md:px-20 py-10 relative">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold mb-6">Best Selling Products</h1>
+    <div className="px-4 md:px-10 py-10 relative">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold mb-6">Related Products</h1>
         <button
-          className="text-primary w-32 flex items-center rounded-lg justify-center font-bold p-3 gap-2"
+          className="text-primary w-32 flex items-center rounded-md justify-center font-bold p-3 gap-2"
           onClick={() => navigate("/Home/Products")}
         >
           View All <IoIosArrowRoundForward size={25} />
         </button>
       </div>
-
       {error ? (
         <div className="text-red-500 text-15 text-center mt-10">
           Failed to fetch data. Please try again.
@@ -165,15 +170,15 @@ function BestSalesProducts() {
         <div className="text-gray-400 text-center mt-10">
           <ClipLoader color="#E0A75E" />
         </div>
-      ) : bestProducts.length === 0 ? (
+      ) : latestProducts.length === 0 ? (
         <div className="text-gray-400 text-15 text-center mt-10">
           No products found.
         </div>
       ) : (
-        <div className="relative">
+        <div className="relative rounded-lg">
           <Swiper
             modules={[Navigation, Autoplay]}
-            spaceBetween={15}
+            spaceBetween={20}
             slidesPerView={1}
             navigation={{
               nextEl: ".custom-swiper-button-next",
@@ -186,12 +191,12 @@ function BestSalesProducts() {
               1024: { slidesPerView: 4 },
             }}
           >
-            {bestProducts.map((product) => (
-              <SwiperSlide key={product.id}>
+            {latestProducts.map((product) => (
+              <SwiperSlide key={product.id} className="rounded-lg">
                 <div className="rounded-lg">
                   <div className="relative bg-gray-50 border rounded-lg">
                     <button
-                      className="absolute top-1 right-1 p-2 rounded-full "
+                      className="absolute top-1 right-1 p-2  rounded-full"
                       onClick={() => handleWishlistToggle(product.id)}
                     >
                       {wishlistItems.includes(product.id) ? (
@@ -204,12 +209,7 @@ function BestSalesProducts() {
                       )}
                     </button>
 
-                    {product.discount_percentage > 0 && (
-                      <div className="absolute top-3 left-3 p-2 text-xs bg-red-600 text-white rounded-2xl">
-                        -{product.discount_percentage}%
-                      </div>
-                    )}
-                    <div className="h-56 flex justify-center py-5 ">
+                    <div className=" rounded-lg h-56 flex justify-center py-5">
                       {product.images?.[0]?.src ? (
                         <img
                           src={product.images[0].src}
@@ -221,30 +221,29 @@ function BestSalesProducts() {
                           }}
                         />
                       ) : (
-                        <div className="text-gray-400 flex items-center justify-center h-full">
+                        <div className="text-gray-400 text-14 flex items-center justify-center h-full">
                           No image available
                         </div>
                       )}
                     </div>
                   </div>
-                  <div className="ms-2">
-                    <h3 className="font-bold text-lg mt-2">{product.name}</h3>
-                    {/* rate */}
+                  <div className="ms-2 mt-2">
+                    <h3 className="font-bold text-lg">{product.name}</h3>
                     <div className="flex items-center gap-2 my-2">
                       {renderRating(product.rate)}
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 mt-1">
                       {product.price_after_discount ? (
                         <>
                           <span className="text-lg font-bold text-primary">
                             ${product.price_after_discount.toFixed(2)}
                           </span>
-                          <span className="text-14 font-light text-gray-400 line-through">
+                          <span className="text-14 text-gray-400 line-through">
                             ${product.price.toFixed(2)}
                           </span>
                         </>
                       ) : (
-                        <span className="text-lg font-bold text-primary">
+                        <span className="text-lg font-bold text-gray-900">
                           ${product.price.toFixed(2)}
                         </span>
                       )}
@@ -254,6 +253,7 @@ function BestSalesProducts() {
               </SwiperSlide>
             ))}
           </Swiper>
+
           <div className="flex justify-end mt-6 gap-4">
             <button className="custom-swiper-button-prev bg-primary p-2 rounded-full text-white hover:bg-primary-dark transition-colors">
               <IoIosArrowRoundBack size={24} />
@@ -267,4 +267,5 @@ function BestSalesProducts() {
     </div>
   );
 }
-export default BestSalesProducts;
+
+export default RelatedProduct;

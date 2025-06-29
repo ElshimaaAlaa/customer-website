@@ -42,18 +42,18 @@ function Faqs() {
         <title>Frequently Asked Questions | VERTEX</title>
       </Helmet>
       <div className="faqHeader w-full h-[65vh] flex flex-col justify-center items-center text-center text-white">
-        <h1 className="text-3xl font-bold mb-4">FAQs</h1>
-        <p className="text-14 font-light w-96 leading-normal">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do Lorem
-          ipsum dolor
+        <h1 className="text-5xl font-bold mb-4">FAQs</h1>
+        <p className="text-17 font-light leading-normal">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, <br />
+          sed do Lorem ipsum dolor
         </p>
       </div>
-      <section className="px-24 my-14">
+      <section className="px-5 md:px-10 lg:px-24 my-14">
         <div>
           {faqsData.slice(0, displayCount).map((item, index) => (
             <div
               key={index}
-              className={`mt-5 p-5  bg-gray-50 rounded-lg transition-all duration-300 ${
+              className={`mt-3 p-7  bg-gray-50 rounded-lg transition-all duration-300 ${
                 openIndex === index ? "border-2 border-primary" : ""
               }`}
             >
@@ -61,7 +61,7 @@ function Faqs() {
                 onClick={() => toggleFaq(index)}
                 className="flex justify-between items-center cursor-pointer"
               >
-                <h1 className="font-bold text-17">{item.question}</h1>
+                <h1 className="font-bold text-lg">{item.question}</h1>
                 <span>
                   {openIndex === index ? (
                     <IoIosArrowUp color="#E0A75E" />
@@ -79,7 +79,7 @@ function Faqs() {
           ))}
           {faqsData.length === 0 && !isLoading && (
             <div className="mt-5 p-5 bg-gray-50 rounded-lg text-center">
-              <p className="text-gray-500 text-14">No FAQs found</p>
+              <p className="text-gray-500 text-15">No FAQs found</p>
             </div>
           )}
         </div>
@@ -87,15 +87,15 @@ function Faqs() {
           {displayCount < faqsData.length && (
             <button
               onClick={showMoreFaqs}
-              className="text-center text-15 bg-primary font-bold text-white cursor-pointer w-44 px-4 py-2 rounded-lg hover:bg-opacity-90 transition"
+              className="text-center text-17 bg-primary font-bold text-white cursor-pointer w-44 p-4 rounded-lg hover:bg-opacity-90 transition"
             >
-              Show More (5)
+              Show More 
             </button>
           )}
           {displayCount > 5 && (
             <button
               onClick={showLessFaqs}
-              className="text-center text-15 bg-gray-50 font-bold text-gray-500 cursor-pointer w-44 px-4 py-2 rounded-lg hover:bg-opacity-90 transition"
+              className="text-center text-17 bg-gray-50 font-bold text-gray-500 cursor-pointer w-44 p-4 rounded-lg hover:bg-opacity-90 transition"
             >
               Show Less
             </button>

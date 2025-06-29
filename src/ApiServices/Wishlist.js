@@ -1,10 +1,8 @@
 import axios from "axios";
-const API_BASE_URL = "https://";
-const live_customer_domain = localStorage.getItem("live_customer_domain");
 export const getWishListData = async () => {
   try {
     const response = await axios({
-      url: `${API_BASE_URL}demo.vrtex.duckdns.org/api/wishlist`,
+      url: `https://demo.vrtex.duckdns.org/api/wishlist`,
       method: "GET",
       headers: {
         "Accept-Language": "en",

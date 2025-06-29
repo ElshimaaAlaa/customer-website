@@ -48,7 +48,7 @@ function DeleteAccount() {
         onClick={() => setShowModal(true)}
       >
         <RiDeleteBin6Line color="#DC2626" size={22} className="me-2" />
-        <p className="font-semibold text-15 mt-1 text-red-600">
+        <p className="font-bold text-6 mt-1 text-red-600">
           Delete Account
         </p>
       </div>
@@ -65,13 +65,13 @@ function DeleteAccount() {
         </p>
         <div className="flex gap-3 mt-5 mb-3">
           <button
-            className="rounded p-3 bg-gray-100 text-gray-400 font-bold w-32"
+            className="rounded p-3 text-17 bg-gray-100 text-gray-400 font-bold w-32"
             onClick={() => setShowModal(false)}
           >
             Cancel
           </button>
           <button
-            className="rounded text-white bg-customred font-bold p-3 w-32"
+            className="rounded text-white text-17 bg-customred font-bold p-3 w-32"
             onClick={handelDeleteAccount}
           >
             {isLoading ? (

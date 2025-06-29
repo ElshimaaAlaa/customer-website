@@ -23,8 +23,8 @@ function ContactInfo() {
       <div className="flex gap-4">
         <div className="w-10 h-10 flex items-center justify-center">{icon}</div>
         <div>
-          <h3 className="font-bold text-16 mb-1">{title}</h3>
-          <a href={link} className="text-gray-400 mt-3 text-14">
+          <h3 className="font-bold text-17 mb-1">{title}</h3>
+          <a href={link} className="text-gray-400 mt-3 text-15">
             {value}
           </a>
         </div>
@@ -34,8 +34,8 @@ function ContactInfo() {
   );
   return (
     <div>
-      <section className="bg-white border rounded-md drop-shadow-lg w-[430px] md:w-[430px] lg:w-500 p-5 h-72 mt-10">
-        <h2 className="font-bold text-16 mb-3 mt-2 relative pb-1 gradient-border-bottom">
+      <section className="bg-white border rounded-md drop-shadow-lg w-[320px] md:w-[400px] lg:w-500 p-5 h-72 mt-10">
+        <h2 className="font-bold text-lg mb-3 mt-2 relative pb-1 gradient-border-bottom">
           Contact information
         </h2>
         <ContactCard
@@ -50,12 +50,12 @@ function ContactInfo() {
           link="mailto:Vertex@gmail.com"
         />
       </section>
-      <section className="bg-white rounded-md border drop-shadow-lg w-[430px] md:w-[430px] lg:w-500 p-5 h-32 mt-3">
-        <h2 className="font-bold text-16 mb-3 mt-2 relative pb-1 gradient-border-bottom">
+      <section className="bg-white rounded-md border drop-shadow-lg w-[320px] md:w-[400px] lg:w-500 p-5 h-32 mt-3">
+        <h2 className="font-bold text-lg mb-3 mt-2 relative pb-1 gradient-border-bottom">
           Follow our social network
         </h2>
         <div className="flex  items-center gap-3">
-          <FaSquareXTwitter size={23} />
+          <FaSquareXTwitter size={28} />
           <WhatsApp />
           <Facebook />
           <Instegram />

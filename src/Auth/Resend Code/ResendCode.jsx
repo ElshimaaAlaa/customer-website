@@ -21,7 +21,7 @@ function ResendCode() {
     <div>
       <p
         onClick={resndCode}
-        className="font-bold text-primary text-15 cursor-pointer"
+        className="font-bold text-primary text-16 cursor-pointer"
       >
         Resend
       </p>

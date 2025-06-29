@@ -23,22 +23,22 @@ function UserProfile() {
         <title>User Profile | VERTEX</title>
       </Helmet>
       <section className="userHeader w-full h-[65vh] flex flex-col justify-center items-center text-center text-white">
-        <h1 className="text-3xl font-bold mb-4">My Account</h1>
-        <p className="text-14 font-light ">
+        <h1 className="text-5xl font-bold mb-4">My Account</h1>
+        <p className="text-17 font-light ">
           Manage your account , and view your orders ...
         </p>
       </section>
       <section className="p-8 bg-customOrange-lightOrange flex items-center justify-between px-28">
         <div className="flex items-center gap-2">
           <FaCircleDollarToSlot color="#E0A75E" size={22} />
-          <p className="text-gray-600 text-15">
+          <p className="text-gray-600 text-16">
             Current Balance:
-            <span className="text-black text-[18px] font-bold ms-2">
+            <span className="text-black text-xl font-bold ms-2">
               $ {data.balance}
             </span>
           </p>
         </div>
-        <p className="font-bold text-primary flex items-center gap-1">
+        <p className="font-bold text-primary text-lg flex items-center gap-1">
           <TbCirclePlus size={23} />
           Add To your balance
         </p>

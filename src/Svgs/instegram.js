@@ -1,5 +1,5 @@
 import React from "react";
-const Instegram = ({ width = 29, height = 29, fill = "#3E67C6", ...props }) => {
+const Instegram = ({ width = 33, height = 33, fill = "#3E67C6", ...props }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

@@ -81,7 +81,7 @@ function InfoSideBar() {
               />
             </div>
             <p
-              className={`font-semibold text-14 mt-1 ${
+              className={`font-semibold text-16 mt-1 ${
                 isActive(path, exactMatch) ? "text-primary" : ""
               }`}
             >

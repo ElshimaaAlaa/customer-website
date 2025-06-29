@@ -22,6 +22,7 @@ import Payment from "./Profile/Payment/Payment";
 import OrderDetails from "./Profile/User Orders/OrderDetail";
 import WishList from "./Pages/WishList/WishList";
 import Products from "./Pages/Products/Products";
+import ViewProductDetails from "./Pages/Products/ViewProductDetails";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -65,6 +66,7 @@ function App() {
           <Route path="AboutUs" element={<AboutUs />} />
           <Route path="ContactUs" element={<ContactUs />} />
           <Route path="Products" element={<Products />} />
+          <Route path="Products/:id" element={<ViewProductDetails/>}/>
           <Route path="WishList" element={<WishList />} />
           <Route path="UserProfile" element={<UserProfile />}>
             <Route index element={<PersonalInformation />} />

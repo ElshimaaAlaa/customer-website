@@ -54,7 +54,7 @@ function ChangePassword() {
 
   return (
     <div>
-      <h1 className="font-bold text-[18px] mt-5">Change Password</h1>
+      <h1 className="font-bold text-xl mt-5">Change Password</h1>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -76,14 +76,14 @@ function ChangePassword() {
           <div className="flex justify-start mt-4">
             <button 
               type="submit"
-              className="flex items-center gap-1 rounded-md w-48 p-3 text-16 justify-center bg-primary text-white"
+              className="flex items-center gap-2 font-bold rounded-md  p-3 text-17 justify-center bg-primary text-white"
               disabled={isLoading}
             >
               {isLoading ? (
-                <ClipLoader color="#fff" size={23} />
+                <ClipLoader color="#fff" size={22} />
               ) : (
                 <>
-                  <FaCircleCheck />
+                  <FaCircleCheck size={19} />
                   Change Password
                 </>
               )}

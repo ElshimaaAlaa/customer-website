@@ -1,53 +1,66 @@
 import { useEffect, useState } from "react";
 import { getHomeData } from "../../ApiServices/Home";
 import { ClipLoader } from "react-spinners";
+import { useNavigate } from "react-router-dom";
+
 function FeaturedCategories() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [featuredCategories, setFeaturedCategories] = useState([]);
+  const navigate = useNavigate();
+
   useEffect(() => {
-    const fetchCatgories = async () => {
+    const fetchCategories = async () => {
       setIsLoading(true);
       try {
         const response = await getHomeData();
-        console.log(response);
-        setIsLoading(false);
-        setFeaturedCategories(response.categories);
+        setFeaturedCategories(response.categories || []);
       } catch (error) {
-        setError(error);
+        setError(error.message || "Failed to fetch data");
+      } finally {
         setIsLoading(false);
       }
     };
-    fetchCatgories();
+    fetchCategories();
   }, []);
+
   return (
-    <div className=" px-20 pt-14 pb-10">
-      <h1 className="font-bold text-lg mb-5">Featured Categories</h1>
-      <div>
+    <div className="px-4 sm:px-6 md:px-10 lg:px-20 py-8 md:py-10 lg:py-14">
+      <h1 className="font-bold text-2xl mb-4 md:mb-5">Featured Categories</h1>
+      
+      <div className="mt-6 md:mt-7">
         {error ? (
-          <div className="text-red-500 text-15 text-center mt-10">
-            Failed to fetch data. Please try again.
+          <div className="text-red-500 text-sm sm:text-base text-center py-10">
+            {error}
           </div>
         ) : isLoading ? (
-          <div className="text-gray-400 text-center mt-10">
-            <ClipLoader color="#E0A75E" />
+          <div className="flex justify-center py-10">
+            <ClipLoader color="#E0A75E" size={30} />
           </div>
         ) : featuredCategories.length === 0 ? (
-          <div className="text-gray-400 text-15 text-center mt-10">
-            No Featured Categories founded.
+          <div className="text-gray-400 text-sm sm:text-base text-center py-10">
+            No Featured Categories found.
           </div>
         ) : (
-          <div className="flex items-center justify-between mt-7">
-            {featuredCategories?.map((cat) => (
-              <div>
-                <div>
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-10 gap-4 sm:gap-6">
+            {featuredCategories.map((cat, index) => (
+              <div 
+                key={cat.id || index} 
+                className="flex flex-col items-center"
+              >
+                <div 
+                  onClick={() => navigate("/Home/Products")} 
+                  className="group cursor-pointer"
+                >
                   <img
                     src={cat?.image}
-                    alt="category-image"
-                    className="w-28 h-28 rounded-full"
+                    alt={cat.name || "Category image"}
+                    className="w-20 h-20 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-full object-cover border-2 border-transparent group-hover:border-primary transition-all duration-300"
                   />
                 </div>
-                <p className="text-13 font-bold text-center mt-1">{cat.name}</p>
+                <p className="text-14 text-center mt-2">
+                  {cat.name}
+                </p>
               </div>
             ))}
           </div>
@@ -56,4 +69,5 @@ function FeaturedCategories() {
     </div>
   );
 }
+
 export default FeaturedCategories;

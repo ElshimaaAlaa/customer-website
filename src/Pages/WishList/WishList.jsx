@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { ClipLoader } from "react-spinners";
-import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
+import { IoIosHeart } from "react-icons/io";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { getWishListData } from "../../ApiServices/Wishlist";
 import { useNavigate } from "react-router-dom";
@@ -53,7 +53,7 @@ function WishList() {
       >
         <IoIosArrowRoundBack size={25} /> Back to home
       </button>
-      <h1 className="text-lg font-bold mb-3">Wishlist</h1>
+      <h1 className="text-2xl font-bold mb-5">Wishlist</h1>
       {error ? (
         <div className="text-red-500 text-15 text-center mt-10">
           Failed to fetch data. Please try again.
@@ -77,24 +77,30 @@ function WishList() {
                   disabled={isToggling[product.id]}
                 >
                   {isToggling[product.id] ? (
-                    <ClipLoader size={18} color="#E0A75E" />
+                    <></>
                   ) : (
-                    <IoIosHeart size={23} className="text-red-500" />
+                    <IoIosHeart size={27} className="text-red-500" />
                   )}
                 </button>
                 {product.discount_percentage > 0 && (
-                  <button className="absolute top-2 left-2 p-1 text-13 bg-red-600 text-white rounded-2xl">
+                  <button className="absolute top-2 left-2 py-2 px-3 text-15 bg-red-600 text-white rounded-full">
                     - {product.discount_percentage}%
                   </button>
                 )}
-                <button className="absolute bottom-2 left-2 py-1 px-2 text-13 bg-yellow-300 text-black rounded-2xl">
-                  {product.stock} Left !
-                </button>
+                {product.stock > 0 ? (
+                  <p className="absolute bottom-3 left-3 rounded-full bg-yellow-300 text-14 py-1 px-2">
+                    {product.stock} Left !
+                  </p>
+                ) : (
+                  <p className="absolute bottom-3 left-3 rounded-full bg-red-600 text-14 py-1 px-2">
+                    Out of stock
+                  </p>
+                )}
                 {product.images?.[0]?.src ? (
                   <img
                     src={product.images[0].src}
                     alt={product.name}
-                    className="h-full w-full  py-3 cursor-pointer"
+                    className="h-full w-full p-6 cursor-pointer"
                     onError={(e) => {
                       e.target.onerror = null;
                       e.target.src = "/placeholder-product.png";
@@ -107,43 +113,46 @@ function WishList() {
                 )}
               </div>
               <div className="px-3 w-300">
-                <h3 className="font-bold text-16 mt-2">{product.name}</h3>
+                <h3 className="font-bold text-lg mt-2">{product.name}</h3>
                 <div className="flex items-center gap-3">
                   <img
                     src="/assets/svgs/rate.svg"
                     alt="rate"
                     className="w-20 h-6"
                   />
-                  <p className="text-13">{product.rate || 0} / 5</p>
+                  <p className="text-13">{product.rate} / 5</p>
                 </div>
-                <div className="flex justify-between items-center mb-5">
+                <div className="flex justify-between items-center mb-3">
                   <div className="flex items-center gap-2 mt-2">
-                    <span className="text-primary text-17 font-bold">
+                    <span className="text-primary text-lg font-bold">
                       ${product.price_after_discount}
                     </span>
-                    <span className="text-gray-400 font-light text-14 line-through">
+                    <span className="text-gray-400 font-light text-15 line-through">
                       ${product.price}
                     </span>
                   </div>
-                  <div>
-                    <button className="bg-primary text-white p-1 rounded-md">
-                      <IoCart size={25} />
-                    </button>
-                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button className="flex-1 rounded-md border-2 border-primary text-primary  py-3 text-17 font-bold hover:bg-primary hover:text-white transition-colors">
+                    Add To Cart
+                  </button>
+                  <button className="flex-1 bg-primary text-white rounded-md py-3 border-2 border-primary text-17 font-bold hover:bg-primary-dark hover:bg-transparent hover:border-primary hover:text-primary transition-colors">
+                    Buy Now
+                  </button>
                 </div>
               </div>
             </div>
           ))}
         </div>
       )}
-      <div className="flex justify-end gap-3">
-        <button className="rounded-md p-3 font-bold bg-gray-100 text-gray-400 w-44 text-center">
+      {/* <div className="flex mt-5 lg:justify-end gap-3">
+        <button className="rounded-md p-3 font-bold bg-gray-100 text-gray-400 w-32 text-center">
           Clear All
         </button>
         <button className="bg-primary font-bold text-white p-3 rounded-md w-44 text-center">
           Add All To Cart
         </button>
-      </div>
+      </div> */}
     </div>
   );
 }

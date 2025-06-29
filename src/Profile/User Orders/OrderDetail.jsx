@@ -76,8 +76,8 @@ function OrderDetails() {
       </Helmet>
 
       <section className="userHeader w-full h-[65vh] flex flex-col justify-center items-center text-center text-white">
-        <h1 className="text-3xl font-bold mb-4">My Account</h1>
-        <p className="text-14 font-light">
+        <h1 className="text-5xl font-bold mb-4">My Account</h1>
+        <p className="text-17 font-light">
           Manage your account, and view your orders...
         </p>
       </section>
@@ -85,14 +85,14 @@ function OrderDetails() {
       <section className="p-8 bg-customOrange-lightOrange flex items-center justify-between px-20">
         <div className="flex items-center gap-2">
           <FaCircleDollarToSlot color="#E0A75E" size={22} />
-          <p className="text-gray-600 text-15">
+          <p className="text-gray-600 text-16">
             Current Balance:
-            <span className="text-black text-[18px] font-bold ms-2">
+            <span className="text-black text-xl font-bold ms-2">
               $ {orderDetail.balance}
             </span>
           </p>
         </div>
-        <p className="font-bold text-primary flex items-center gap-1">
+        <p className="font-bold text-primary flex items-center gap-1 text-lg">
           <TbCirclePlus size={23} />
           Add To your balance
         </p>
@@ -100,13 +100,13 @@ function OrderDetails() {
 
       <div className="px-20 py-10">
         <button
-          className="text-primary text-14 underline flex items-center rounded-md -ms-4 mb-2 p-3 gap-2"
+          className="text-primary text-15 underline flex items-center rounded-md -ms-4 mb-2 p-3 gap-2"
           onClick={() => navigate("/Home/UserProfile/UserOrder")}
         >
           <IoIosArrowRoundBack size={25} /> Back to Orders
         </button>
 
-        <h3 className="font-bold text-17 mb-3">View Order</h3>
+        <h3 className="font-bold text-xl mb-3">View Order</h3>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
           <div className="lg:col-span-2 space-y-5">

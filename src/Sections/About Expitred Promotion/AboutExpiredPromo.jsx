@@ -3,7 +3,6 @@ import { getHomeData } from "../../ApiServices/Home";
 import { ClipLoader } from "react-spinners";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 
-
 function AboutExpiredPromo() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -24,7 +23,6 @@ function AboutExpiredPromo() {
         });
 
         setExpiringPromotions(soonExpiring);
-    
       } catch (error) {
         setError(error);
       } finally {
@@ -34,10 +32,17 @@ function AboutExpiredPromo() {
     fetchPromotions();
   }, []);
 
-
   const StarRating = ({ rating }) => {
-    if (rating === null || rating === undefined) {
-      return <div className="text-gray-400 text-13">No ratings</div>;
+    // Handle null/undefined/NaN ratings
+    if (rating === null || rating === undefined || isNaN(rating)) {
+      return (
+        <div className="flex items-center gap-1">
+          {[...Array(5)].map((_, i) => (
+            <FaStar key={`empty-${i}`} className="text-gray-300" />
+          ))}
+          {/* <span className="text-13 ml-1 text-gray-400">(No ratings)</span> */}
+        </div>
+      );
     }
 
     const stars = [];
@@ -49,6 +54,7 @@ function AboutExpiredPromo() {
       stars.push(<FaStar key={`full-${i}`} className="text-yellow-400" />);
     }
 
+    // Half star
     if (hasHalfStar) {
       stars.push(<FaStarHalfAlt key="half" className="text-yellow-400" />);
     }
@@ -62,9 +68,7 @@ function AboutExpiredPromo() {
     return (
       <div className="flex items-center gap-1">
         {stars}
-        <span className="text-13 ml-1">
-          ({rating.toFixed(1)})
-        </span>
+        <span className="text-13 ml-1">({rating.toFixed(1)})</span>
       </div>
     );
   };
@@ -92,9 +96,7 @@ function AboutExpiredPromo() {
         const hours = Math.floor(
           (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
         );
-        const minutes = Math.floor(
-          (difference % (1000 * 60 * 60)) / (1000 * 60)
-        );
+        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
         setTimeLeft({ days, hours, minutes, seconds });
@@ -107,7 +109,7 @@ function AboutExpiredPromo() {
       <div className="absolute -top-7 left-96 bg-white border-2 border-red-600 w-550 h-16 rounded-full">
         <div className="flex items-center justify-around">
           <div className="">
-            <p className="font-bold text-16 ">
+            <p className="font-bold text-16">
               Deal of the Days
               <span className="font-light text-13 ms-16">End in</span>
             </p>
@@ -159,7 +161,7 @@ function AboutExpiredPromo() {
             return (
               <div
                 key={promotion.id}
-                className="flex h-64 relative rounded-lg border-2 border-red-600 w-full"
+                className="flex h-80 py-3 relative rounded-lg border-2 border-red-600 w-full"
               >
                 <div className="flex items-center justify-center mt-8 px-20 relative">
                   {product?.images?.[0]?.src ? (
@@ -176,17 +178,17 @@ function AboutExpiredPromo() {
                 </div>
                 
                 <div className="pt-20 pr-10">
-                  <p className="text-13 text-gray-500 mb-2">Category Name</p>
+                  <p className="text-14 text-gray-500 mb-2">Category Name</p>
                   <div>
-                    <p className="font-bold text-17 my-2">{product.name}</p>
+                    <p className="font-bold text-lg my-2">{product.name}</p>
                     <div className="my-2">
                       <StarRating rating={product.rate} />
                     </div>
                     <div className="flex items-center gap-3 mt-3">
-                      <span className="font-bold text-primary text-17">
+                      <span className="font-bold text-primary text-lg">
                         ${product.price_after_discount?.toFixed(2)}
                       </span>
-                      <span className="line-through text-14 text-gray-400">
+                      <span className="line-through text-15 text-gray-400">
                         ${product.price?.toFixed(2)}
                       </span>
                       <span className="bg-red-600 rounded-2xl text-white text-sm px-2 py-1">

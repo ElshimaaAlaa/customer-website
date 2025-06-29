@@ -4,9 +4,8 @@ import "react-multi-carousel/lib/styles.css";
 import { IoIosArrowRoundForward } from "react-icons/io";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { getHomeData } from "../../ApiServices/Home";
-import { MdStar } from "react-icons/md";
 
-function OpinionSection() {
+function UserRating() {
   const carouselRef = useRef();
   const [clientData, setClientData] = useState([]);
 
@@ -58,10 +57,10 @@ function OpinionSection() {
         <span
           key={i}
           className={
-            i <= rating ? "text-yellow-400 text-18" : "text-gray-300 text-18"
+            i <= rating ? "text-yellow-400 text-lg" : "text-gray-300 text-lg"
           }
         >
-          <MdStar />
+          ★
         </span>
       );
     }
@@ -70,7 +69,7 @@ function OpinionSection() {
 
   return (
     <section className="px-4 md:px-8 lg:px-20 mt-6 mb-10">
-      <h2 className="font-bold text-2xl mb-6">Our Clients Opinion</h2>
+      <h2 className="font-bold text-2xl mb-6">Rating & Reviews</h2>
       <div className="carousel-container mt-3 relative">
         <Carousel
           responsive={responsive}
@@ -80,23 +79,15 @@ function OpinionSection() {
           arrows={false}
           showDots={false}
           containerClass="carousel"
-          itemClass="px-2"
+          itemClass="pe-2"
           partialVisible={false}
         >
           {clientData.map((opinion, index) => (
             <div
               key={index}
-              className="flex flex-col items-start border border-gray-200 justify-center lg:flex-row gap-4 bg-gray-50 rounded-lg p-3  lg:items-center w-full h-full"
+              className="flex flex-col items-start border border-gray-100 justify-center lg:flex-row gap-4 bg-gray-100 rounded-lg p-3   w-full h-full me-3"
             >
-              <div className="flex-shrink-0 justify-center flex items-center">
-                <img
-                  src={opinion.user_image || "/assets/images/user.png"}
-                  alt={`${opinion.user_name}'s profile`}
-                  loading="lazy"
-                  className="w-24 h-24 object-cover rounded-full lg:rounded-md md:rounded-md md:w-330 md:object-fill md:h-52 lg:w-48 lg:h-48"
-                />
-              </div>
-              <div className="flex-1 space-y-4">
+              <div className="flex-1 py-2">
                 <svg
                   viewBox="0 0 52 52"
                   fill="none"
@@ -114,14 +105,18 @@ function OpinionSection() {
                     fill="white"
                   />
                 </svg>
-                <h3 className="text-sm md:text-[14.5px] font-medium w-full lg:w-44 leading-6">
+                <h3 className="text-sm pt-2 md:text-[14.5px] font-medium w-full lg:w-44 leading-6">
                   {opinion.comment}
                 </h3>
-                <div className="flex flex-col text-xl">
-                  <p className="flex">{renderStars(opinion.rate)}</p>
+                <div className="flex justify-between items-center gap-1">
+                  <p className=""> {renderStars(opinion.rate)}</p>
                   <p className="text-gray-500 text-11">{opinion.date}</p>
                 </div>
-                <p className="text-gray-600 text-14">By {opinion.user_name}</p>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                  <p className="text-13 text-gray-600 mt-2">
+                    By {opinion.user_name}
+                  </p>
+                </div>
               </div>
             </div>
           ))}
@@ -147,4 +142,4 @@ function OpinionSection() {
     </section>
   );
 }
-export default OpinionSection;
+export default UserRating;

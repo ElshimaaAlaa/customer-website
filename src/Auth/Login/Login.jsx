@@ -77,14 +77,14 @@ function Login() {
         <meta charSet="utf-8" />
         <title>Login</title>
       </Helmet>
-      <div className="loginContainer w-96 lg:w-450 md:w-450 sm:w-80 xs:w-450 s:w-80 bg-gray-50 rounded-md">
+      <div className="loginContainer lg:w-450 md:w-450 sm:w-450 xs:w-450 s:w-450 bg-gray-50 rounded-md">
         <img
           src="/assets/svgs/vertex.svg"
           alt="logo"
-          className="w-48 h-10 mb-3"
+          className="w-48 h-10 mb-4"
         />
-        <div className="flex items-center gap-3 mt-3">
-          <h1 className="font-bold text-[20px]">Welcome Back</h1>
+        <div className="flex items-center gap-3 mt-3 mb-2">
+          <h1 className="font-bold text-2xl">Welcome Back</h1>
           <img
             src="/assets/images/waving-hand_svgrepo.com.png"
             alt="welcome-back"
@@ -139,7 +139,7 @@ function Login() {
                 <div
                   role="button"
                   tabIndex={0}
-                  className="font-bold text-11 lg:text-13 cursor-pointer"
+                  className="font-bold text-12 lg:text-14 cursor-pointer"
                   onClick={() => navigate("/Login/ForgotPassword")}
                 >
                   Forget your password?
@@ -166,7 +166,7 @@ function Login() {
         <p className="text-center text-gray-400 text-15 mt-5">
           Don't Have An Account ?
           <span
-            className="ms-2 text-primary font-bold text-15 cursor-pointer"
+            className="ms-2 text-primary font-bold text-17 cursor-pointer"
             onClick={() => navigate("/Register")}
           >
             Register

@@ -81,10 +81,10 @@ function PersonalInformation() {
       </Helmet>
       <section>
         <div className="flex flex-col md:flex-row items-center justify-between mb-2">
-          <h1 className="font-bold text-[19px]">Personal Information</h1>
+          <h1 className="font-bold text-xl">Personal Information</h1>
           <button
             onClick={() => navigate("EditInfo", { state: personalInfo })}
-            className="text-white font-semibold flex items-center justify-center gap-3 bg-primary p-2 w-24 rounded-md"
+            className="text-white font-semibold flex items-center justify-center gap-3 bg-primary p-3 w-24 rounded-md"
             aria-label="Edit personal information"
           >
             <img src="/assets/svgs/edit.svg" alt="Edit icon" className="w-7" />
@@ -106,11 +106,11 @@ function PersonalInformation() {
             }}
           />
           <div className="text-center md:text-left">
-            <h2 className="font-semibold text-16 mt-3">
+            <h2 className="font-semibold text-lg mt-3">
               {personalInfo?.name || "N/A"}
             </h2>
-            <p className="text-gray-400 text-13">
-              {personalInfo?.role || "Vertex CEO"}
+            <p className="text-gray-400 text-15">
+              {personalInfo?.role || "Customer"}
             </p>
           </div>
         </div>
@@ -119,11 +119,11 @@ function PersonalInformation() {
           <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-96">
             <div>
               <p className="text-gray-400 text-15">Name</p>
-              <p className="text-14">{personalInfo?.name || "N/A"}</p>
+              <p className="text-15">{personalInfo?.name || "N/A"}</p>
             </div>
             <div>
               <p className="text-gray-400 text-15">Email</p>
-              <p className="text-14">{personalInfo?.email || "N/A"}</p>
+              <p className="text-15">{personalInfo?.email || "N/A"}</p>
             </div>
           </div>
           <div className="mt-3">

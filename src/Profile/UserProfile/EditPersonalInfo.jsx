@@ -66,7 +66,7 @@ function EditInfo() {
         <title>Edit Personal Information</title>
       </Helmet>
       <section>
-        <h1 className="font-bold text-[18px]">Edit Personal Information</h1>
+        <h1 className="font-bold text-xl">Edit Personal Information</h1>
         <Formik
           initialValues={initialValues}
           enableReinitialize
@@ -100,9 +100,9 @@ function EditInfo() {
                       />
                       <label
                         htmlFor="imageUpload"
-                        className="cursor-pointer text-15 flex items-center gap-1"
+                        className="cursor-pointer text-17 flex items-center gap-1"
                       >
-                        <MdOutlineFileUpload size={22} />
+                        <MdOutlineFileUpload size={25} />
                         Upload Picture
                       </label>
                       <button
@@ -138,20 +138,20 @@ function EditInfo() {
               <div className="mt-5 flex items-center justify-end gap-3">
                 <button
                   type="button"
-                  className="bg-gray-100 text-gray-400 font-bold p-3 w-32 rounded-md"
+                  className="bg-gray-100 text-17 text-gray-400 font-bold p-4 w-32 rounded-md"
                   onClick={() => navigate("/Home/UserProfile")}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="bg-primary font-bold text-white flex items-center justify-center gap-2 rounded-md p-3 w-32"
+                  className="bg-primary font-bold text-17 text-white flex items-center justify-center gap-2 rounded-md p-4 w-32"
                 >
                   {isLoading ? (
                     <ClipLoader color="#fff" size={22} />
                   ) : (
                     <>
-                      <FaCircleCheck /> Save
+                      <FaCircleCheck size={21}/> Save
                     </>
                   )}
                 </button>
@@ -172,10 +172,10 @@ function EditInfo() {
             Profile updated successfully!
           </p>
           <button
-            className="bg-primary text-white rounded-md p-2 text-14 mt-4 w-60 "
+            className="bg-primary text-white rounded-md p-2 text-16 font-bold mt-4 w-60 "
             onClick={() => navigate("/Home/UserProfile")}
           >
-            Done ! Updated Successfully
+            Done ! 
           </button>
         </div>
       </SuccessModal>

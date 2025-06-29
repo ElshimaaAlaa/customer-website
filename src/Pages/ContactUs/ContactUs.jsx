@@ -56,27 +56,28 @@ function ContactUs() {
         values.message
       );
       setShowModal(true);
-      resetForm(); 
+      resetForm();
     } catch (error) {
       setError("Failed to send the message. Please try again.");
     } finally {
       setIsLoading(false);
-    }}
+    }
+  };
   return (
     <section className="bg-white pb-10">
       <Helmet>
         <title>Contact Us | VERTEX</title>
       </Helmet>
       <div className="contactHeader w-full h-[65vh] flex flex-col justify-center items-center text-center text-white">
-        <h1 className="text-3xl font-bold mb-4">Contact Us</h1>
-        <p className="text-14 font-light w-96 leading-normal">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do Lorem
-          ipsum dolor
+        <h1 className="text-5xl font-bold mb-4">Contact Us</h1>
+        <p className="text-17 font-light  leading-normal">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, <br /> sed do
+          Lorem ipsum dolor
         </p>
       </div>
-      <div className="flex px-20 justify-center gap-4">
-        <ContactInfo/>
-        <section className="bg-customOrange-mediumOrange p-5 mt-10 w-[430px] md:w-[430px] lg:w-500 rounded-md">
+      <div className="flex items-center flex-col md:flex-row md:items-start lg:items-start px-5 lg:px-20 justify-center gap-4">
+        <ContactInfo />
+        <section className="bg-customOrange-mediumOrange p-5 mt-10 w-[320px] md:w-[430px] lg:w-500 rounded-md">
           <div className="flex justify-center">
             <img
               src="/assets/svgs/chats.svg"
@@ -84,10 +85,10 @@ function ContactUs() {
               className="w-14 mt-4 mb-2"
             />
           </div>
-          <h2 className="font-bold text-16 text-center mb-1">
+          <h2 className="font-bold text-lg text-center mb-1">
             Send your problem
           </h2>
-          <p className="text-gray-400 text-13 text-center mb-2">
+          <p className="text-gray-400 text-14 text-center mb-3">
             We are here to help you
           </p>
           <Formik
@@ -122,8 +123,8 @@ function ContactUs() {
                     isLoading ? (
                       <ClipLoader color="#fff" size={22} />
                     ) : (
-                      <div className="flex justify-center items-center gap-2">
-                        <LuSend />
+                      <div className="flex justify-center text-17 items-center gap-2">
+                        <LuSend size={19}/>
                         Send Message
                       </div>
                     )

@@ -77,9 +77,9 @@ function VerifayPassword() {
         <img
           src="/assets/svgs/vertex.svg"
           alt="logo"
-          className="w-48 h-10 mb-3"
+          className="w-48 h-10 mb-4"
         />
-        <h1 className="font-bold text-[20px] mt-3">Verification Code</h1>
+        <h1 className="font-bold text-2xl mt-3">Verification Code</h1>
         <p className="text-secondary mt-2 text-15">
           Enter the verification code we just sent on your email address.
         </p>

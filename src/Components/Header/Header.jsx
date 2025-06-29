@@ -69,7 +69,7 @@ const Header = () => {
                     <div className="flex justify-center">
                       <button
                         onClick={handleExploreClick}
-                        className="text-white w-48 justify-center bg-primary p-3 rounded-md flex items-center gap-2 mt-6 hover:bg-primary-dark transition-colors"
+                        className="text-white  justify-center bg-primary p-4 text-lg font-bold rounded-md flex items-center gap-2 mt-6 hover:bg-primary-dark transition-colors"
                       >
                         Explore Now < IoIosArrowRoundForward size={25}/>
                       </button>

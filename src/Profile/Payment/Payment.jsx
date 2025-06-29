@@ -88,7 +88,7 @@ function Payment() {
                   name="card_exp_date"
                   placeholder="MM/YY"
                   type="date"
-                  className={`w-full h-12 p-3 border-2 rounded-md outline-none transition-all duration-200 placeholder:text-14 focus:border-primary`}
+                  className={`w-full h-14 p-3 border-2 rounded-md outline-none transition-all duration-200 placeholder:text-14 focus:border-primary`}
                   onChange={(e) => {
                     let value = e.target.value;
                     if (value.length === 2 && !value.includes("/")) {
