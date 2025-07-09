@@ -1,5 +1,5 @@
 import { Form, Formik } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
@@ -10,12 +10,15 @@ import InputField from "../../Components/InputFields/InputField";
 import { AiOutlineDelete } from "react-icons/ai";
 import { MdOutlineFileUpload } from "react-icons/md";
 import "./style.scss";
+import { useTranslation } from "react-i18next";
 function EditInfo() {
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const navigate = useNavigate();
   const { state } = useLocation();
+  const { t, i18n } = useTranslation();
+  const [isRtl, setIsRtl] = useState(false);
   const personalInfo = state || {};
   const initialValues = {
     name: personalInfo?.name || "",
@@ -59,14 +62,16 @@ function EditInfo() {
   } else {
     document.body.classList.remove("no-scroll");
   }
-
+  useEffect(() => {
+    setIsRtl(i18n.language === "ar");
+  }, [i18n.language]);
   return (
     <div>
       <Helmet>
         <title>Edit Personal Information</title>
       </Helmet>
       <section>
-        <h1 className="font-bold text-xl">Edit Personal Information</h1>
+        <h1 className="font-bold text-xl">{t("editProfile")}</h1>
         <Formik
           initialValues={initialValues}
           enableReinitialize
@@ -103,7 +108,7 @@ function EditInfo() {
                         className="cursor-pointer text-17 flex items-center gap-1"
                       >
                         <MdOutlineFileUpload size={25} />
-                        Upload Picture
+                        {t("uploadPic")}
                       </label>
                       <button
                         type="button"
@@ -123,38 +128,64 @@ function EditInfo() {
                     </div>
                   </div>
                 ) : (
-                  <p className="text-gray-500">No image available</p>
+                  <p className="text-gray-500">{t("noImage")}</p>
                 )}
               </div>
               <div className="border p-3 rounded-md bg-gray-50 w-full">
                 <div className="flex flex-col md:flex-row gap-4">
-                  <InputField placeholder="Name" name="name" />
-                  <InputField placeholder="Email" name="email" />
+                  <InputField placeholder={t("name")} name="name" />
+                  <InputField placeholder={t("email")} name="email" />
                 </div>
                 <div className="mt-2">
-                  <InputField placeholder="Phone" name="phone" />
+                  <InputField placeholder={t("phone")} name="phone" />
                 </div>
               </div>
-              <div className="mt-5 flex items-center justify-end gap-3">
-                <button
-                  type="button"
-                  className="bg-gray-100 text-17 text-gray-400 font-bold p-4 w-32 rounded-md"
-                  onClick={() => navigate("/Home/UserProfile")}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="bg-primary font-bold text-17 text-white flex items-center justify-center gap-2 rounded-md p-4 w-32"
-                >
-                  {isLoading ? (
-                    <ClipLoader color="#fff" size={22} />
-                  ) : (
-                    <>
-                      <FaCircleCheck size={21}/> Save
-                    </>
-                  )}
-                </button>
+              <div className="mt-5 flex items-center justify-end gap-3 rtl:justify-start">
+                {isRtl ? (
+                  <>
+                    <button
+                      type="submit"
+                      className="bg-primary font-bold text-17 text-white flex items-center justify-center gap-2 rounded-md p-3 w-32"
+                    >
+                      {isLoading ? (
+                        <ClipLoader color="#fff" size={22} />
+                      ) : (
+                        <>
+                          <FaCircleCheck size={21} /> {t("save")}
+                        </>
+                      )}
+                    </button>
+                    <button
+                      type="button"
+                      className="bg-gray-100 text-17 text-gray-400 font-bold p-3 w-32 rounded-md"
+                      onClick={() => navigate("/Home/UserProfile")}
+                    >
+                      {t("cancel")}
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      type="button"
+                      className="bg-gray-100 text-17 text-gray-400 font-bold p-3 w-32 rounded-md"
+                      onClick={() => navigate("/Home/UserProfile")}
+                    >
+                      {t("cancel")}
+                    </button>
+                    <button
+                      type="submit"
+                      className="bg-primary font-bold text-17 text-white flex items-center justify-center gap-2 rounded-md p-3 w-32"
+                    >
+                      {isLoading ? (
+                        <ClipLoader color="#fff" size={22} />
+                      ) : (
+                        <>
+                          <FaCircleCheck size={21} /> {t("save")}
+                        </>
+                      )}
+                    </button>
+                  </>
+                )}
               </div>
             </Form>
           )}
@@ -168,14 +199,12 @@ function EditInfo() {
             alt="Success"
             className="w-32 mt-6"
           />
-          <p className="font-bold mt-5 text-center">
-            Profile updated successfully!
-          </p>
+          <p className="font-bold mt-5 text-center">{t("updateProfile")}</p>
           <button
-            className="bg-primary text-white rounded-md p-2 text-16 font-bold mt-4 w-60 "
+            className="bg-primary text-white rounded-md p-2 text-16 font-bold mt-4 w-36 "
             onClick={() => navigate("/Home/UserProfile")}
           >
-            Done ! 
+            {t("done")}
           </button>
         </div>
       </SuccessModal>

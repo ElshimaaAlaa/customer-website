@@ -11,6 +11,7 @@ export const getHomeData = async () => {
     });
     if (response.status === 200) {
       console.log("success get home data");
+      console.log("home data",response)
       return response.data.data;
     }
   } catch (error) {

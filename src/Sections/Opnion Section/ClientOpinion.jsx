@@ -5,11 +5,11 @@ import { IoIosArrowRoundForward } from "react-icons/io";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { getHomeData } from "../../ApiServices/Home";
 import { MdStar } from "react-icons/md";
-
+import { useTranslation } from "react-i18next";
 function OpinionSection() {
   const carouselRef = useRef();
   const [clientData, setClientData] = useState([]);
-
+  const { t } = useTranslation();
   useEffect(() => {
     const fetchClientsOpinions = async () => {
       try {
@@ -70,7 +70,7 @@ function OpinionSection() {
 
   return (
     <section className="px-4 md:px-8 lg:px-20 mt-6 mb-10">
-      <h2 className="font-bold text-2xl mb-6">Our Clients Opinion</h2>
+      <h2 className="font-bold text-2xl mb-6">{t("clientOpnion")}</h2>
       <div className="carousel-container mt-3 relative">
         <Carousel
           responsive={responsive}
@@ -80,13 +80,13 @@ function OpinionSection() {
           arrows={false}
           showDots={false}
           containerClass="carousel"
-          itemClass="px-2"
+          itemClass="px-2 lg:mx-14"
           partialVisible={false}
         >
           {clientData.map((opinion, index) => (
             <div
               key={index}
-              className="flex flex-col items-start border border-gray-200 justify-center lg:flex-row gap-4 bg-gray-50 rounded-lg p-3  lg:items-center w-full h-full"
+              className="flex flex-col items-start border  border-gray-200 justify-center lg:flex-row gap-4 bg-gray-50 rounded-lg p-3 lg:items-center w-full lg:w-550 h-full"
             >
               <div className="flex-shrink-0 justify-center flex items-center">
                 <img
@@ -96,7 +96,7 @@ function OpinionSection() {
                   className="w-24 h-24 object-cover rounded-full lg:rounded-md md:rounded-md md:w-330 md:object-fill md:h-52 lg:w-48 lg:h-48"
                 />
               </div>
-              <div className="flex-1 space-y-4">
+              <div className="flex-1">
                 <svg
                   viewBox="0 0 52 52"
                   fill="none"
@@ -114,14 +114,18 @@ function OpinionSection() {
                     fill="white"
                   />
                 </svg>
-                <h3 className="text-sm md:text-[14.5px] font-medium w-full lg:w-44 leading-6">
-                  {opinion.comment}
+                <h3 className="text-12 font-medium w-full my-3">
+                  {opinion.comment} Lorem ipsum dolor sit amet consectetur
+                  adipisicing elit. Mollitia exercitationem sit repellat
+                  voluptatem rerum dolorem deserunt labore tempora dolores quas
+                  est animi nisi, beatae et suscipit ipsam magnam, a soluta.
                 </h3>
                 <div className="flex flex-col text-xl">
                   <p className="flex">{renderStars(opinion.rate)}</p>
-                  <p className="text-gray-500 text-11">{opinion.date}</p>
                 </div>
-                <p className="text-gray-600 text-14">By {opinion.user_name}</p>
+                <p className="text-gray-600 text-13 mt-1">
+                  By {opinion.user_name}
+                </p>
               </div>
             </div>
           ))}

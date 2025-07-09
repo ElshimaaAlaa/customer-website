@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Profile } from "../../ApiServices/Profile";
-
+import { useTranslation } from "react-i18next";
 function Address() {
   const navigate = useNavigate();
   const [addressData, setAddressData] = useState([]);
+  const { t } = useTranslation();
   //fetch address data from profile service
   useEffect(() => {
     const getInfo = async () => {
@@ -23,31 +24,31 @@ function Address() {
   return (
     <section>
       <div className="flex flex-col md:flex-row items-center justify-between mb-2">
-        <h1 className="font-bold text-xl">Address</h1>
+        <h1 className="font-bold text-xl">{t("address")}</h1>
         <button
           onClick={handleEditClick}
           className="text-white font-semibold flex items-center justify-center gap-3 bg-primary p-3 w-24 rounded-md"
           aria-label="Edit personal information"
         >
           <img src="/assets/svgs/edit.svg" alt="Edit" className="w-7" />
-          Edit
+          {t("edit")}
         </button>
       </div>
       <div className="border rounded-md p-3 w-full bg-gray-50">
         <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-96">
           <div>
-            <p className="text-gray-400 text-15">Country</p>
+            <p className="text-gray-400 text-15">{t("country")}</p>
             <p className="text-15">{addressData?.country || "Egypt"}</p>
           </div>
           <div>
-            <p className="text-gray-400 text-15">Street Address</p>
+            <p className="text-gray-400 text-15">{t("streetAddress")}</p>
             <p className="text-15">
               {addressData?.address || "Street name , Street num"}
             </p>
           </div>
         </div>
         <div className="mt-3">
-          <p className="text-gray-400 text-15">City</p>
+          <p className="text-gray-400 text-15">{t("city")}</p>
           <p className="text-15">{addressData?.city || "Damietta"}</p>
         </div>
       </div>

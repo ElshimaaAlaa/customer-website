@@ -4,6 +4,7 @@ import TopSection from "../../Components/Navbar/TopSection";
 import { Outlet } from "react-router-dom";
 import BottomSection from "../../Components/Navbar/BottomSection";
 import Footer from "../../Components/Footer/Footer";
+import Navbar from "../../Components/Navbar/Navbar";
 
 function Main() {
   return (
@@ -12,8 +13,9 @@ function Main() {
         <title>Home Page | Vertex</title>
       </Helmet>
       <div>
-        <TopSection />
-        <BottomSection />
+        {/* <TopSection />
+        <BottomSection /> */}
+        <Navbar />
         <Outlet />
         <Footer />
       </div>

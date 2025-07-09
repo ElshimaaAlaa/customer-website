@@ -1,5 +1,5 @@
 import { Formik, Form, Field } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as Yup from "yup";
 import MainBtn from "../../Components/Main Button/MainBtn";
 import "./VerifayPassword.scss";
@@ -8,10 +8,14 @@ import { Helmet } from "react-helmet";
 import { VerifayPasswordService } from "../../ApiServices/VerifayPasswordService";
 import ResendCode from "../Resend Code/ResendCode";
 import { useNavigate } from "react-router-dom";
-
+import { IoIosArrowDown } from "react-icons/io";
+import { useTranslation } from "react-i18next";
 function VerifayPassword() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
+  const { t, i18n } = useTranslation();
+  const [isRTL, setIsRTL] = useState(false);
   const initialValues = {
     email: "",
     otp1: "",
@@ -24,7 +28,7 @@ function VerifayPassword() {
 
   const handleSubmit = async (values) => {
     setLoading(true);
-    const email = localStorage.getItem("Email");
+    const email = localStorage.getItem("user email");
     const otp =
       values.otp1 +
       values.otp2 +
@@ -50,12 +54,12 @@ function VerifayPassword() {
   };
 
   const validationSchema = Yup.object().shape({
-    otp1: Yup.string().required("Required"),
-    otp2: Yup.string().required("Required"),
-    otp3: Yup.string().required("Required"),
-    otp4: Yup.string().required("Required"),
-    otp5: Yup.string().required("Required"),
-    otp6: Yup.string().required("Required"),
+    otp1: Yup.string().required(t("required")),
+    otp2: Yup.string().required(t("required")),
+    otp3: Yup.string().required(t("required")),
+    otp4: Yup.string().required(t("required")),
+    otp5: Yup.string().required(t("required")),
+    otp6: Yup.string().required(t("required")),
   });
 
   const handleKeyUp = (event) => {
@@ -67,29 +71,77 @@ function VerifayPassword() {
     }
   };
 
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem("selectedLanguage") || "en";
+    i18n.changeLanguage(savedLanguage);
+    setIsRTL(savedLanguage === "ar");
+  }, [i18n]);
+  // Update RTL state and localStorage when language changes
+  useEffect(() => {
+    const currentLanguage = i18n.language;
+    setIsRTL(currentLanguage === "ar");
+    localStorage.setItem("selectedLanguage", currentLanguage);
+  }, [i18n.language]);
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+    setShowLanguageDropdown(false);
+    localStorage.setItem("selectedLanguage", lng);
+  };
+
   return (
-    <div className="main-container min-h-screen flex items-center justify-center">
+    <div
+      className="main-container min-h-screen flex items-center justify-center"
+      dir={isRTL ? "rtl" : "ltr"}
+    >
       <Helmet>
         <meta charSet="utf-8" />
         <title>Verifay Password</title>
+        <html dir={isRTL ? "rtl" : "ltr"} lang={i18n.language} />
       </Helmet>
-      <div className="verivayContainer lg:w-450 md:w-450 sm:w-450 xs:w-450 s:w-450 bg-gray-50 rounded-md">
-        <img
-          src="/assets/svgs/vertex.svg"
-          alt="logo"
-          className="w-48 h-10 mb-4"
-        />
-        <h1 className="font-bold text-2xl mt-3">Verification Code</h1>
-        <p className="text-secondary mt-2 text-15">
-          Enter the verification code we just sent on your email address.
-        </p>
+      <div
+        className={`verivayContainer w-96 lg:w-450 md:w-450 sm:w-450 xs:w-450 s:w-450 bg-gray-50 rounded-md`}
+      >
+        <div className="flex justify-between items-center">
+          <img
+            src="/assets/svgs/vertex.svg"
+            alt="logo"
+            className="w-48 h-10 mb-3"
+          />
+          <div className="relative">
+            <button
+              className="flex items-center gap-1 text-14 bg-customOrange-lightOrange text-primary rounded-md p-2"
+              onClick={() => setShowLanguageDropdown(!showLanguageDropdown)}
+            >
+              {i18n.language.toUpperCase()}
+              <IoIosArrowDown size={20} />
+            </button>
+            {showLanguageDropdown && (
+              <div className="absolute right-0  w-14 bg-white rounded-md shadow-lg z-10">
+                <button
+                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  onClick={() => changeLanguage("en")}
+                >
+                  EN
+                </button>
+                <button
+                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  onClick={() => changeLanguage("ar")}
+                >
+                  AR
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+        <h1 className="font-bold text-[21px] mt-2 rtl:text-[20px]">{t("verification")}</h1>
+        <p className="text-secondary mt-2 text-15 rtl:text-[15px]">{t("enterVerifayCode")}</p>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
           {({ errors, touched }) => (
-            <Form className="mt-3 flex flex-col">
+            <Form className="mt-3 flex flex-col ">
               <div className="flex gap-2">
                 {Array(6)
                   .fill("")
@@ -108,12 +160,12 @@ function VerifayPassword() {
                   ))}
               </div>
               <div className="text-gray-600 mt-3 mb-3 flex items-center gap-2 text-15">
-                <p className="">Didn’t Get Code?</p>
+                <p>{t("notGetCode")}</p>
                 <ResendCode />
               </div>
               <MainBtn
                 text={
-                  loading ? <ClipLoader color="#fff" size={22} /> : "Verify"
+                  loading ? <ClipLoader color="#fff" size={22} /> : t("verifay")
                 }
                 btnType="submit"
               />

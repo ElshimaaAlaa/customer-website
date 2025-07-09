@@ -17,6 +17,7 @@ export const loginService = async (email, password) => {
       localStorage.setItem("user token", response.data.data.token);
       localStorage.setItem("user email", response.data.data.email);
       localStorage.setItem("user name", response.data.data.name);
+      localStorage.setItem("user password", response.data.data.password);
       console.log(response.data.data);
       return response.data.data;
     }

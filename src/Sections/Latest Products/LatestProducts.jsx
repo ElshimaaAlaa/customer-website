@@ -4,13 +4,14 @@ import { toggleWishlist } from "../../ApiServices/ToggleWishlist";
 import { ClipLoader } from "react-spinners";
 import { IoIosHeartEmpty, IoIosHeart } from "react-icons/io";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Autoplay } from "swiper/modules";
+import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import { IoIosArrowRoundForward, IoIosArrowRoundBack } from "react-icons/io";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 function LatestProducts() {
   const [isLoading, setIsLoading] = useState(false);
@@ -18,6 +19,8 @@ function LatestProducts() {
   const [latestProducts, setLatestProducts] = useState([]);
   const [wishlistItems, setWishlistItems] = useState([]);
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
+
   useEffect(() => {
     const fetchProducts = async () => {
       setIsLoading(true);
@@ -25,7 +28,6 @@ function LatestProducts() {
         const response = await getHomeData();
         setLatestProducts(response.latest_products || []);
 
-        // Initialize wishlist items from localStorage
         const storedWishlist = localStorage.getItem("wishlistItems");
         if (storedWishlist) {
           setWishlistItems(JSON.parse(storedWishlist));
@@ -41,7 +43,6 @@ function LatestProducts() {
 
   const handleWishlistToggle = async (productId) => {
     try {
-      // Optimistic UI update
       const isInWishlist = wishlistItems.includes(productId);
       const updatedWishlist = isInWishlist
         ? wishlistItems.filter((id) => id !== productId)
@@ -50,18 +51,15 @@ function LatestProducts() {
       setWishlistItems(updatedWishlist);
       localStorage.setItem("wishlistItems", JSON.stringify(updatedWishlist));
 
-      // Call API endpoint
       const response = await toggleWishlist(productId);
-
       if (!response.success) {
-        throw new Error(response.message || "Failed to update wishlist");
+        throw new Error(response.message || t("wishlistUpdateError"));
       }
 
-      // Show success message
       toast.success(
         isInWishlist
-          ? "Product removed from wishlist"
-          : "Product added to wishlist",
+          ? t("productRemovedFromWishlist")
+          : t("productAddedToWishlist"),
         {
           position: "top-right",
           autoClose: 3000,
@@ -77,14 +75,14 @@ function LatestProducts() {
           ? prev.filter((id) => id !== productId)
           : [...prev, productId]
       );
-      toast.error(error.message || "Failed to update wishlist", {
+      toast.error(error.message || t("wishlistUpdateError"), {
         position: "top-right",
         autoClose: 3000,
       });
       console.error("Wishlist error:", error);
     }
   };
-  // rating
+
   const renderRating = (rating) => {
     if (!rating)
       return (
@@ -147,24 +145,32 @@ function LatestProducts() {
             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
           </svg>
         ))}
-        <span className="text-13 text-white ml-1">{rating}</span>
+        <span className="text-13 text-gray-600 ml-1">{rating}</span>
       </div>
     );
   };
+
+  const getTranslatedField = (product, field) => {
+    const language = i18n.language;
+    const fieldName = `${field}_${language.split("-")[0]}`;
+    return product[fieldName] || product[field] || "";
+  };
+
   return (
     <div className="px-4 md:px-20 py-10 relative">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold mb-6">Latest Products</h1>
+        <h1 className="text-2xl font-bold mb-6">{t("latestProducts")}</h1>
         <button
           className="text-primary w-32 flex items-center rounded-md justify-center font-bold p-3 gap-2"
           onClick={() => navigate("/Home/Products")}
         >
-          View All <IoIosArrowRoundForward size={25} />
+          {t("viewAll")} <IoIosArrowRoundForward size={25} />
         </button>
       </div>
+
       {error ? (
         <div className="text-red-500 text-15 text-center mt-10">
-          Failed to fetch data. Please try again.
+          {t("failedToFetchData")}
         </div>
       ) : isLoading ? (
         <div className="text-gray-400 text-center mt-10">
@@ -172,19 +178,18 @@ function LatestProducts() {
         </div>
       ) : latestProducts.length === 0 ? (
         <div className="text-gray-400 text-15 text-center mt-10">
-          No products found.
+          {t("noProductsFound")}
         </div>
       ) : (
         <div className="relative rounded-lg">
           <Swiper
-            modules={[Navigation, Autoplay]}
+            modules={[Navigation]}
             spaceBetween={15}
             slidesPerView={1}
             navigation={{
               nextEl: ".custom-swiper-button-next",
               prevEl: ".custom-swiper-button-prev",
             }}
-            autoplay={{ delay: 3000 }}
             breakpoints={{
               640: { slidesPerView: 2 },
               768: { slidesPerView: 3 },
@@ -192,11 +197,11 @@ function LatestProducts() {
             }}
           >
             {latestProducts.map((product) => (
-              <SwiperSlide key={product.id} className="rounded-lg">
-                <div className="rounded-lg">
-                  <div className="relative bg-gray-50 border rounded-lg">
+              <SwiperSlide key={product.id} className="rounded-lg h-full">
+                <div className="rounded-lg h-full flex flex-col">
+                  <div className="relative bg-gray-50 border rounded-lg flex-grow flex flex-col">
                     <button
-                      className="absolute top-1 right-1 p-2  rounded-full"
+                      className="absolute top-1 right-1 p-2 rounded-full z-10"
                       onClick={() => handleWishlistToggle(product.id)}
                     >
                       {wishlistItems.includes(product.id) ? (
@@ -209,11 +214,17 @@ function LatestProducts() {
                       )}
                     </button>
 
-                    <div className=" rounded-lg h-56 flex justify-center py-5">
+                    {product.discount_percentage > 0 && (
+                      <div className="absolute top-3 left-3 p-2 text-xs bg-red-600 text-white rounded-2xl">
+                        -{product.discount_percentage}%
+                      </div>
+                    )}
+
+                    <div className="h-56 flex justify-center py-5 flex-grow">
                       {product.images?.[0]?.src ? (
                         <img
                           src={product.images[0].src}
-                          alt={product.name}
+                          alt={getTranslatedField(product, "name")}
                           className="max-h-full max-w-full object-contain"
                           onError={(e) => {
                             e.target.onerror = null;
@@ -221,14 +232,16 @@ function LatestProducts() {
                           }}
                         />
                       ) : (
-                        <div className="text-gray-400 text-14 flex items-center justify-center h-full">
-                          No image available
+                        <div className="text-gray-400 flex items-center justify-center h-full">
+                          {t("noImageAvailable")}
                         </div>
                       )}
                     </div>
                   </div>
-                  <div className="ms-2 mt-2">
-                    <h3 className="font-bold text-lg">{product.name}</h3>
+                  <div className="mt-3">
+                    <h3 className="font-bold text-lg">
+                      {getTranslatedField(product, "name")}
+                    </h3>
                     <div className="flex items-center gap-2 my-2">
                       {renderRating(product.rate)}
                     </div>
@@ -249,6 +262,7 @@ function LatestProducts() {
                       )}
                     </div>
                   </div>
+                  {/* </div> */}
                 </div>
               </SwiperSlide>
             ))}

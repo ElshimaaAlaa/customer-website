@@ -1,5 +1,5 @@
 import { Form, Formik } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PasswordInput from "../../Components/Password Input/PasswordInput";
 import * as Yup from "yup";
 import SuccessModal from "../../Components/Modal/Success Modal/SuccessModal";
@@ -8,14 +8,15 @@ import { ClipLoader } from "react-spinners";
 import { FaCircleCheck } from "react-icons/fa6";
 import "./style.scss";
 import { useNavigate } from "react-router-dom";
-
+import { useTranslation } from "react-i18next";
 function ChangePassword() {
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
+  const { t, i18n } = useTranslation();
+  const [isRtl, setIsRtl] = useState(false);
   const initialValues = {
     password: "",
     password_confirmation: "",
@@ -23,11 +24,11 @@ function ChangePassword() {
 
   const validationSchema = Yup.object({
     password: Yup.string()
-      .min(8, "Password must be at least 8 characters long")
-      .required("Password is required"),
+      .min(8, t("passwordLenght"))
+      .required(t("passwordRequired")),
     password_confirmation: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Passwords must match")
-      .required("Confirm Password is required"),
+      .oneOf([Yup.ref("password"), null], t("matchPassword"))
+      .required(t("confirmRequired")),
   });
 
   const handleSubmit = async (values) => {
@@ -51,32 +52,39 @@ function ChangePassword() {
   } else {
     document.body.classList.remove("no-scroll");
   }
+  useEffect(() => {
+    setIsRtl(i18n.language === "ar");
+  }, [i18n.language]);
 
   return (
     <div>
-      <h1 className="font-bold text-xl mt-5">Change Password</h1>
+      <h1 className="font-bold text-xl mt-5">{t("changePassword")}</h1>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
         <Form className="w-500px">
-          <PasswordInput 
-            name="password" 
-            placeholder="New Password"
+          <PasswordInput
+            name="password"
+            placeholder={t("newPassword")}
             showPassword={showPassword}
             togglePasswordVisibility={() => setShowPassword(!showPassword)}
+            dir={isRtl ? "rtl" : "ltr"}
           />
           <PasswordInput
             name="password_confirmation"
-            placeholder="Confirm Password"
+            placeholder={t("confirmPassword")}
             showPassword={showConfirmPassword}
-            togglePasswordVisibility={() => setShowConfirmPassword(!showConfirmPassword)}
+            togglePasswordVisibility={() =>
+              setShowConfirmPassword(!showConfirmPassword)
+            }
+            dir={isRtl ? "rtl" : "ltr"}
           />
           <div className="flex justify-start mt-4">
-            <button 
+            <button
               type="submit"
-              className="flex items-center gap-2 font-bold rounded-md  p-3 text-17 justify-center bg-primary text-white"
+              className="flex items-center gap-2 font-bold rounded-md w-48  p-3 text-17 justify-center bg-primary text-white"
               disabled={isLoading}
             >
               {isLoading ? (
@@ -84,7 +92,7 @@ function ChangePassword() {
               ) : (
                 <>
                   <FaCircleCheck size={19} />
-                  Change Password
+                 {t("changePassword")}
                 </>
               )}
             </button>
@@ -99,7 +107,7 @@ function ChangePassword() {
             alt="success"
             className="w-32 mt-6"
           />
-          <h1 className="font-bold">Password Updated Successfully</h1>
+          <h1 className="font-bold">{t("successChangePass")}</h1>
         </div>
       </SuccessModal>
     </div>

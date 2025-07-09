@@ -4,13 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { Profile } from "../../ApiServices/Profile";
 import { IoCopyOutline } from "react-icons/io5";
 import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; 
-
+import "react-toastify/dist/ReactToastify.css";
+import { useTranslation } from "react-i18next";
 function PersonalInformation() {
   const navigate = useNavigate();
   const [personalInfo, setPersonalInfo] = useState({});
   const [error, setError] = useState(null);
-
+  const { t } = useTranslation();
   useEffect(() => {
     const getInfo = async () => {
       try {
@@ -81,22 +81,17 @@ function PersonalInformation() {
       </Helmet>
       <section>
         <div className="flex flex-col md:flex-row items-center justify-between mb-2">
-          <h1 className="font-bold text-xl">Personal Information</h1>
+          <h1 className="font-bold text-xl">{t("personalInfo")}</h1>
           <button
             onClick={() => navigate("EditInfo", { state: personalInfo })}
             className="text-white font-semibold flex items-center justify-center gap-3 bg-primary p-3 w-24 rounded-md"
             aria-label="Edit personal information"
           >
             <img src="/assets/svgs/edit.svg" alt="Edit icon" className="w-7" />
-            Edit
+            {t("edit")}
           </button>
         </div>
-        {error && (
-          <div className="bg-red-100 text-red-600 p-3 rounded-md mb-6">
-            {error}
-          </div>
-        )}
-        <div className="bg-gray-50 flex flex-col md:flex-row items-center gap-5 my-3 border rounded-md p-3 w-full">
+        <div className="bg-gray-50 flex flex-col md:flex-row items-center gap-5 my-3 border rounded-md p-3 w-full rtl:flex-row-reverse">
           <img
             src={personalInfo.image || "/assets/images/userPic.jpg"}
             alt="User profile"
@@ -118,16 +113,16 @@ function PersonalInformation() {
         <div className="bg-gray-50 border rounded-md p-3 w-full">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-96">
             <div>
-              <p className="text-gray-400 text-15">Name</p>
+              <p className="text-gray-400 text-15">{t("name")}</p>
               <p className="text-15">{personalInfo?.name || "N/A"}</p>
             </div>
             <div>
-              <p className="text-gray-400 text-15">Email</p>
+              <p className="text-gray-400 text-15">{t("email")}</p>
               <p className="text-15">{personalInfo?.email || "N/A"}</p>
             </div>
           </div>
           <div className="mt-3">
-            <p className="text-gray-400 text-15">Phone</p>
+            <p className="text-gray-400 text-15">{t("phone")}</p>
             <div className="flex items-center gap-3">
               <p className="font-medium text-13">
                 {personalInfo.phone || "not provided"}
@@ -157,5 +152,4 @@ function PersonalInformation() {
     </div>
   );
 }
-
 export default PersonalInformation;

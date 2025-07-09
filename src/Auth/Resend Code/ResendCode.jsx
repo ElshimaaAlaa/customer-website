@@ -1,13 +1,16 @@
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 function ResendCode() {
+  const { t } = useTranslation();
   const resndCode = async () => {
-    const email = localStorage.getItem("Email");
+    const email = localStorage.getItem("user email");
     const response = await axios({
-      url: `https://https://demo.vrtex.duckdns.org/api/send-otp`,
+      url: `https://demo.vrtex.duckdns.org/api/send-otp`,
       method: "POST",
       headers: {
-        Accept: "application/json",
-        "Accept-Language": "ar",
+        "Content-Type": "application/json",
+        "Accept-Language": "en",
+        Authorization: `Bearer ${localStorage.getItem("user token")}`,
       },
       data: { email },
     });
@@ -21,9 +24,9 @@ function ResendCode() {
     <div>
       <p
         onClick={resndCode}
-        className="font-bold text-primary text-16 cursor-pointer"
+        className="font-bold text-primary text-15 cursor-pointer rtl:text-[14px]"
       >
-        Resend
+        {t("resend")}
       </p>
     </div>
   );

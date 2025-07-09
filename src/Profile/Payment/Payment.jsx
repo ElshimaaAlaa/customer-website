@@ -10,10 +10,12 @@ import { ClipLoader } from "react-spinners";
 import { FaCheckCircle } from "react-icons/fa";
 import SuccessModal from "../../Components/Modal/Success Modal/SuccessModal";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 function Payment() {
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const initialValues = {
     card_cvv: "",
     card_exp_date: "",
@@ -40,7 +42,7 @@ function Payment() {
   };
   return (
     <div>
-      <h2 className="font-bold text-[18px] mb-3">Payment Methods</h2>
+      <h2 className="font-bold text-[18px] mb-3">{t("PaymentMethod")}</h2>
       <section className="flex flex-col gap-3">
         <div className="border border-gray-200 bg-gray-50 rounded-lg p-4 flex items-center justify-between">
           <p className="flex items-center text-15">
@@ -48,7 +50,7 @@ function Payment() {
             Credit Card
           </p>
           <button className="text-primary text-16 font-bold">
-            Link Account
+            {t("linkAccount")}
           </button>
         </div>
         <div className="border border-gray-200 bg-gray-50 rounded-lg p-4 flex items-center justify-between">
@@ -57,7 +59,7 @@ function Payment() {
             Pay pal
           </p>
           <button className="text-primary text-16 font-bold">
-            Link Account
+             {t("linkAccount")}
           </button>
         </div>
         <div className="border border-gray-200 bg-gray-50 rounded-lg p-4 flex items-center justify-between">
@@ -66,7 +68,7 @@ function Payment() {
             Visa
           </p>
           <button className="text-primary text-16 font-bold">
-            Link Account
+             {t("linkAccount")}
           </button>
         </div>
         <div className="border border-gray-200 bg-gray-50 rounded-lg p-4 flex items-center justify-between">
@@ -74,15 +76,15 @@ function Payment() {
             <GooglePay />
             Google Pay
           </p>
-          <button className="text-red-600 text-16 font-bold">Delete</button>
+          <button className="text-red-600 text-16 font-bold">{t("delete")}</button>
         </div>
       </section>
       <section className="border border-gray-200 p-4 rounded-lg bg-gray-50 mt-3">
-        <h3 className="text-15 font-bold mb-3">Add New Credit/ Debit Card</h3>
+        <h3 className="text-15 font-bold mb-3">{t("addNewCard")}</h3>
         <Formik initialValues={initialValues} onSubmit={handleSubmit}>
           <Form>
             <div className="flex items-center gap-2">
-              <InputField name="card_cvv" placeholder="CVV" />
+              <InputField name="card_cvv" placeholder={t("cvv")} />
               <div className="w-full">
                 <Field
                   name="card_exp_date"
@@ -101,16 +103,16 @@ function Payment() {
             <div className="flex items-center gap-2 mt-3">
               <InputField
                 name="card_holder_name"
-                placeholder="Card Holder Name"
+                placeholder={t("cardHolder")}
               />
               <InputField
                 name="card_number"
-                placeholder="Card Number"
+                placeholder={t("cardNumber")}
                 type="tel"
                 inputMode="numeric"
               />
             </div>
-            <div className="flex justify-end">
+            <div className="flex justify-end rtl:justify-start">
               <button
                 type="submit"
                 className="bg-primary text-white rounded-md p-3  flex items-center gap-2 w-32 justify-center mt-4"
@@ -119,7 +121,7 @@ function Payment() {
                   <ClipLoader size={20} color="#fff" />
                 ) : (
                   <>
-                    <FaCheckCircle /> Save
+                    <FaCheckCircle /> {t("save")}
                   </>
                 )}
               </button>

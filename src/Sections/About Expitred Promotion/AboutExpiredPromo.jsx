@@ -2,12 +2,13 @@ import { useState, useEffect } from "react";
 import { getHomeData } from "../../ApiServices/Home";
 import { ClipLoader } from "react-spinners";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 function AboutExpiredPromo() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [expiringPromotions, setExpiringPromotions] = useState([]);
-
+  const { t } = useTranslation();
   useEffect(() => {
     const fetchPromotions = async () => {
       setIsLoading(true);
@@ -96,7 +97,9 @@ function AboutExpiredPromo() {
         const hours = Math.floor(
           (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
         );
-        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        const minutes = Math.floor(
+          (difference % (1000 * 60 * 60)) / (1000 * 60)
+        );
         const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
         setTimeLeft({ days, hours, minutes, seconds });
@@ -110,8 +113,8 @@ function AboutExpiredPromo() {
         <div className="flex items-center justify-around">
           <div className="">
             <p className="font-bold text-16">
-              Deal of the Days
-              <span className="font-light text-13 ms-16">End in</span>
+              {t("dealDays")}
+              <span className="font-light text-13 ms-16">{t("endIn")}</span>
             </p>
           </div>
           <div className="flex items-center gap-3 text-white py-2">
@@ -141,7 +144,7 @@ function AboutExpiredPromo() {
     <div className="px-4 md:px-20 pt-20 pb-5">
       {error ? (
         <div className="text-red-500 text-center mt-10">
-          Failed to fetch promotions. Please try again.
+          {t("error")}
         </div>
       ) : isLoading ? (
         <div className="text-center mt-10">
@@ -149,7 +152,7 @@ function AboutExpiredPromo() {
         </div>
       ) : expiringPromotions.length === 0 ? (
         <div className="text-gray-400 text-center mt-10">
-          No promotions ending soon.
+         {t("endSoon")}
         </div>
       ) : (
         <div className="">
@@ -172,13 +175,13 @@ function AboutExpiredPromo() {
                     />
                   ) : (
                     <div className="text-gray-400 text-14">
-                      No image available
+                      {t("noImageAvailable")}
                     </div>
                   )}
                 </div>
-                
+
                 <div className="pt-20 pr-10">
-                  <p className="text-14 text-gray-500 mb-2">Category Name</p>
+                  <p className="text-14 text-gray-500 mb-2">{t("catName")}</p>
                   <div>
                     <p className="font-bold text-lg my-2">{product.name}</p>
                     <div className="my-2">

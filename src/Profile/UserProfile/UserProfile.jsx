@@ -6,8 +6,10 @@ import InfoSideBar from "../MainInfo/InfoSideBar";
 import { Outlet } from "react-router-dom";
 import { Profile } from "../../ApiServices/Profile";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 function UserProfile() {
   const [data, setData] = useState([]);
+  const { t } = useTranslation();
   const getUserData = async () => {
     try {
       const response = await Profile();
@@ -23,16 +25,16 @@ function UserProfile() {
         <title>User Profile | VERTEX</title>
       </Helmet>
       <section className="userHeader w-full h-[65vh] flex flex-col justify-center items-center text-center text-white">
-        <h1 className="text-5xl font-bold mb-4">My Account</h1>
+        <h1 className="text-5xl font-bold mb-4">{t("myAcc")}</h1>
         <p className="text-17 font-light ">
-          Manage your account , and view your orders ...
+          {t("accHead")}
         </p>
       </section>
       <section className="p-8 bg-customOrange-lightOrange flex items-center justify-between px-28">
         <div className="flex items-center gap-2">
           <FaCircleDollarToSlot color="#E0A75E" size={22} />
           <p className="text-gray-600 text-16">
-            Current Balance:
+            {t("currentBalance")}
             <span className="text-black text-xl font-bold ms-2">
               $ {data.balance}
             </span>
@@ -40,7 +42,7 @@ function UserProfile() {
         </div>
         <p className="font-bold text-primary text-lg flex items-center gap-1">
           <TbCirclePlus size={23} />
-          Add To your balance
+          {t("addBalance")}
         </p>
       </section>
       <section className="flex flex-col md:flex-row px-4 md:px-20 mt-10 gap-10">

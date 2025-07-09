@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Register.scss";
 import OAuth from "../OAuth/OAuth";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -10,10 +10,15 @@ import PasswordInput from "../../Components/Password Input/PasswordInput";
 import MainBtn from "../../Components/Main Button/MainBtn";
 import { register } from "../../ApiServices/RegisterApi";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { IoIosArrowDown } from "react-icons/io";
 
 function Register() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
+  const { t, i18n } = useTranslation();
+  const [isRTL, setIsRTL] = useState(false);
   const [showPasswordConfirmation, setShowPasswordConfirmation] =
     useState(false);
   const navigate = useNavigate();
@@ -28,19 +33,19 @@ function Register() {
   };
 
   const validationSchema = Yup.object({
-    name: Yup.string().required("Name is required"),
+    name: Yup.string().required(t("nameRequired")),
     email: Yup.string()
       .email("Invalid email format")
-      .required("Email is required"),
+      .required(t("emailRequired")),
     password: Yup.string()
-      .min(8, "Password must be at least 8 characters")
-      .required("Password is required"),
+      .min(8, t("passwordLenght"))
+      .required(t("passwordRequired")),
     password_confirmation: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Passwords must match")
-      .required("Confirm Password is required"),
+      .oneOf([Yup.ref("password"), null], t("matchPassword"))
+      .required(t("confirmRequired")),
     agreeToTerms: Yup.boolean()
-      .oneOf([true], "You must agree to the terms and conditions")
-      .required("You must agree to the terms and conditions"),
+      .oneOf([true], t("confirm"))
+      .required(t("confirm")),
   });
 
   const handleSubmit = async (values) => {
@@ -62,20 +67,70 @@ function Register() {
       setError("Failed to register. Please try again.");
     }
   };
-
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem("selectedLanguage") || "en";
+    i18n.changeLanguage(savedLanguage);
+    setIsRTL(savedLanguage === "ar");
+  }, [i18n]);
+  // Update RTL state and localStorage when language changes
+  useEffect(() => {
+    const currentLanguage = i18n.language;
+    setIsRTL(currentLanguage === "ar");
+    localStorage.setItem("selectedLanguage", currentLanguage);
+  }, [i18n.language]);
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+    setShowLanguageDropdown(false);
+    localStorage.setItem("selectedLanguage", lng);
+  };
   return (
-    <div className="maincontainer">
+    <div className="maincontainer" dir={isRTL ? "rtl" : "ltr"}>
       <Helmet>
         <meta charSet="utf-8" />
         <title>Register</title>
+        <html dir={isRTL ? "rtl" : "ltr"} lang={i18n.language} />{" "}
       </Helmet>
       <div className="registerContainer lg:w-450 md:w-450 sm:w-450 xs:w-450 s:w-450 bg-gray-50">
-        <img
-          src="/assets/svgs/vertex.svg"
-          alt="logo"
-          className="w-48 h-10 mb-4"
-        />
-        <h1 className="font-bold text-2xl mt-3">Create New Account</h1>
+        <div className="flex justify-between items-center">
+          <img
+            src="/assets/svgs/vertex.svg"
+            alt="logo"
+            className="w-48 h-10 mb-3"
+          />
+          <div className="relative">
+            <button
+              className="flex items-center gap-1 text-14 bg-customOrange-lightOrange text-primary rounded-md p-2"
+              onClick={() => setShowLanguageDropdown(!showLanguageDropdown)}
+            >
+              {i18n.language.toUpperCase()}
+              <IoIosArrowDown size={20} />
+            </button>
+            {showLanguageDropdown && (
+              <div
+                className={`absolute ${
+                  isRTL ? "left-0" : "right-0"
+                } w-14 bg-white rounded-md shadow-lg z-10`}
+              >
+                <button
+                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  onClick={() => changeLanguage("en")}
+                >
+                  EN
+                </button>
+                <button
+                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  onClick={() => changeLanguage("ar")}
+                >
+                  AR
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <h1 className="font-bold text-2xl mt-3 rtl:text-[20px]">
+          {t("createAccount")}
+        </h1>
         <Formik
           initialValues={initialValues}
           onSubmit={handleSubmit}
@@ -86,24 +141,26 @@ function Register() {
           {({ values, errors, touched }) => (
             <Form className="flex flex-col">
               <div className="relative mt-3">
-                <AuthInputField placeholder="Name" name="name" />
+                <AuthInputField placeholder={t("name")} name="name" dir={isRTL?"rtl":"ltr"}/>
               </div>
               <div className="relative mt-3">
-                <AuthInputField placeholder="Email" name="email" />
+                <AuthInputField placeholder={t("email")} name="email" dir={isRTL?"rtl":"ltr"} />
               </div>
               <PasswordInput
                 name="password"
-                placeholder="Password"
+                placeholder={t("password")}
                 showPassword={showPasswordConfirmation}
                 togglePasswordVisibility={() =>
                   setShowPasswordConfirmation(!showPasswordConfirmation)
                 }
+                dir={isRTL ? "rtl" : "ltr"}
               />
               <PasswordInput
                 name="password_confirmation"
-                placeholder="Confirm Password"
+                placeholder={t("confirmPassword")}
                 showPassword={showPassword}
                 togglePasswordVisibility={() => setShowPassword(!showPassword)}
+                dir={isRTL ? "rtl" : "ltr"}
               />
 
               <div className="flex items-start mt-3">
@@ -124,7 +181,7 @@ function Register() {
                     </svg>
                   </span>
                   <span className="text-11 lg:text-14 text-gray-500 ms-2">
-                    I agree with the Terms & Conditions of Clarity
+                    {t("agree")}
                   </span>
                 </label>
               </div>
@@ -137,7 +194,7 @@ function Register() {
               <div className="mt-3 mb-3">
                 <MainBtn
                   text={
-                    loading ? <ClipLoader color="#fff" size={22} /> : "Sign Up"
+                    loading ? <ClipLoader color="#fff" size={22} /> : t("signUp")
                   }
                   btnType="submit"
                   disabled={loading}
@@ -150,19 +207,19 @@ function Register() {
 
               <div className="flex items-center justify-center w-full">
                 <div className="border-t border-gray-300 flex-grow"></div>
-                <span className="mx-4 text-gray-400 text-13 font-bold">OR</span>
+                <span className="mx-4 text-gray-400 text-13 font-bold">{t("or")}</span>
                 <div className="border-t border-gray-300 flex-grow"></div>
               </div>
 
               <OAuth />
 
               <p className="text-center text-gray-400 mt-3 text-15">
-                Have An Account ?
+                {t("haveAcc")}
                 <span
                   onClick={() => navigate("/Login")}
-                  className="ms-2 text-primary font-bold text-17 cursor-pointer"
+                  className="ms-2 text-primary font-bold text-17 cursor-pointer rtl:text-[16px]"
                 >
-                  Login
+                  {t("logIn")}
                 </span>
               </p>
             </Form>

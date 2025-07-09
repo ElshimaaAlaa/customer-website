@@ -6,13 +6,13 @@ import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "./Promotions.scss";
-
+import { useTranslation } from "react-i18next";
 function Promotions() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [promotions, setPromotions] = useState([]);
   const [hoveredItem, setHoveredItem] = useState(null);
-
+  const { t, i18n } = useTranslation();
   useEffect(() => {
     const fetchProducts = async () => {
       setIsLoading(true);
@@ -94,10 +94,14 @@ function Promotions() {
       </div>
     );
   };
-
+  const getTranslatedField = (product, field) => {
+    const language = i18n.language;
+    const fieldName = `${field}_${language.split("-")[0]}`;
+    return product[fieldName] || product[field] || "";
+  };
   return (
     <div className="px-4 md:px-20 py-5 relative">
-      <h1 className="text-2xl font-bold mb-6">Promotions</h1>
+      <h1 className="text-2xl font-bold mb-6">{t("promotions")}</h1>
       {error ? (
         <div className="text-red-500 text-15 text-center mt-10">
           Failed to fetch data. Please try again.
@@ -130,26 +134,30 @@ function Promotions() {
             {promotions.flatMap((promotion) =>
               promotion.promotion_items?.map((item) => (
                 <SwiperSlide key={`${promotion.id}-${item.id}`}>
-                  <div 
+                  <div
                     className="relative group rounded-md overflow-hidden"
                     onMouseEnter={() => setHoveredItem(item.id)}
                     onMouseLeave={() => setHoveredItem(null)}
                   >
                     {/* Gray overlay that appears on hover */}
-                    <div className={`absolute inset-0 bg-black bg-opacity-30 transition-opacity duration-300 ${hoveredItem === item.id ? 'opacity-100' : 'opacity-0'}`}></div>
-                    
+                    <div
+                      className={`absolute inset-0 bg-black bg-opacity-30 transition-opacity duration-300 ${
+                        hoveredItem === item.id ? "opacity-100" : "opacity-0"
+                      }`}
+                    ></div>
+
                     {/* Product card */}
                     <div className="relative bg-gray-50 border rounded-md flex justify-center">
                       <div className="absolute rounded-md overlay-div">
                         <div className="flex justify-end mx-2 my-2">
                           <p className="bg-red-600 text-14 text-white rounded-full p-2 text-center">
-                            Offer - {item.product.discount_percentage}%
+                            {t("offer")} - {item.product.discount_percentage}%
                           </p>
                         </div>
                         <div className="flex h-56 mx-3 items-end">
                           <div>
                             <h3 className="font-bold text-white text-xl mt-3">
-                              {item.product.name}
+                               {getTranslatedField(item.product, "name")}
                             </h3>
                             <div className="flex items-center gap-3">
                               {renderRating(item.product.rate)}
@@ -189,9 +197,15 @@ function Promotions() {
                     </div>
 
                     {/* Add to Cart button - appears on hover */}
-                    <div className={`absolute bottom-4 right-4 transition-all duration-300 transform ${hoveredItem === item.id ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
+                    <div
+                      className={`absolute bottom-4 right-4 transition-all duration-300 transform ${
+                        hoveredItem === item.id
+                          ? "translate-y-0 opacity-100"
+                          : "translate-y-4 opacity-0"
+                      }`}
+                    >
                       <button className="bg-primary hover:bg-primary-dark text-white p-3 text-lg rounded-md font-bold shadow-lg transition-colors duration-200">
-                        + Add To Cart
+                        + {t("addToCart")}
                       </button>
                     </div>
                   </div>

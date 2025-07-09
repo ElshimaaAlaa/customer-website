@@ -6,33 +6,32 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import "./headerStyle.scss";
 import { IoIosArrowRoundForward } from "react-icons/io";
-
 import headerImage1 from "./header.png";
-import headerImage2 from "./header.png";
-import headerImage3 from "./header.png";
-
+import headerImage2 from "./header2.png";
+import headerImage3 from "./header3.png";
+import { useTranslation } from "react-i18next";
 const Header = () => {
   const [activeSlide, setActiveSlide] = useState(0);
   const [swiperInstance, setSwiperInstance] = useState(null);
-
+  const { t } = useTranslation();
   const headerImages = [
     {
       id: 1,
       src: headerImage1,
       alt: "Winter Collection 1",
-      title: "Winter Collection For Creative People",
+      title: t("headerP1"),
     },
     {
       id: 2,
       src: headerImage2,
       alt: "Winter Collection 2",
-      title: "Premium Quality Winter Wear",
+      title: t("headerP2"),
     },
     {
       id: 3,
       src: headerImage3,
       alt: "Winter Collection 3",
-      title: "Stylish Winter Outfits",
+      title: t("headerP3"),
     },
   ];
 
@@ -71,7 +70,7 @@ const Header = () => {
                         onClick={handleExploreClick}
                         className="text-white  justify-center bg-primary p-4 text-lg font-bold rounded-md flex items-center gap-2 mt-6 hover:bg-primary-dark transition-colors"
                       >
-                        Explore Now < IoIosArrowRoundForward size={25}/>
+                      {t("exploreNow")} <IoIosArrowRoundForward size={25} />
                       </button>
                     </div>
                   </div>

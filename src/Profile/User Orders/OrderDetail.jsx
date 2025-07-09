@@ -10,13 +10,13 @@ import { FaCircleDollarToSlot } from "react-icons/fa6";
 import { TbCirclePlus } from "react-icons/tb";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { ClipLoader } from "react-spinners";
-
+import { useTranslation } from "react-i18next";
 function OrderDetails() {
   const [orderDetail, setOrderDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
   const navigate = useNavigate();
-
+  const { t } = useTranslation();
   useEffect(() => {
     const fetchOrderDetails = async () => {
       try {
@@ -58,12 +58,12 @@ function OrderDetails() {
   if (!orderDetail) {
     return (
       <div className="text-center py-10">
-        <p className="text-red-500">Failed to load order details</p>
+        <p className="text-red-500">{t("error")}</p>
         <button
           onClick={() => navigate(-1)}
           className="mt-4 text-primary flex items-center gap-1"
         >
-          <IoIosArrowRoundBack size={20} /> Back to Orders
+          <IoIosArrowRoundBack size={20} /> {t("backToOrders")}
         </button>
       </div>
     );
@@ -76,9 +76,9 @@ function OrderDetails() {
       </Helmet>
 
       <section className="userHeader w-full h-[65vh] flex flex-col justify-center items-center text-center text-white">
-        <h1 className="text-5xl font-bold mb-4">My Account</h1>
+        <h1 className="text-5xl font-bold mb-4">{t("myAcc")}</h1>
         <p className="text-17 font-light">
-          Manage your account, and view your orders...
+          {t("accHead")}
         </p>
       </section>
 
@@ -86,7 +86,7 @@ function OrderDetails() {
         <div className="flex items-center gap-2">
           <FaCircleDollarToSlot color="#E0A75E" size={22} />
           <p className="text-gray-600 text-16">
-            Current Balance:
+            {t("currentBalance")}
             <span className="text-black text-xl font-bold ms-2">
               $ {orderDetail.balance}
             </span>
@@ -94,7 +94,7 @@ function OrderDetails() {
         </div>
         <p className="font-bold text-primary flex items-center gap-1 text-lg">
           <TbCirclePlus size={23} />
-          Add To your balance
+          {t("addBalance")}
         </p>
       </section>
 
@@ -103,17 +103,17 @@ function OrderDetails() {
           className="text-primary text-15 underline flex items-center rounded-md -ms-4 mb-2 p-3 gap-2"
           onClick={() => navigate("/Home/UserProfile/UserOrder")}
         >
-          <IoIosArrowRoundBack size={25} /> Back to Orders
+          <IoIosArrowRoundBack size={25} /> {t("backToOrders")}
         </button>
 
-        <h3 className="font-bold text-xl mb-3">View Order</h3>
+        <h3 className="font-bold text-xl mb-3">{t("viewOrder")}</h3>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
           <div className="lg:col-span-2 space-y-5">
             <section className="border border-gray-200 rounded-md p-4 bg-white">
               <div className="flex justify-between">
                 <h2 className="font-bold text-15">
-                  Order ID:
+                  {t("orderId")}
                   <span className="text-12 ms-2">
                     #{orderDetail.order_number.split("-")[1]}
                   </span>
@@ -151,7 +151,7 @@ function OrderDetails() {
                   const displayName =
                     statusDisplayMap[statusItem.status_name] ||
                     statusItem.status_name;
-                  const dateToShow = statusItem.date || "not provided";
+                  const dateToShow = statusItem.date || t("notProvided");
 
                   return (
                     <div
@@ -175,10 +175,10 @@ function OrderDetails() {
             </section>
             {/* Order Details Section */}
             <section className="border border-gray-200 rounded-lg p-4 bg-white">
-              <h2 className="font-bold text-15">Order Details</h2>
+              <h2 className="font-bold text-15">{t("orderDetail")}</h2>
               <div className="flex gap-36 mt-4">
                 <div>
-                  <h4 className="text-gray-400 text-15">Item No</h4>
+                  <h4 className="text-gray-400 text-15">{t("itemNo")}</h4>
                   <p className="text-14">
                     {orderDetail.products.reduce(
                       (total, product) => total + product.quantity,
@@ -187,7 +187,7 @@ function OrderDetails() {
                   </p>
                 </div>
                 <div>
-                  <h4 className="text-gray-400 text-15">Payment</h4>
+                  <h4 className="text-gray-400 text-15">{t("payment")}</h4>
                   <p
                     className={`px-2 py-2 rounded-md text-13 mt-1 ${
                       orderDetail.payment_status === "unpaid" || "غير مدفوع"
@@ -207,7 +207,7 @@ function OrderDetails() {
 
             {/* Products List Section */}
             <section className="border border-gray-200 rounded-lg p-4 bg-white">
-              <h2 className="font-bold text-15 mb-4">List Items</h2>
+              <h2 className="font-bold text-15 mb-4">{t("listItems")}</h2>
               <div className=" rounded-md">
                 <table className="w-full table">
                   <tbody>
@@ -252,19 +252,19 @@ function OrderDetails() {
 
               <section className="bg-gray-50 rounded-lg px-3 py-5 mt-4 flex flex-col gap-7">
                 <div className="flex items-center justify-between">
-                  <p className="text-15">Subtotal</p>
+                  <p className="text-15">{t("subTotal")}</p>
                   <p className="text-gray-400 text-15">
                     $ {orderDetail.sub_total || 0}
                   </p>
                 </div>
                 <div className="flex items-center justify-between">
-                  <p className="text-15">Shipping</p>
+                  <p className="text-15">{t("shipping")}</p>
                   <p className="text-gray-400 text-15">
                     $ {orderDetail.shipping_price || 0}
                   </p>
                 </div>
                 <div className="flex items-center justify-between border-t-2">
-                  <p className="text-16 font-bold mt-5">Total</p>
+                  <p className="text-16 font-bold mt-5">{t("total")}</p>
                   <p className="text-gray-400 text-15">
                     $ {orderDetail.total || 0}
                   </p>
@@ -274,9 +274,9 @@ function OrderDetails() {
 
             {/* Transactions Section */}
             <section className="border border-gray-200 rounded-lg p-4 bg-white">
-              <h2 className="font-bold text-15">Transactions</h2>
+              <h2 className="font-bold text-15">{t("transactions")}</h2>
               <div className="mt-2">
-                <p className="text-14 mt-6">Payment</p>
+                <p className="text-14 mt-6">{t("pay")}</p>
                 <div className="space-y-2">
                   {orderDetail.transactions?.map((method, index) => (
                     <div
@@ -301,7 +301,7 @@ function OrderDetails() {
             <div className="grid grid-cols-1 gap-5">
               {/* Shipping Address */}
               <section className="border border-gray-200 rounded-lg p-4 bg-white">
-                <h2 className="font-bold text-15">Shipping Address</h2>
+                <h2 className="font-bold text-15">{t("shippingAddress")}</h2>
                 <p className="text-13 mt-2">
                   {orderDetail.shipping_address || "Not Available"}
                 </p>
@@ -309,7 +309,7 @@ function OrderDetails() {
 
               {/* Customer Details */}
               <section className="border border-gray-200 rounded-lg p-4 bg-white">
-                <h2 className="font-bold text-15 mb-4">Customer Details</h2>
+                <h2 className="font-bold text-15 mb-4">{t("customerDetails")}</h2>
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center gap-2 text-14 font-bold underline">
                     <span className="text-gray-500">{icons[2]?.icon}</span>
@@ -332,33 +332,33 @@ function OrderDetails() {
 
               {/* Balance Section */}
               <section className="border border-gray-200 rounded-lg p-4 bg-white">
-                <h2 className="font-bold text-15 mb-3">Balance</h2>
+                <h2 className="font-bold text-15 mb-3">{t("balance")}</h2>
                 <div className="bg-gray-50 border border-gray-200 rounded-md p-2">
                   <div className="flex justify-between items-center">
-                    <p className="text-15">Order Total</p>
+                    <p className="text-15">{t("orderTotal")}</p>
                     <p className="text-gray-400 text-15">
                       $ {orderDetail.total || 0}
                     </p>
                   </div>
                   <div className="flex justify-between items-center mt-5">
-                    <p className="text-15">Return Total</p>
+                    <p className="text-15">{t("returnTotal")}</p>
                     <p className="text-gray-400 text-15">0</p>
                   </div>
                   <hr className="border-gray-300 my-2" />
                   <div className="flex justify-between items-center mt-5">
-                    <p className="text-15">Paid by customer</p>
+                    <p className="text-15">{t("paidByCustomer")}</p>
                     <p className="text-gray-400 text-15">0</p>
                   </div>
                   <div className="flex items-center justify-between">
-                    <p className="text-15 mt-5">Refunded</p>
+                    <p className="text-15 mt-5">{t("refund")}</p>
                     <p className="text-gray-400 text-15">0</p>
                   </div>
                   <hr className="border-gray-300 my-2" />
                   <div className="mt-5 flex justify-between">
                     <div>
-                      <p>Balance</p>
+                      <p>{t("balance")}</p>
                       <span className="text-gray-500 text-13">
-                        (customer owes you)
+                        {t("own")}
                       </span>
                     </div>
                     <p className="text-gray-400 text-15">

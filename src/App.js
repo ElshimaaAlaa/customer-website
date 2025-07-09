@@ -23,7 +23,33 @@ import OrderDetails from "./Profile/User Orders/OrderDetail";
 import WishList from "./Pages/WishList/WishList";
 import Products from "./Pages/Products/Products";
 import ViewProductDetails from "./Pages/Products/ViewProductDetails";
-
+//translation
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+import LanguageDetector from "i18next-browser-languagedetector";
+import enTranslation from "./Translation/en.json";
+import arTranslation from "./Translation/ar.json";
+import Cart from "./Pages/Cart/Cart";
+// Initialize i18n
+i18n
+  .use(initReactI18next)
+  .use(LanguageDetector)
+  .init({
+    lng: "en",
+    resources: {
+      en: {
+        translation: enTranslation,
+      },
+      ar: {
+        translation: arTranslation,
+      },
+    },
+    fallbackLng: "en",
+    debug: true,
+    interpolation: {
+      escapeValue: false,
+    },
+  });
 function App() {
   const [loading, setLoading] = useState(true);
 
@@ -66,8 +92,9 @@ function App() {
           <Route path="AboutUs" element={<AboutUs />} />
           <Route path="ContactUs" element={<ContactUs />} />
           <Route path="Products" element={<Products />} />
-          <Route path="Products/:id" element={<ViewProductDetails/>}/>
+          <Route path="Products/:id" element={<ViewProductDetails />} />
           <Route path="WishList" element={<WishList />} />
+          <Route path="Cart" element={<Cart/>}/>
           <Route path="UserProfile" element={<UserProfile />}>
             <Route index element={<PersonalInformation />} />
             <Route path="EditInfo" element={<EditInfo />} />

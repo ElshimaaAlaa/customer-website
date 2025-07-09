@@ -2,11 +2,12 @@ import { Field, ErrorMessage } from "formik";
 import { FaRegEye, FaEyeSlash } from "react-icons/fa";
 import clsx from "clsx";
 
-function PasswordInput({
-  name,
-  placeholder,
-  showPassword,
+function PasswordInput({ 
+  name, 
+  placeholder, 
+  showPassword, 
   togglePasswordVisibility,
+  dir = "ltr" 
 }) {
   return (
     <div className="relative mt-3 w-full">
@@ -17,19 +18,28 @@ function PasswordInput({
               {...field}
               type={showPassword ? "text" : "password"}
               placeholder={placeholder}
+              dir={dir} 
               className={clsx(
-                "border-2 outline-none rounded-md p-3 h-14 w-full placeholder:text-14 transition-all duration-200",
+                "w-full p-3 h-14 border-2 rounded-md outline-none transition-all duration-200 placeholder:text-14 focus:border-primary placeholder:text-gray-400",
                 {
                   "border-red-500": meta.touched && meta.error,
                   "border-[#28A513]": meta.touched && !meta.error,
                   "border-gray-200": !meta.touched,
                   "focus:border-primary": !meta.touched,
+                  "pr-10": dir === "ltr", 
+                  "pl-10": dir === "rtl", 
                 }
               )}
             />
             <button
               type="button"
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer"
+              className={clsx(
+                "absolute top-1/2 transform -translate-y-1/2 cursor-pointer",
+                {
+                  "right-2": dir === "ltr",
+                  "left-2": dir === "rtl",  
+                }
+              )}
               onClick={togglePasswordVisibility}
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
@@ -38,13 +48,15 @@ function PasswordInput({
           </div>
         )}
       </Field>
-      <ErrorMessage
-        name={name}
-        component="p"
-        className="text-red-500 text-sm mt-1"
+      <ErrorMessage 
+        name={name} 
+        component="div" 
+        className={clsx("text-red-500 text-sm mt-1", {
+          "text-right": dir === "rtl", 
+          "text-left": dir === "ltr", 
+        })} 
       />
     </div>
   );
 }
-
 export default PasswordInput;

@@ -11,7 +11,7 @@ import { toggleWishlist } from "../../ApiServices/ToggleWishlist";
 import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { useTranslation } from "react-i18next";
 function Products() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -27,6 +27,7 @@ function Products() {
   const [isToggling, setIsToggling] = useState({});
   const navigate = useNavigate();
   const productsPerPage = 6;
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,11 +43,11 @@ function Products() {
           setPriceRange([0, Math.ceil(maxPrice)]);
         }
         setCategories(categoriesData);
-        
+
         // Initialize wishlist items from product data
         const initialWishlist = productData
-          .filter(product => product.is_fav)
-          .map(product => product.id);
+          .filter((product) => product.is_fav)
+          .map((product) => product.id);
         setWishlistItems(initialWishlist);
       } catch (error) {
         console.error(error);
@@ -66,15 +67,15 @@ function Products() {
     setIsToggling((prev) => ({ ...prev, [productId]: true }));
     try {
       const response = await toggleWishlist(productId);
-      
+
       if (!response.success) {
         throw new Error(response.message);
       }
 
-      setWishlistItems(prev => 
-        response.action === "added" 
-          ? [...prev, productId] 
-          : prev.filter(id => id !== productId)
+      setWishlistItems((prev) =>
+        response.action === "added"
+          ? [...prev, productId]
+          : prev.filter((id) => id !== productId)
       );
 
       toast.success(
@@ -143,7 +144,14 @@ function Products() {
     }
 
     return result;
-  }, [products, searchTerm, selectedCategories, priceRange, minRating, sortOption]);
+  }, [
+    products,
+    searchTerm,
+    selectedCategories,
+    priceRange,
+    minRating,
+    sortOption,
+  ]);
 
   // Handle category selection
   const handleCategoryToggle = (categoryId) => {
@@ -193,7 +201,8 @@ function Products() {
     searchTerm ||
     selectedCategories.length > 0 ||
     priceRange[0] > 0 ||
-    (products.length > 0 && priceRange[1] < Math.max(...products.map((p) => p.price))) ||
+    (products.length > 0 &&
+      priceRange[1] < Math.max(...products.map((p) => p.price))) ||
     minRating > 0;
 
   return (
@@ -202,39 +211,39 @@ function Products() {
       <div className="px-4 lg:px-20 py-10 flex flex-col lg:flex-row gap-8">
         {/* Filters sidebar */}
         <section className="w-330 border-1 border-gray-200 rounded-xl p-6">
-          <h3 className="font-bold text-2xl mb-4">Find Your Needs</h3>
+          <h3 className="font-bold text-2xl mb-4">{t("findNeeds")}</h3>
           <div className="border-b-1 border-gray-200 mb-8"></div>
-          
+
           {/* Search */}
           <div className="mb-8">
-            <h3 className="font-bold text-lg mb-5">Search</h3>
+            <h3 className="font-bold text-lg mb-5">{t("search")}</h3>
             <div className="relative w-full">
               <Search
-                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5"
+                className="absolute left-3 rtl:right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5"
                 color="#E0A75E"
               />
               <input
                 type="text"
-                placeholder="Search"
+                placeholder={t("search")}
                 value={searchTerm}
                 onChange={(e) => {
                   setSearchTerm(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="w-full h-12 pl-10 pr-4 py-5 bg-muted/50 rounded-lg text-sm focus:outline-none border-2 border-gray-200 bg-gray-50 placeholder:text-13 focus:border-primary"
+                className="w-full h-12 pl- rtl:pr-10 rtl:text-[16px] pr-4 py-5 bg-muted/50 rounded-lg text-sm focus:outline-none border-2 border-gray-200 bg-gray-50 placeholder:text-13 focus:border-primary"
               />
             </div>
           </div>
 
           {/* Sort by */}
           <div className="mb-8">
-            <h3 className="font-bold text-lg my-4">Sort by</h3>
+            <h3 className="font-bold text-lg my-4">{t("sortBy")} : </h3>
             <ul className="grid grid-cols-2 gap-2">
               {[
-                { id: "recent", label: "Most Recent" },
-                { id: "popular", label: "Popular" },
-                { id: "priceHigh", label: "Price High" },
-                { id: "priceLow", label: "Price Low" },
+                { id: "recent", label: t("mostRecent") },
+                { id: "popular", label: t("popular") },
+                { id: "priceHigh", label: t("priceHigh") },
+                { id: "priceLow", label: t("priceLow") },
               ].map((option) => (
                 <li
                   key={option.id}
@@ -253,7 +262,7 @@ function Products() {
 
           {/* Categories */}
           <div className="mb-8">
-            <h3 className="font-bold text-lg my-3">Categories</h3>
+            <h3 className="font-bold text-lg my-3">{t("categories")}</h3>
             <ul className="space-y-2">
               {categories.map((category) => (
                 <li key={category.id} className="flex items-center">
@@ -263,7 +272,7 @@ function Products() {
                       id={`category-${category.id}`}
                       checked={selectedCategories.includes(category.id)}
                       onChange={() => handleCategoryToggle(category.id)}
-                      className="appearance-none h-5 w-5 border border-gray-300 rounded mr-2 
+                      className="appearance-none h-5 w-5 border border-gray-300 rounded mr-2 rtl:ml-2 
                       checked:bg-primary checked:border-primary
                       focus:outline-none focus:ring-1 focus:ring-primary"
                     />
@@ -294,7 +303,7 @@ function Products() {
 
           {/* Price */}
           <div className="mb-8">
-            <h3 className="font-bold text-lg my-3">Price</h3>
+            <h3 className="font-bold text-lg my-3">{t("price")}</h3>
             <Slider
               value={priceRange}
               onChange={handlePriceChange}
@@ -319,7 +328,7 @@ function Products() {
 
           {/* Rating */}
           <div className="mb-8">
-            <h3 className="font-bold text-lg my-3">Rate</h3>
+            <h3 className="font-bold text-lg my-3">{t("rate")}</h3>
             <div className="flex flex-col space-y-2">
               {[4, 3, 2, 1, 0].map((rating) => (
                 <div
@@ -345,8 +354,8 @@ function Products() {
                       </svg>
                     ))}
                   </div>
-                  <span className="text-sm">
-                    {rating === 0 ? "0-1 Stars" : `${rating}+ Stars`}
+                  <span className="text-sm rtl:mr-2">
+                    {rating === 0 ? `0-1  ${t("star")}` : `${rating} + ${t("star")}`}
                   </span>
                 </div>
               ))}
@@ -391,7 +400,9 @@ function Products() {
                 </span>
               )}
               {(priceRange[0] > 0 ||
-                (products.length > 0 && priceRange[1] < Math.max(...products.map((p) => p.price)))) && (
+                (products.length > 0 &&
+                  priceRange[1] <
+                    Math.max(...products.map((p) => p.price)))) && (
                 <span className="bg-white px-3 py-1 rounded-full text-sm flex items-center border">
                   Price: ${priceRange[0]} - ${priceRange[1]}
                   <button
@@ -469,14 +480,11 @@ function Products() {
                       ) : wishlistItems.includes(product.id) ? (
                         <IoIosHeart size={27} className="text-red-500" />
                       ) : (
-                        <IoIosHeartEmpty
-                          size={27}
-                          className="text-black "
-                        />
+                        <IoIosHeartEmpty size={27} className="text-black " />
                       )}
                     </button>
 
-                    <div 
+                    <div
                       className="relative bg-gray-50 border-1 border-gray-100 rounded-lg h-64 cursor-pointer"
                       onClick={() => navigate(`/Home/Products/${product.id}`)}
                     >
@@ -513,7 +521,7 @@ function Products() {
                       </div>
                     </div>
                     <div className="p-3">
-                      <h3 
+                      <h3
                         className="font-bold text-lg mt-2 transition-colors cursor-pointer"
                         onClick={() => navigate(`/Home/Products/${product.id}`)}
                       >
@@ -543,7 +551,8 @@ function Products() {
                         </span>
                       </div>
                       <div className="flex items-center gap-2 mt-2">
-                        {product.price_after_discount && product.price_after_discount !== product.price ? (
+                        {product.price_after_discount &&
+                        product.price_after_discount !== product.price ? (
                           <>
                             <span className="text-lg font-bold text-primary">
                               ${product.price_after_discount.toFixed(2)}
@@ -559,7 +568,7 @@ function Products() {
                         )}
                       </div>
                       <div className="flex items-center gap-2 mt-3">
-                        <button 
+                        <button
                           className={`flex-1 rounded-md border-2 border-primary py-3 text-17 font-bold transition-colors ${
                             product.stock === 0
                               ? "bg-gray-200 text-gray-500 border-gray-300 cursor-not-allowed"
@@ -569,7 +578,7 @@ function Products() {
                         >
                           Add To Cart
                         </button>
-                        <button 
+                        <button
                           className={`flex-1 rounded-md border-2 py-3 text-17 font-bold transition-colors ${
                             product.stock === 0
                               ? "bg-gray-200 text-gray-500 border-gray-300 cursor-not-allowed"

@@ -6,7 +6,7 @@ import { IoCalendarNumberOutline } from "react-icons/io5";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import ReactPaginate from "react-paginate";
 import { Search } from "lucide-react";
-
+import { useTranslation } from "react-i18next";
 function UserOrder() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -16,6 +16,8 @@ function UserOrder() {
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
+  const [isRTL, setIsRtl] = useState(false);
   const [pagination, setPagination] = useState({
     total: 0,
     count: 0,
@@ -65,7 +67,8 @@ function UserOrder() {
       }
     };
     fetchReceivedOrder();
-  }, [pagination.current_page]);
+    setIsRtl(i18n.language === "ar");
+  }, [pagination.current_page, i18n.language]);
 
   const filteredOrders = orders.filter((order) => {
     if (!debouncedSearchQuery) return true;
@@ -90,7 +93,7 @@ function UserOrder() {
 
   return (
     <div>
-      <h1 className="font-bold text-xl mb-2">My Orders</h1>
+      <h1 className="font-bold text-xl mb-2">{t("myOrders")}</h1>
       {isSearching && debouncedSearchQuery !== searchQuery && (
         <div className="text-center py-2">
           <ClipLoader size={20} color="#E0A75E" />
@@ -98,18 +101,18 @@ function UserOrder() {
       )}
       <div className="relative w-full mt-3">
         <Search
-          className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5"
+          className="absolute left-3 rtl:right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5"
           color="#E0A75E"
         />
         <input
           type="text"
-          placeholder="Search"
+          placeholder={t("search")}
           value={searchQuery}
           onChange={(e) => {
             setSearchQuery(e.target.value);
             setIsSearching(true);
           }}
-          className="w-full h-12 pl-10 pr-10 py-4 bg-muted/50 rounded-md text-sm focus:outline-none border-1 border-gray-200 bg-gray-50 placeholder:text-15 focus:border-2 focus:border-primary"
+          className="w-full h-12 pl-10 pr-10  py-4 bg-muted/50 rounded-md text-sm focus:outline-none border-1 border-gray-200 bg-gray-50 placeholder:text-15 focus:border-2 focus:border-primary"
         />
         {searchQuery && (
           <button
@@ -117,7 +120,7 @@ function UserOrder() {
               setSearchQuery("");
               setIsSearching(false);
             }}
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+            className="absolute right-3  top-1/2 transform  -translate-y-1/2 text-gray-400 hover:text-gray-600"
           >
             ×
           </button>
@@ -125,7 +128,7 @@ function UserOrder() {
       </div>
       {error ? (
         <div className="text-red-500 text-15 text-center mt-10">
-          Failed to fetch data. Please try again.
+          {t("error")}
         </div>
       ) : isLoading ? (
         <div className="text-gray-400 text-center mt-10">
@@ -133,9 +136,7 @@ function UserOrder() {
         </div>
       ) : filteredOrders.length === 0 ? (
         <div className="text-gray-400 text-15 text-center mt-10">
-          {debouncedSearchQuery
-            ? "No orders match your search."
-            : "No orders found."}
+          {debouncedSearchQuery ? t("noSearchResults") : ""}
         </div>
       ) : (
         <>
@@ -143,21 +144,31 @@ function UserOrder() {
             <table className="bg-white min-w-full table">
               <thead>
                 <tr>
-                  <th className="px-3 py-3 border-b text-left cursor-pointer text-14">
+                  <th className="px-3 py-3 border-b text-left cursor-pointer text-14 rtl:text-right">
                     <p className="flex items-center gap-3">
                       <input
                         type="checkbox"
                         className="form-checkbox h-4 w-4"
                         aria-label="Select all categories"
                       />
-                      Order ID
+                      {t("orderId")}
                     </p>
                   </th>
-                  <th className="px-3 py-3 text-left border-l text-14 w-300">Date</th>
-                  <th className="px-3 py-3 text-left border-r border-l text-14">Price</th>
-                  <th className="px-3 py-3 text-left border-l text-14">Items</th>
-                  <th className="px-3 py-3 text-left border-l text-14">Payment</th>
-                  <th className="px-3 py-3 text-left border-l text-14">Status</th>
+                  <th className="px-3 py-3 text-left border text-14 w-300 rtl:text-right">
+                    {t("date")}
+                  </th>
+                  <th className="px-3 py-3 text-left border-r border-l text-14 rtl:text-right">
+                    {t("price")}
+                  </th>
+                  <th className="px-3 py-3 text-left border-l text-14 rtl:text-right">
+                    {t("items")}
+                  </th>
+                  <th className="px-3 py-3 text-left border text-14 rtl:text-right">
+                    {t("payment")}
+                  </th>
+                  <th className="px-3 py-3 text-left border-l text-14 rtl:text-right">
+                    {t("status")}
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -165,8 +176,7 @@ function UserOrder() {
                   <tr
                     key={order.id}
                     className="hover:bg-gray-50 cursor-pointer"
-                   onClick={() => navigate(`/Home/UserOrder/${order.id}`)}
-
+                    onClick={() => navigate(`/Home/UserOrder/${order.id}`)}
                   >
                     <td className="px-3 py-3 border-t border-r border-b text-gray-600 text-13">
                       <p className="flex items-center gap-2">
@@ -191,7 +201,7 @@ function UserOrder() {
                         0
                       )}
                     </td>
-                    <td className="px-3 py-3 border-t border-r">
+                    <td className="px-3 py-3 border">
                       <span
                         className={`px-2 py-2 rounded-md text-14 text-center ${
                           order.payment_status === "unpaid" || "غير مدفوع"
@@ -233,8 +243,20 @@ function UserOrder() {
             containerClassName="flex items-center justify-end mt-5 "
             pageClassName="px-3 py-1 rounded-md"
             activeClassName="bg-customOrange-lightOrange text-primary"
-            previousLabel={<ChevronLeft className="w-5 h-5 text-primary" />}
-            nextLabel={<ChevronRight className="w-5 h-5 text-primary" />}
+            previousLabel={
+              isRTL ? (
+                <ChevronRight className="w-5 h-5 text-primary" />
+              ) : (
+                <ChevronLeft className="w-5 h-5 text-primary" />
+              )
+            }
+            nextLabel={
+              isRTL ? (
+                <ChevronLeft className="w-5 h-5 text-primary" />
+              ) : (
+                <ChevronRight className="w-5 h-5 text-primary" />
+              )
+            }
             previousClassName={`px-3 py-1 rounded ${
               !pagination.prev_page_url
                 ? "opacity-50 cursor-not-allowed"

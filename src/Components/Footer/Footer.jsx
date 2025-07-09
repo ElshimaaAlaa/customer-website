@@ -8,10 +8,11 @@ import WhatsApp from "../../Svgs/WhatsApp";
 import { FaXTwitter } from "react-icons/fa6";
 import { settings } from "../../ApiServices/GeneralSettings";
 import { useNavigate } from "react-router-dom";
-
+import { useTranslation } from "react-i18next";
 function Footer() {
   const [shopData, setShopData] = useState([]);
   const navigate = useNavigate();
+  const { t } = useTranslation();
   useEffect(() => {
     const getVertexData = async () => {
       const response = await settings();
@@ -29,7 +30,7 @@ function Footer() {
             alt="footer logo"
             className="h-10"
           />
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <FaXTwitter size={21} />
             <WhatsApp />
             <Facebook />
@@ -37,24 +38,43 @@ function Footer() {
           </div>
         </div>
         <div className="space-y-4">
-          <h2 className="font-bold text-17 mb-2">Support</h2>
+          <h2 className="font-bold text-17 mb-2">{t("support")}</h2>
           <ul className="list-none text-sm space-y-2">
-            <li className="cursor-pointer hover:text-primary">Safety Tips</li>
-            <li onClick={() => navigate("ContactUs")} className="cursor-pointer hover:text-primary text-14">Contact us</li>
-            <li className="cursor-pointer hover:text-primary text-14">Privacy Policy</li>
-            <li className="cursor-pointer hover:text-primary text-14">Terms and Conditions</li>
-            <li className="cursor-pointer hover:text-primary text-14" onClick={()=>navigate("Faqs")}>FAQs</li>
+            <li className="cursor-pointer hover:text-primary">{t("saftyTips")}</li>
+            <li
+              onClick={() => navigate("ContactUs")}
+              className="cursor-pointer hover:text-primary text-14"
+            >
+              {t("contactUs")}
+            </li>
+            <li className="cursor-pointer hover:text-primary text-14">
+              {t("privacy")}
+            </li>
+            <li className="cursor-pointer hover:text-primary text-14">
+              {t("trems")}
+            </li>
+            <li
+              className="cursor-pointer hover:text-primary text-14"
+              onClick={() => navigate("Faqs")}
+            >
+              {t("faqs")}
+            </li>
           </ul>
         </div>
         <div className="space-y-4">
-          <h2 className="font-bold text-17 mb-2">Company</h2>
+          <h2 className="font-bold text-17 mb-2">{t("company")}</h2>
           <ul className="list-none text-sm space-y-2">
-            <li className="cursor-pointer hover:text-primary text-14" onClick={()=>navigate("AboutUs")}>About us</li>
-            <li className="cursor-pointer hover:text-primary text-14">Blogs</li>
+            <li
+              className="cursor-pointer hover:text-primary text-14"
+              onClick={() => navigate("AboutUs")}
+            >
+              {t("aboutUs")}
+            </li>
+            <li className="cursor-pointer hover:text-primary text-14">{t("blogs")}</li>
           </ul>
         </div>
         <div className="space-y-4">
-          <h2 className="font-bold text-17 mb-2">Get in touch</h2>
+          <h2 className="font-bold text-17 mb-2">{t("getInTouch")}</h2>
           <ul className="list-none text-sm space-y-2">
             <li className="flex items-center text-14 gap-2 underline">
               <PhoneNum /> {shopData.phone}
@@ -70,7 +90,7 @@ function Footer() {
       </div>
       {/* copyrights */}
       <div className="border-t-2 border-gray-400 mt-8 pt-6 text-sm text-center">
-        © 2024 Cadet UI. All Rights Reserved.
+        {t("reservedCopy")}
       </div>
     </section>
   );

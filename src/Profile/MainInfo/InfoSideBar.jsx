@@ -6,41 +6,42 @@ import DeleteAccount from "../UserProfile/DeleteAccount";
 import { CiLocationOn } from "react-icons/ci";
 import { MdOutlineLocalGroceryStore } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
-
+import { useTranslation } from "react-i18next";
 function InfoSideBar() {
   const navigate = useNavigate();
   const location = useLocation();
   const [activeItem, setActiveItem] = useState(null);
+  const { t } = useTranslation();
   const menuItems = [
     {
       IconComponent: Profile,
       alt: "Personal Information Icon",
-      label: "Personal Information",
+      label: t("personalInfo"),
       path: "",
-      exactMatch: true, 
+      exactMatch: true,
     },
     {
       IconComponent: CiLocationOn,
       alt: "",
-      label: "Manage Address",
+      label: t("manageAddress"),
       path: "Address",
     },
     {
       IconComponent: MdOutlineLocalGroceryStore,
       alt: "",
-      label: "My Orders",
+      label:t("myOrders"),
       path: "UserOrder",
     },
     {
       IconComponent: RiLockPasswordLine,
       alt: "",
-      label: "Change password",
+      label: t("changePassword"),
       path: "ChangePassword",
     },
     {
       IconComponent: PaymentMethod,
       alt: "Payment Information Icon",
-      label: "Payment Information",
+      label: t("paymentInfo"),
       path: "Payment",
     },
   ];
@@ -61,35 +62,37 @@ function InfoSideBar() {
   return (
     <aside className="w-full">
       <div className="flex flex-col gap-7 border-r p-4 md:p-8">
-        {menuItems.map(({ IconComponent, alt, label, path, exactMatch }, index) => (
-          <button
-            key={index}
-            className={`flex items-center gap-1 ${
-              isActive(path, exactMatch) ? "text-primary" : ""
-            }`}
-            aria-label={label}
-            onClick={() => handleItemClick(path)}
-          >
-            <div
-              className={`w-6 h-6 me-3 ${
-                isActive(path, exactMatch) ? "text-primary" : "text-gray-600"
-              }`}
-            >
-              <IconComponent
-                className="w-full h-full"
-                stroke={isActive(path, exactMatch) ? "#E0A75E" : "#000"}
-              />
-            </div>
-            <p
-              className={`font-semibold text-16 mt-1 ${
+        {menuItems.map(
+          ({ IconComponent, alt, label, path, exactMatch }, index) => (
+            <button
+              key={index}
+              className={`flex items-center gap-1 ${
                 isActive(path, exactMatch) ? "text-primary" : ""
               }`}
+              aria-label={label}
+              onClick={() => handleItemClick(path)}
             >
-              {label}
-            </p>
-          </button>
-        ))}
-        <DeleteAccount/>
+              <div
+                className={`w-6 h-6 me-3 ${
+                  isActive(path, exactMatch) ? "text-primary" : "text-gray-600"
+                }`}
+              >
+                <IconComponent
+                  className="w-full h-full"
+                  stroke={isActive(path, exactMatch) ? "#E0A75E" : "#000"}
+                />
+              </div>
+              <p
+                className={`font-semibold text-16 mt-1 ${
+                  isActive(path, exactMatch) ? "text-primary" : ""
+                }`}
+              >
+                {label}
+              </p>
+            </button>
+          )
+        )}
+        <DeleteAccount />
       </div>
     </aside>
   );
