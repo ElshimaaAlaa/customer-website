@@ -58,15 +58,15 @@ function ContactUs() {
   return (
     <section className="bg-white pb-10">
       <Helmet>
-        <title>Contact Us | VERTEX</title>
+        <title>{t("contactUs")} | {t("vertex")}</title>
       </Helmet>
       <div className="contactHeader w-full h-[65vh] flex flex-col justify-center items-center text-center text-white">
         <h1 className="text-5xl font-bold mb-4">{t("contactUs")}</h1>
-        <p className="text-17 font-light  leading-normal">
+        <p className="text-17 font-light  leading-normal w-300 lg:w-500px md:w-500px">
          {t("contactDesc")}
         </p>
       </div>
-      <div className="flex items-center flex-col md:flex-row md:items-start lg:items-start px-5 lg:px-20 justify-center gap-4 rtl:flex-row-reverse">
+      <div className="flex items-center flex-col md:flex-row md:items-start lg:items-start px-5 lg:px-20 justify-center gap-4 md:rtl:flex-row-reverse lg:rtl:flex-row-reverse">
         <ContactInfo />
         <section className="bg-customOrange-mediumOrange p-5 mt-10 w-[320px] md:w-[430px] lg:w-500 rounded-md">
           <div className="flex justify-center">

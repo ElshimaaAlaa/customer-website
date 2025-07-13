@@ -41,11 +41,11 @@ function Faqs() {
   return (
     <section>
       <Helmet>
-        <title>Frequently Asked Questions | VERTEX</title>
+        <title>{t("faqs")} | {t("vertex")}</title>
       </Helmet>
       <div className="faqHeader w-full h-[65vh] flex flex-col justify-center items-center text-center text-white">
         <h1 className="text-5xl font-bold mb-4">{t("faqs")}</h1>
-        <p className="text-17 font-light leading-normal w-500px">
+        <p className="text-17 font-light leading-normal w-310 md:w-540 lg:w-500px ">
           {t("faqsP")}
         </p>
       </div>

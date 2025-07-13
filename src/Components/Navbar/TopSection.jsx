@@ -38,14 +38,16 @@ function TopSection() {
           <MdPhone size={18} className="mt-1" />
           <p className="font-medium ">
             {t("contactUs")} :
-            <span className="underline font-light ml-1 rtl:ms-2">{shopData.phone}</span>
+            <span className="underline font-light ml-1 rtl:ms-2">
+              {shopData.phone}
+            </span>
           </p>
         </div>
 
         {/* Login/Signup*/}
         <div className="text-center sm:text-left">
           <p className="flex items-center text-xs sm:text-sm lg:text-17 md:text-17 font-light rtl:ms-3">
-            {/* {!isLoggedIn && (  */}
+            {!isLoggedIn && (
               <>
                 <p className="text-17 rtl:mx-2">{t("sendFirstOrder")}</p>
                 <span
@@ -61,7 +63,7 @@ function TopSection() {
                   {t("signUp")}
                 </span>
               </>
-            {/* )} */}
+            )}
           </p>
         </div>
 

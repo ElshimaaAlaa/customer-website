@@ -5,11 +5,11 @@ import { useTranslation } from "react-i18next";
 function Quality() {
   const { t } = useTranslation();
   return (
-    <section className="flex flex-col gap-6 px-5 lg:flex-row md:flex-row lg:px-20 py-6">
-      <div className="flex gap-3 bg-customOrange-lightOrange rounded-xl py-7 h-36 px-8 w-full ">
+    <section className="flex flex-col md:gap-3  gap-6 px-5 lg:flex-row md:flex-row lg:px-20 py-6">
+      <div className="flex gap-3 bg-customOrange-lightOrange rounded-xl py-7  px-8 w-full ">
         <Delivary />
         <div className="flex flex-col gap-2">
-          <h2 className="font-bold text-17 mt-1">{t("quickDelivery")}</h2>
+          <h2 className="font-bold text-17 mt-1">{t("quickDelivery")}</h2>     
           <p className="text-darkGray text-14 leading-5">
             {t("quickDeliveryp")}
           </p>
@@ -27,7 +27,7 @@ function Quality() {
       <div className="flex gap-3 bg-customOrange-lightOrange rounded-xl py-7 px-8 w-full">
         <Qualityicon />
         <div className="flex flex-col gap-2">
-          <h2 className="font-bold text-17 mt-1">{t("allTimeSupport")}</h2>
+          <h2 className="font-bold text-17  mt-1">{t("allTimeSupport")}</h2>
           <p className="text-darkGray text-14">{t("allTimeSupportp")}</p>
         </div>
       </div>

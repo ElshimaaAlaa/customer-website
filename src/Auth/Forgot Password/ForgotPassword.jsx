@@ -68,7 +68,7 @@ function ForgotPassword() {
     >
       <Helmet>
         <meta charSet="utf-8" />
-        <title>{t("forgotPasswordTitle")}</title>
+        <title>{t("forgotPassword")} | {t("vertex")} </title>
         <html dir={isRTL ? "rtl" : "ltr"} lang={i18n.language} />
       </Helmet>
       <div

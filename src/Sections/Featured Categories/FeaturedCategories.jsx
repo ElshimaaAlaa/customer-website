@@ -26,7 +26,7 @@ function FeaturedCategories() {
 
   return (
     <div className="px-4 sm:px-6 md:px-10 lg:px-20 py-8 md:py-10 lg:py-14">
-      <h1 className="font-bold text-2xl mb-4 md:mb-5">{t("featuredCats")}</h1>
+      <h1 className="font-bold text-2xl mb-4 md:mb-5 rtl:text-[22px]">{t("featuredCats")}</h1>
 
       <div className="mt-6 md:mt-7">
         {error ? (
@@ -39,10 +39,10 @@ function FeaturedCategories() {
           </div>
         ) : featuredCategories.length === 0 ? (
           <div className="text-gray-400 text-sm sm:text-base text-center py-10">
-            No Featured Categories found.
+            {t("notFeatureCats")}
           </div>
         ) : (
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-10 gap-4 sm:gap-6">
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-6 xl:grid-cols-10 gap-4 sm:gap-6">
             {featuredCategories.map((cat, index) => (
               <div key={cat.id || index} className="flex flex-col items-center">
                 <div

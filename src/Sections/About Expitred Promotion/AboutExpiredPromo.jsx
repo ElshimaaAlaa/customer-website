@@ -34,14 +34,12 @@ function AboutExpiredPromo() {
   }, []);
 
   const StarRating = ({ rating }) => {
-    // Handle null/undefined/NaN ratings
     if (rating === null || rating === undefined || isNaN(rating)) {
       return (
         <div className="flex items-center gap-1">
           {[...Array(5)].map((_, i) => (
             <FaStar key={`empty-${i}`} className="text-gray-300" />
           ))}
-          {/* <span className="text-13 ml-1 text-gray-400">(No ratings)</span> */}
         </div>
       );
     }
@@ -151,7 +149,7 @@ function AboutExpiredPromo() {
           <ClipLoader color="#E0A75E" />
         </div>
       ) : expiringPromotions.length === 0 ? (
-        <div className="text-gray-400 text-center mt-10">
+        <div className="text-gray-400 text-center mt-10 rtl:text-[18px]">
          {t("endSoon")}
         </div>
       ) : (

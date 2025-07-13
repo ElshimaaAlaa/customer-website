@@ -87,7 +87,7 @@ function Register() {
     <div className="maincontainer" dir={isRTL ? "rtl" : "ltr"}>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Register</title>
+        <title>{t("createAccount")} | {t("vertex")}</title>
         <html dir={isRTL ? "rtl" : "ltr"} lang={i18n.language} />{" "}
       </Helmet>
       <div className="registerContainer lg:w-450 md:w-450 sm:w-450 xs:w-450 s:w-450 bg-gray-50">

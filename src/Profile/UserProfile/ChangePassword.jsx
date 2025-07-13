@@ -64,7 +64,7 @@ function ChangePassword() {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        <Form className="w-500px">
+        <Form className="md:w-500px lg:w-500px">
           <PasswordInput
             name="password"
             placeholder={t("newPassword")}

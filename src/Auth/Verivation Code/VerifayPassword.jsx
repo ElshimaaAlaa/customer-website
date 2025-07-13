@@ -95,7 +95,7 @@ function VerifayPassword() {
     >
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Verifay Password</title>
+        <title>{t("verification")} | {t("vertex")}</title>
         <html dir={isRTL ? "rtl" : "ltr"} lang={i18n.language} />
       </Helmet>
       <div

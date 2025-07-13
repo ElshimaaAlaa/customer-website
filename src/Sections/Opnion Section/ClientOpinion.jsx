@@ -9,7 +9,8 @@ import { useTranslation } from "react-i18next";
 function OpinionSection() {
   const carouselRef = useRef();
   const [clientData, setClientData] = useState([]);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const [isRtl, setIsRtl] = useState(false);
   useEffect(() => {
     const fetchClientsOpinions = async () => {
       try {
@@ -20,7 +21,8 @@ function OpinionSection() {
       }
     };
     fetchClientsOpinions();
-  }, []);
+    setIsRtl(i18n.language === "ar");
+  }, [i18n.language]);
 
   const responsive = {
     desktop: {
@@ -69,8 +71,8 @@ function OpinionSection() {
   };
 
   return (
-    <section className="px-4 md:px-8 lg:px-20 mt-6 mb-10">
-      <h2 className="font-bold text-2xl mb-6">{t("clientOpnion")}</h2>
+    <section className="px-4 md:px-8 lg:px-10 mt-6 mb-10">
+      <h2 className="font-bold text-2xl mb-6 rtl:text-[22px]">{t("clientOpnion")}</h2>
       <div className="carousel-container mt-3 relative">
         <Carousel
           responsive={responsive}
@@ -80,7 +82,7 @@ function OpinionSection() {
           arrows={false}
           showDots={false}
           containerClass="carousel"
-          itemClass="px-2 lg:mx-14"
+          itemClass="px-2 lg:mx-10"
           partialVisible={false}
         >
           {clientData.map((opinion, index) => (
@@ -114,7 +116,7 @@ function OpinionSection() {
                     fill="white"
                   />
                 </svg>
-                <h3 className="text-12 font-medium w-full my-3">
+                <h3 className="text-12 lg:text-12 md:text-[18px] font-medium w-full my-3">
                   {opinion.comment} Lorem ipsum dolor sit amet consectetur
                   adipisicing elit. Mollitia exercitationem sit repellat
                   voluptatem rerum dolorem deserunt labore tempora dolores quas
@@ -123,7 +125,7 @@ function OpinionSection() {
                 <div className="flex flex-col text-xl">
                   <p className="flex">{renderStars(opinion.rate)}</p>
                 </div>
-                <p className="text-gray-600 text-13 mt-1">
+                <p className="text-gray-600 text-13 md:text-16 lg:text-13 mt-1">
                   By {opinion.user_name}
                 </p>
               </div>
@@ -138,14 +140,22 @@ function OpinionSection() {
           onClick={handlePrev}
           aria-label="Previous testimonial"
         >
-          <IoIosArrowRoundBack size={25} />
+          {isRtl ? (
+            <IoIosArrowRoundForward size={25} />
+          ) : (
+            <IoIosArrowRoundBack size={25} />
+          )}
         </button>
         <button
           className="bg-primary text-white p-2 w-10 h-10 font-bold rounded-full text-lg md:text-2xl hover:bg-primary-dark transition-colors"
           onClick={handleNext}
           aria-label="Next testimonial"
         >
-          <IoIosArrowRoundForward size={25} />
+          {isRtl ? (
+            <IoIosArrowRoundBack size={25} />
+          ) : (
+            <IoIosArrowRoundForward size={25} />
+          )}
         </button>
       </div>
     </section>

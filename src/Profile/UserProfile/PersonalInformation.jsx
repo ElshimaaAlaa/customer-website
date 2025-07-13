@@ -31,7 +31,7 @@ function PersonalInformation() {
       navigator.clipboard
         .writeText(personalInfo.phone)
         .then(() => {
-          toast.success("Phone number copied to clipboard!", {
+          toast.success(t("phoneCopy"), {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,
@@ -42,8 +42,7 @@ function PersonalInformation() {
           });
         })
         .catch((err) => {
-          console.error("Failed to copy phone number: ", err);
-          toast.error("Failed to copy phone number", {
+          toast.error(t("faildCopy"), {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,
@@ -54,7 +53,7 @@ function PersonalInformation() {
           });
         });
     } else {
-      toast.warn("No phone number available to copy", {
+      toast.warn(t("noPhone"), {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -69,7 +68,7 @@ function PersonalInformation() {
   return (
     <div>
       <Helmet>
-        <title>Personal Information</title>
+        <title>{t("personalInfo")} | {t("vertex")}</title>
         <meta name="description" content="Edit personal information" />
         <meta property="og:title" content="Edit Personal Information" />
         <meta property="og:description" content="Edit personal information" />
@@ -80,7 +79,7 @@ function PersonalInformation() {
         />
       </Helmet>
       <section>
-        <div className="flex flex-col md:flex-row items-center justify-between mb-2">
+        <div className="flex items-center justify-between mb-2">
           <h1 className="font-bold text-xl">{t("personalInfo")}</h1>
           <button
             onClick={() => navigate("EditInfo", { state: personalInfo })}

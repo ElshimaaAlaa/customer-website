@@ -1,19 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import "./headerStyle.scss";
-import { IoIosArrowRoundForward } from "react-icons/io";
 import headerImage1 from "./header.png";
 import headerImage2 from "./header2.png";
 import headerImage3 from "./header3.png";
 import { useTranslation } from "react-i18next";
+import { IoIosArrowRoundForward, IoIosArrowRoundBack } from "react-icons/io";
+
 const Header = () => {
   const [activeSlide, setActiveSlide] = useState(0);
   const [swiperInstance, setSwiperInstance] = useState(null);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const [isRtl, setIsRtl] = useState(false);
   const headerImages = [
     {
       id: 1,
@@ -41,6 +43,9 @@ const Header = () => {
       nextSection.scrollIntoView({ behavior: "smooth" });
     }
   };
+  useEffect(() => {
+    setIsRtl(i18n.language === "ar");
+  }, [i18n.language]);
 
   return (
     <>
@@ -70,7 +75,12 @@ const Header = () => {
                         onClick={handleExploreClick}
                         className="text-white  justify-center bg-primary p-4 text-lg font-bold rounded-md flex items-center gap-2 mt-6 hover:bg-primary-dark transition-colors"
                       >
-                      {t("exploreNow")} <IoIosArrowRoundForward size={25} />
+                        {t("exploreNow")}{" "}
+                        {isRtl ? (
+                          <IoIosArrowRoundBack size={25} />
+                        ) : (
+                          <IoIosArrowRoundForward size={25} />
+                        )}
                       </button>
                     </div>
                   </div>

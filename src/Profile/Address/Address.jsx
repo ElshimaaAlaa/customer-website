@@ -23,7 +23,7 @@ function Address() {
   };
   return (
     <section>
-      <div className="flex flex-col md:flex-row items-center justify-between mb-2">
+      <div className="flex items-center justify-between mb-2">
         <h1 className="font-bold text-xl">{t("address")}</h1>
         <button
           onClick={handleEditClick}

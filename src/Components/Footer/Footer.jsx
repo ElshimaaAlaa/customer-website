@@ -21,9 +21,9 @@ function Footer() {
     getVertexData();
   }, []);
   return (
-    <section className="bg-black text-white pt-10 pb-6 mt-5 px-10 lg:px-20">
+    <section className="bg-black text-white pt-10 pb-6 mt-5 px-10 md-px-5 lg:px-20">
       {/* footer items */}
-      <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-4  ">
+      <div className="grid grid-cols-1 md:grid-cols-4 md:gap-2 lg:grid-cols-4 gap-4">
         <div className="space-y-5">
           <img
             src="/assets/svgs/Footer logo.svg"

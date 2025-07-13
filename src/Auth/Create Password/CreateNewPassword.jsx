@@ -78,7 +78,7 @@ function CreateNewPassword() {
     >
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Create New Password</title>
+        <title>{t("createNewPassword")} | {t("vertex")}</title>
         <html dir={isRTL ? "rtl" : "ltr"} lang={i18n.language} />
       </Helmet>
       <div

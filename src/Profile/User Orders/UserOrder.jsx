@@ -140,33 +140,33 @@ function UserOrder() {
         </div>
       ) : (
         <>
-          <div className="border border-gray-200 rounded-lg mt-2 overflow-hidden">
+          <div className="border border-gray-200 rounded-lg mt-2 overflow-y-scroll lg:overflow-hidden">
             <table className="bg-white min-w-full table">
               <thead>
                 <tr>
-                  <th className="px-3 py-3 border-b text-left cursor-pointer text-14 rtl:text-right">
+                  <th className="px-3 py-3 border-b text-left cursor-pointer text-11 md:text-14 lg:text-14 rtl:text-right">
                     <p className="flex items-center gap-3">
                       <input
                         type="checkbox"
-                        className="form-checkbox h-4 w-4"
+                        className="form-checkbox h-3 w-3 md:w-4 md:h-4 lg:h-4 lg:w-4"
                         aria-label="Select all categories"
                       />
                       {t("orderId")}
                     </p>
                   </th>
-                  <th className="px-3 py-3 text-left border text-14 w-300 rtl:text-right">
+                  <th className="px-3 py-3 text-left border text-11 md:text-14 lg:text-14 w-300 rtl:text-right">
                     {t("date")}
                   </th>
-                  <th className="px-3 py-3 text-left border-r border-l text-14 rtl:text-right">
+                  <th className="px-3 py-3 text-left border-r border-l text-11 md:text-14 lg:text-14 rtl:text-right">
                     {t("price")}
                   </th>
-                  <th className="px-3 py-3 text-left border-l text-14 rtl:text-right">
+                  <th className="px-3 py-3 text-left border-l text-11 md:text-14 lg:text-14 rtl:text-right">
                     {t("items")}
                   </th>
-                  <th className="px-3 py-3 text-left border text-14 rtl:text-right">
+                  <th className="px-3 py-3 text-left border text-11 md:text-14 lg:text-14 rtl:text-right">
                     {t("payment")}
                   </th>
-                  <th className="px-3 py-3 text-left border-l text-14 rtl:text-right">
+                  <th className="px-3 py-3 text-left border-l text-11 md:text-14 lg:text-14 rtl:text-right">
                     {t("status")}
                   </th>
                 </tr>
@@ -188,7 +188,7 @@ function UserOrder() {
                         {order.order_number}
                       </p>
                     </td>
-                    <td className="flex items-center gap-2 px-6 py-3 border-t border-r text-gray-600 text-13 ">
+                    <td className="flex items-center gap-2 px-6 py-3 border-t border-r text-gray-600 text-11 md:text-13 lg:text-13 ">
                       <IoCalendarNumberOutline color="#69ABB5" size={16} />
                       {order.date || "N/A"}
                     </td>

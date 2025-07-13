@@ -1,5 +1,5 @@
 import Header from "../../Components/Header/Header";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useContext } from "react";
 import { getProducts } from "../../ApiServices/Products";
 import { ClipLoader } from "react-spinners";
 import { Search } from "lucide-react";
@@ -9,9 +9,10 @@ import Pagination from "@mui/material/Pagination";
 import { useNavigate } from "react-router-dom";
 import { toggleWishlist } from "../../ApiServices/ToggleWishlist";
 import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useTranslation } from "react-i18next";
+import { CartContext } from "../../Cart Context/CartContext";
 function Products() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -27,7 +28,8 @@ function Products() {
   const [isToggling, setIsToggling] = useState({});
   const navigate = useNavigate();
   const productsPerPage = 6;
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const cart = useContext(CartContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -94,6 +96,11 @@ function Products() {
     } finally {
       setIsToggling((prev) => ({ ...prev, [productId]: false }));
     }
+  };
+
+  const addToCart = (product) => {
+    cart.AddProductToCart(product);
+    toast.success(t("successAdded"));
   };
 
   // Filter and sort products
@@ -205,6 +212,11 @@ function Products() {
       priceRange[1] < Math.max(...products.map((p) => p.price))) ||
     minRating > 0;
 
+  const getTranslatedField = (product, field) => {
+    const language = i18n.language;
+    const fieldName = `${field}_${language.split("-")[0]}`;
+    return product[fieldName] || product[field] || "";
+  };
   return (
     <div className="products-page">
       <Header />
@@ -278,7 +290,7 @@ function Products() {
                     />
                     {selectedCategories.includes(category.id) && (
                       <svg
-                        className="absolute left-0 w-5 h-5 text-white pointer-events-none"
+                        className="absolute left-0 w-5 h-5 rtl:right-2 text-white pointer-events-none"
                         viewBox="0 0 20 20"
                         fill="currentColor"
                       >
@@ -355,7 +367,9 @@ function Products() {
                     ))}
                   </div>
                   <span className="text-sm rtl:mr-2">
-                    {rating === 0 ? `0-1  ${t("star")}` : `${rating} + ${t("star")}`}
+                    {rating === 0
+                      ? `0-1  ${t("star")}`
+                      : `${rating} + ${t("star")}`}
                   </span>
                 </div>
               ))}
@@ -366,11 +380,11 @@ function Products() {
         {/* Products section */}
         <section className="flex-1">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-bold text-2xl mt-5">Products</h3>
+            <h3 className="font-bold text-2xl mt-5">{t("products")}</h3>
             <p className="text-sm text-gray-600">
-              Showing {indexOfFirstProduct + 1}-
-              {Math.min(indexOfLastProduct, filteredProducts.length)} of{" "}
-              {filteredProducts.length} items
+              {t("showing")} {indexOfFirstProduct + 1}-
+              {Math.min(indexOfLastProduct, filteredProducts.length)} {t("of")}{" "}
+              {filteredProducts.length} {t("items")}
             </p>
           </div>
 
@@ -379,7 +393,7 @@ function Products() {
             <div className="flex flex-wrap gap-2">
               {searchTerm && (
                 <span className="bg-white px-3 py-1 rounded-full text-sm flex items-center border">
-                  Search: "{searchTerm}"
+                  {t("search")} : "{searchTerm}"
                   <button
                     onClick={() => setSearchTerm("")}
                     className="ml-1 text-gray-500 hover:text-gray-700"
@@ -390,7 +404,7 @@ function Products() {
               )}
               {selectedCategories.length > 0 && (
                 <span className="bg-white px-3 py-1 rounded-full text-sm flex items-center border">
-                  Categories: {selectedCategories.length}
+                  {t("categories")}: {selectedCategories.length}
                   <button
                     onClick={() => setSelectedCategories([])}
                     className="ml-1 text-gray-500 hover:text-gray-700"
@@ -404,7 +418,7 @@ function Products() {
                   priceRange[1] <
                     Math.max(...products.map((p) => p.price)))) && (
                 <span className="bg-white px-3 py-1 rounded-full text-sm flex items-center border">
-                  Price: ${priceRange[0]} - ${priceRange[1]}
+                  {t("price")}: ${priceRange[0]} - ${priceRange[1]}
                   <button
                     onClick={() =>
                       setPriceRange([
@@ -420,7 +434,7 @@ function Products() {
               )}
               {minRating > 0 && (
                 <span className="bg-white px-3 py-1 rounded-full text-sm flex items-center border">
-                  Rating: {minRating}+
+                  {t("rating")}: {minRating}+
                   <button
                     onClick={() => setMinRating(0)}
                     className="ml-1 text-gray-500 hover:text-gray-700"
@@ -435,30 +449,28 @@ function Products() {
                 onClick={clearAllFilters}
                 className="text-sm underline text-primary hover:text-primary-dark"
               >
-                Clear All
+                {t("clearAll")}
               </button>
             )}
           </div>
 
           {/* Products grid */}
           {error ? (
-            <div className="text-red-500 text-center mt-10">
-              Failed to fetch data. Please try again.
-            </div>
+            <div className="text-red-500 text-center mt-10">{t("error")}</div>
           ) : isLoading ? (
             <div className="flex justify-center items-center h-64">
               <ClipLoader color="#E0A75E" size={50} />
             </div>
           ) : filteredProducts.length === 0 ? (
             <div className="text-center py-20">
-              <p className="text-gray-500 text-15">
-                No products match your filters.
+              <p className="text-gray-500 text-15 rtl:text-[19px]">
+                {t("noSearchResults")}
               </p>
               <button
                 onClick={clearAllFilters}
                 className="mt-4 text-14 px-3 py-2 bg-primary text-white rounded-md hover:bg-primary-dark"
               >
-                Clear Filters
+                {t("clearFilters")}
               </button>
             </div>
           ) : (
@@ -495,11 +507,11 @@ function Products() {
                       )}
                       {product.stock > 0 ? (
                         <p className="absolute bottom-3 left-3 px-3 py-1 text-15 bg-yellow-300 rounded-full">
-                          {product.stock} Left !
+                          {product.stock} {t("left")}
                         </p>
                       ) : (
                         <p className="absolute bottom-3 left-3 px-3 py-1 text-15 bg-red-400 text-white rounded-full">
-                          Out of stock
+                          {t("outOfStock")}
                         </p>
                       )}
                       <div className="h-full flex justify-center items-center p-7">
@@ -515,7 +527,7 @@ function Products() {
                           />
                         ) : (
                           <div className="text-gray-400 flex items-center justify-center h-full">
-                            No image available
+                            {t("noImage")}
                           </div>
                         )}
                       </div>
@@ -525,7 +537,7 @@ function Products() {
                         className="font-bold text-lg mt-2 transition-colors cursor-pointer"
                         onClick={() => navigate(`/Home/Products/${product.id}`)}
                       >
-                        {product.name}
+                        {getTranslatedField(product, "name")}
                       </h3>
                       <div className="flex items-center gap-2 mt-1">
                         <div className="flex">
@@ -575,8 +587,9 @@ function Products() {
                               : "text-primary hover:bg-primary hover:text-white"
                           }`}
                           disabled={product.stock === 0}
+                          onClick={() => addToCart(product)}
                         >
-                          Add To Cart
+                          {t("addToCart")}
                         </button>
                         <button
                           className={`flex-1 rounded-md border-2 py-3 text-17 font-bold transition-colors ${
@@ -586,7 +599,7 @@ function Products() {
                           }`}
                           disabled={product.stock === 0}
                         >
-                          Buy Now
+                          {t("buyNow")}
                         </button>
                       </div>
                     </div>
@@ -625,8 +638,8 @@ function Products() {
           )}
         </section>
       </div>
+      <ToastContainer />
     </div>
   );
 }
-
 export default Products;

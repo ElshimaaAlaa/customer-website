@@ -22,7 +22,7 @@ function UserProfile() {
   return (
     <div className="bg-white pb-10">
       <Helmet>
-        <title>User Profile | VERTEX</title>
+        <title>{t("UserProfile")} | {t("vertex")}</title>
       </Helmet>
       <section className="userHeader w-full h-[65vh] flex flex-col justify-center items-center text-center text-white">
         <h1 className="text-5xl font-bold mb-4">{t("myAcc")}</h1>
@@ -30,22 +30,22 @@ function UserProfile() {
           {t("accHead")}
         </p>
       </section>
-      <section className="p-8 bg-customOrange-lightOrange flex items-center justify-between px-28">
+      <section className="py-8 px-3 md:p-8 lg:p-8 bg-customOrange-lightOrange flex items-center justify-between md:px-14 lg:px-28">
         <div className="flex items-center gap-2">
           <FaCircleDollarToSlot color="#E0A75E" size={22} />
-          <p className="text-gray-600 text-16">
+          <p className="text-gray-600 text-14 md:text-[20px] lg:text-16">
             {t("currentBalance")}
-            <span className="text-black text-xl font-bold ms-2">
+            <span className="text-black text-12 rtl:text-14 md:rtl:text-[20px] md:text-[20px] lg:text-xl font-bold ms-2">
               $ {data.balance}
             </span>
           </p>
         </div>
-        <p className="font-bold text-primary text-lg flex items-center gap-1">
+        <p className="font-bold text-primary text-12 rtl:text-14  md:rtl:text-[20px] md:text-[20px] lg:text-lg flex items-center gap-1">
           <TbCirclePlus size={23} />
           {t("addBalance")}
         </p>
       </section>
-      <section className="flex flex-col md:flex-row px-4 md:px-20 mt-10 gap-10">
+      <section className="flex flex-col md:flex-row px-4 md:px-5 mt-10 gap-10">
         <div className="md:w-1/4">
           <InfoSideBar />
         </div>

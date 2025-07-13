@@ -20,6 +20,7 @@ function LatestProducts() {
   const [wishlistItems, setWishlistItems] = useState([]);
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
+  const [isRtl, setIsRtl] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -39,7 +40,8 @@ function LatestProducts() {
       }
     };
     fetchProducts();
-  }, []);
+    setIsRtl(i18n.language === "ar");
+  }, [i18n.language]);
 
   const handleWishlistToggle = async (productId) => {
     try {
@@ -63,10 +65,6 @@ function LatestProducts() {
         {
           position: "top-right",
           autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
         }
       );
     } catch (error) {
@@ -79,12 +77,11 @@ function LatestProducts() {
         position: "top-right",
         autoClose: 3000,
       });
-      console.error("Wishlist error:", error);
     }
   };
 
   const renderRating = (rating) => {
-    if (!rating)
+    if (!rating) {
       return (
         <div className="flex items-center">
           {[...Array(5)].map((_, i) => (
@@ -99,6 +96,7 @@ function LatestProducts() {
           ))}
         </div>
       );
+    }
 
     const fullStars = Math.floor(rating);
     const hasHalfStar = rating % 1 >= 0.5;
@@ -122,17 +120,16 @@ function LatestProducts() {
             fill="currentColor"
             viewBox="0 0 20 20"
           >
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-            <path
-              d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-              fill="url(#half-star)"
-            />
             <defs>
               <linearGradient id="half-star" x1="0" x2="100%" y1="0" y2="0">
                 <stop offset="50%" stopColor="currentColor" />
                 <stop offset="50%" stopColor="#D1D5DB" />
               </linearGradient>
             </defs>
+            <path
+              d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+              fill="url(#half-star)"
+            />
           </svg>
         )}
         {[...Array(emptyStars)].map((_, i) => (
@@ -145,7 +142,6 @@ function LatestProducts() {
             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
           </svg>
         ))}
-        <span className="text-13 text-gray-600 ml-1">{rating}</span>
       </div>
     );
   };
@@ -157,27 +153,29 @@ function LatestProducts() {
   };
 
   return (
-    <div className="px-4 md:px-20 py-10 relative">
+    <div className="px-4 md:px-10 py-10 relative">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold mb-6">{t("latestProducts")}</h1>
+        <h1 className="text-2xl font-bold mb-6 rtl:text-[22px]">
+          {t("latestProducts")}
+        </h1>
         <button
           className="text-primary w-32 flex items-center rounded-md justify-center font-bold p-3 gap-2"
           onClick={() => navigate("/Home/Products")}
         >
-          {t("viewAll")} <IoIosArrowRoundForward size={25} />
+          {t("viewAll")}  {isRtl ?<IoIosArrowRoundBack size={25} /> : <IoIosArrowRoundForward size={25} /> }
         </button>
       </div>
 
       {error ? (
-        <div className="text-red-500 text-15 text-center mt-10">
+        <div className="text-red-500 text-center mt-10">
           {t("failedToFetchData")}
         </div>
       ) : isLoading ? (
-        <div className="text-gray-400 text-center mt-10">
+        <div className="text-center mt-10">
           <ClipLoader color="#E0A75E" />
         </div>
       ) : latestProducts.length === 0 ? (
-        <div className="text-gray-400 text-15 text-center mt-10">
+        <div className="text-gray-400 text-center mt-10">
           {t("noProductsFound")}
         </div>
       ) : (
@@ -216,7 +214,11 @@ function LatestProducts() {
 
                     {product.discount_percentage > 0 && (
                       <div className="absolute top-3 left-3 p-2 text-xs bg-red-600 text-white rounded-2xl">
-                        -{product.discount_percentage}%
+                        {isRtl ? (
+                          <>{product.discount_percentage}% -</>
+                        ) : (
+                          <>-{product.discount_percentage}%</>
+                        )}
                       </div>
                     )}
 
@@ -238,6 +240,7 @@ function LatestProducts() {
                       )}
                     </div>
                   </div>
+
                   <div className="mt-3">
                     <h3 className="font-bold text-lg">
                       {getTranslatedField(product, "name")}
@@ -246,23 +249,29 @@ function LatestProducts() {
                       {renderRating(product.rate)}
                     </div>
                     <div className="flex items-center gap-2 mt-1">
-                      {product.price_after_discount ? (
-                        <>
-                          <span className="text-lg font-bold text-primary">
-                            ${product.price_after_discount.toFixed(2)}
-                          </span>
-                          <span className="text-14 text-gray-400 line-through">
-                            ${product.price.toFixed(2)}
-                          </span>
-                        </>
-                      ) : (
-                        <span className="text-lg font-bold text-gray-900">
-                          ${product.price.toFixed(2)}
-                        </span>
-                      )}
+                      <>
+                        {isRtl ? (
+                          <>
+                            <span className="text-14 text-gray-400 line-through">
+                              ${product.price.toFixed(2)}
+                            </span>
+                            <span className="text-lg font-bold text-primary">
+                              ${product.price_after_discount.toFixed(2)}
+                            </span>
+                          </>
+                        ) : (
+                          <>
+                            <span className="text-lg font-bold text-primary">
+                              ${product.price_after_discount.toFixed(2)}
+                            </span>
+                            <span className="text-14 text-gray-400 line-through">
+                              ${product.price.toFixed(2)}
+                            </span>
+                          </>
+                        )}
+                      </>
                     </div>
                   </div>
-                  {/* </div> */}
                 </div>
               </SwiperSlide>
             ))}
@@ -270,10 +279,18 @@ function LatestProducts() {
 
           <div className="flex justify-end mt-6 gap-4">
             <button className="custom-swiper-button-prev bg-primary p-2 rounded-full text-white hover:bg-primary-dark transition-colors">
-              <IoIosArrowRoundBack size={24} />
+              {isRtl ? (
+                <IoIosArrowRoundBack size={24} />
+              ) : (
+                <IoIosArrowRoundForward size={24} />
+              )}
             </button>
             <button className="custom-swiper-button-next bg-primary p-2 rounded-full text-white hover:bg-primary-dark transition-colors">
-              <IoIosArrowRoundForward size={24} />
+              {isRtl ? (
+                <IoIosArrowRoundForward size={24} />
+              ) : (
+                <IoIosArrowRoundBack size={24} />
+              )}
             </button>
           </div>
         </div>
@@ -281,5 +298,4 @@ function LatestProducts() {
     </div>
   );
 }
-
 export default LatestProducts;

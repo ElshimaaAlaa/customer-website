@@ -9,11 +9,11 @@ function AboutUs() {
   return (
     <section className="bg-white pb-10">
       <Helmet>
-        <title>About Us | VERTEX</title>
+        <title>{t("aboutUs")} | {t("vertex")}</title>
       </Helmet>
       <div className="aboutHeader w-full h-[65vh] flex flex-col justify-center items-center text-center text-white">
         <h1 className="text-5xl font-bold mb-4">{t("aboutUs")}</h1>
-        <p className="text-15 font-light leading-normal w-600px">
+        <p className="text-15 font-light leading-normal w-310 md:w-600px  lg:w-600px">
           {t("aboutUsHeader")}
         </p>
       </div>

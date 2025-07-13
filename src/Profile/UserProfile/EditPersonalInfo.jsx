@@ -68,7 +68,7 @@ function EditInfo() {
   return (
     <div>
       <Helmet>
-        <title>Edit Personal Information</title>
+        <title>{t("editProfile")} | {t("vertex")}</title>
       </Helmet>
       <section>
         <h1 className="font-bold text-xl">{t("editProfile")}</h1>

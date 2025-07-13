@@ -94,7 +94,7 @@ function AdminLogin() {
     <div className="main-container" dir={isRTL ? "rtl" : "ltr"}>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>{t("login")}</title>
+        <title>{t("login")} | {t("vertex")}</title>
         <html dir={isRTL ? "rtl" : "ltr"} lang={i18n.language} />
       </Helmet>
       <div
