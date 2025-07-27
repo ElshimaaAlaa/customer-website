@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState, useCallback } from "react";
 import Quality from "../../Sections/Quality Section/Quality";
 import {
   IoIosArrowRoundBack,
+  IoIosArrowRoundForward,
   IoIosHeart,
   IoIosHeartEmpty,
 } from "react-icons/io";
@@ -10,9 +11,9 @@ import UserRating from "./UserRating";
 import RelatedProduct from "./RelatedProduct";
 import axios from "axios";
 import { toggleWishlist } from "../../ApiServices/ToggleWishlist";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { ClipLoader } from "react-spinners";
+import { useTranslation } from "react-i18next";
+import { CartContext } from "../../Cart Context/CartContext";
 
 function ViewProductDetails() {
   const navigate = useNavigate();
@@ -20,69 +21,72 @@ function ViewProductDetails() {
   const [product, setProduct] = useState(null);
   const [mainImage, setMainImage] = useState("");
   const [loading, setLoading] = useState(true);
-  const [isWishlisted, setIsWishlisted] = useState(false);
-  const [isTogglingWishlist, setIsTogglingWishlist] = useState(false);
+  const [wishlistItems, setWishlistItems] = useState([]);
+  const { t, i18n } = useTranslation();
+  const [isRTL, setIsRTL] = useState(false);
+  const cart = useContext(CartContext);
 
-  useEffect(() => {
-    const fetchProductDetail = async () => {
-      try {
-        const response = await axios({
-          url: `https://demo.vrtex.duckdns.org/api/products/${id}`,
-          method: "GET",
-          headers: {
-            "Accept-Language": "en",
-            Authorization: `Bearer ${localStorage.getItem("user token")}`,
-          },
-        });
+  const fetchProductDetail = useCallback(async () => {
+    try {
+      const response = await axios({
+        url: `https://demo.vrtex.duckdns.org/api/products/${id}`,
+        method: "GET",
+        headers: {
+          "Accept-Language": "en",
+          Authorization: `Bearer ${localStorage.getItem("user token")}`,
+        },
+      });
 
-        setProduct(response.data.data);
-        setIsWishlisted(response.data.data?.is_fav || false);
-        if (response.data.data?.images?.length > 0) {
-          setMainImage(response.data.data.images[0].src);
-        }
-      } catch (error) {
-        console.error("Error fetching product:", error);
-        toast.error("Failed to load product details", {
-          position: "top-right",
-          autoClose: 3000,
-        });
-      } finally {
-        setLoading(false);
+      setProduct(response.data.data);
+      setMainImage(response.data.data.images?.[0]?.src || "");
+
+      const storedWishlist = localStorage.getItem("wishlistItems");
+      if (storedWishlist) {
+        setWishlistItems(JSON.parse(storedWishlist));
       }
-    };
-
-    fetchProductDetail();
+    } catch (error) {
+      console.error("Error fetching product:", error);
+    } finally {
+      setLoading(false);
+    }
   }, [id]);
 
-  const handleWishlistToggle = async () => {
-    if (!product) return;
+  useEffect(() => {
+    fetchProductDetail();
+    setIsRTL(i18n.language === "ar");
+  }, [fetchProductDetail, i18n.language]);
 
-    setIsTogglingWishlist(true);
+  const getTranslatedField = (product, field) => {
+    const language = i18n.language;
+    const fieldName = `${field}_${language.split("-")[0]}`;
+    return product[fieldName] || product[field] || "";
+  };
+
+  const handleWishlistToggle = async (productId) => {
     try {
-      const response = await toggleWishlist(product.id);
+      const isInWishlist = wishlistItems.includes(productId);
+      const updatedWishlist = isInWishlist
+        ? wishlistItems.filter((id) => id !== productId)
+        : [...wishlistItems, productId];
 
+      setWishlistItems(updatedWishlist);
+      localStorage.setItem("wishlistItems", JSON.stringify(updatedWishlist));
+
+      const response = await toggleWishlist(productId);
       if (!response.success) {
-        throw new Error(response.message);
+        throw new Error(response.message || t("wishlistUpdateError"));
       }
-
-      setIsWishlisted(response.action === "added");
-
-      toast.success(
-        response.action === "added"
-          ? "Added to wishlist"
-          : "Removed from wishlist",
-        { position: "top-right", autoClose: 2000 }
-      );
     } catch (error) {
-      toast.error(
-        error.message.includes("locale")
-          ? "Language settings issue"
-          : error.message || "Failed to update wishlist",
-        { position: "top-right", autoClose: 3000 }
+      setWishlistItems((prev) =>
+        prev.includes(productId)
+          ? prev.filter((id) => id !== productId)
+          : [...prev, productId]
       );
-    } finally {
-      setIsTogglingWishlist(false);
     }
+  };
+
+  const addToCart = (product) => {
+    cart.AddProductToCart(product);
   };
 
   if (loading) {
@@ -94,12 +98,11 @@ function ViewProductDetails() {
   }
 
   if (!product) {
-    return (
-      <div className="text-center py-20 text-red-500">
-        Product not found or failed to load
-      </div>
-    );
+    return <div className="text-center py-20 text-red-500">{t("error")}</div>;
   }
+
+  const isWishlisted = wishlistItems.includes(product.id);
+  const productQuantity = cart.getProductQuantity(product);
 
   return (
     <div className="">
@@ -108,42 +111,48 @@ function ViewProductDetails() {
           className="flex items-center gap-2 cursor-pointer"
           onClick={() => navigate("/Home/Products")}
         >
-          <IoIosArrowRoundBack size={25} color="#E0A75E" />
-          <p className="text-primary text-16 underline">Back to menu</p>
+          {isRTL ? (
+            <IoIosArrowRoundForward size={25} color="#E0A75E" />
+          ) : (
+            <IoIosArrowRoundBack size={25} color="#E0A75E" />
+          )}
+          <p className="text-primary text-16 underline">{t("backToMenu")}</p>
         </div>
 
         {/* Product Details Section */}
         <div className="flex flex-col md:flex-row gap-8 mt-8">
           {/* Product Images */}
-          <div className="lg:w-500px ">
+          <div className="lg:w-500px">
             {/* Main Image */}
             <div className="bg-gray-50 rounded-lg p-10 mb-3 relative">
               {product.discount_percentage > 0 && (
                 <p className="absolute top-3 left-3 rounded-full text-white bg-red-600 py-2 px-3 text-15">
-                  -{product.discount_percentage}%
+                  {isRTL ? (
+                    <> {product.discount_percentage}% -</>
+                  ) : (
+                    <>-{product.discount_percentage} %</>
+                  )}
                 </p>
               )}
               {product.stock > 0 ? (
                 <p className="absolute bottom-3 left-3 rounded-full py-1 px-3 text-15 bg-yellow-300">
-                  {product.stock} Left !
+                  {product.stock} {t("left")}
                 </p>
               ) : (
                 <p className="absolute bottom-3 left-3 rounded-full py-1 px-3 text-15 bg-red-400">
-                  Out of stock
+                  {t("outOfStock")}
                 </p>
               )}
 
-              {mainImage && (
-                <img
-                  src={mainImage}
-                  alt={product.name}
-                  className="w-full h-auto lg:p-8 max-h-96 object-contain"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = "/placeholder-product.png";
-                  }}
-                />
-              )}
+              <img
+                src={mainImage || "/placeholder-product.png"}
+                alt={product.name}
+                className="w-full h-auto lg:p-8 max-h-96 object-contain"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = "/placeholder-product.png";
+                }}
+              />
             </div>
 
             {/* Thumbnail Images */}
@@ -176,23 +185,21 @@ function ViewProductDetails() {
 
           {/* Product Info */}
           <div className="flex-1">
-            {/* product category */}
-            <div className="flex flex-row-reverse justify-between items-center">
+            <div className="flex flex-row-reverse justify-end gap-56 items-center">
               <div>
-                {/* Wishlist Button */}
                 <button
                   className="p-2 rounded-full z-10"
-                  onClick={handleWishlistToggle}
-                  disabled={isTogglingWishlist}
+                  onClick={() => handleWishlistToggle(product.id)}
+                  aria-label={
+                    isWishlisted ? t("removeFromWishlist") : t("addToWishlist")
+                  }
                 >
-                  {isTogglingWishlist ? (
-                    <ClipLoader size={22} color="#E0A75E" />
-                  ) : isWishlisted ? (
+                  {isWishlisted ? (
                     <IoIosHeart size={27} className="text-red-500" />
                   ) : (
                     <IoIosHeartEmpty
                       size={27}
-                      className=" hover:text-red-500"
+                      className="text-black hover:text-red-500"
                     />
                   )}
                 </button>
@@ -200,9 +207,11 @@ function ViewProductDetails() {
 
               <div>
                 <p className="text-gray-600 text-16 mt-6">
-                  {product.category?.name || "Category not specified"}
+                  {product.category?.name || t("noCat")}
                 </p>
-                <h1 className="text-2xl font-bold mt-3">{product.name}</h1>
+                <h1 className="text-2xl font-bold mt-3">
+                  {getTranslatedField(product, "name")}
+                </h1>
               </div>
             </div>
 
@@ -224,11 +233,6 @@ function ViewProductDetails() {
                   </svg>
                 ))}
               </div>
-              <span className="text-sm text-gray-600">
-                {product.rate !== null && product.rate !== undefined
-                  ? `(${product.rate.toFixed(1)})`
-                  : ""}
-              </span>
             </div>
 
             {/* Price */}
@@ -236,12 +240,25 @@ function ViewProductDetails() {
               {product.price_after_discount &&
               product.price_after_discount !== product.price ? (
                 <>
-                  <span className="text-xl text-primary font-bold">
-                    ${product.price_after_discount.toFixed(2)}
-                  </span>
-                  <span className="text-gray-500 text-15 line-through">
-                    ${product.price.toFixed(2)}
-                  </span>
+                  {isRTL ? (
+                    <>
+                      <span className="text-gray-500 text-15 line-through">
+                        ${product.price.toFixed(2)}
+                      </span>
+                      <span className="text-xl text-primary font-bold">
+                        ${product.price_after_discount.toFixed(2)}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="text-xl text-primary font-bold">
+                        ${product.price_after_discount.toFixed(2)}
+                      </span>
+                      <span className="text-gray-500 text-15 line-through">
+                        ${product.price.toFixed(2)}
+                      </span>
+                    </>
+                  )}
                 </>
               ) : (
                 <span className="text-xl text-primary font-bold">
@@ -250,15 +267,15 @@ function ViewProductDetails() {
               )}
             </div>
 
-            {/* description */}
+            {/* Description */}
             <p className="text-gray-600 text-14 md:w-450 mt-6">
-              {product.description || "No description available"}
+              {product.description || t("noDescription")}
             </p>
 
-            {/* product colors select - You'll need to implement this based on your product data */}
+            {/* Product Colors */}
             {product.colors?.length > 0 && (
               <div className="my-8">
-                <p className="text-lg mb-2">Select Color</p>
+                <p className="text-lg mb-2">{t("selectColor")}</p>
                 <div className="flex gap-2">
                   {product.colors.map((color) => (
                     <button
@@ -266,16 +283,17 @@ function ViewProductDetails() {
                       className="w-8 h-8 rounded-full border-2 border-gray-200"
                       style={{ backgroundColor: color.hex_code }}
                       title={color.name}
+                      aria-label={color.name}
                     />
                   ))}
                 </div>
               </div>
             )}
 
-            {/* product sizes select - You'll need to implement this based on your product data */}
+            {/* Product Sizes */}
             {product.sizes?.length > 0 && (
               <div className="my-4">
-                <p className="text-lg mb-2">Select Size</p>
+                <p className="text-lg mb-2">{t("selectSize")}</p>
                 <div className="flex flex-wrap gap-2">
                   {product.sizes.map((size) => (
                     <button
@@ -286,6 +304,9 @@ function ViewProductDetails() {
                           : "border-gray-100 text-gray-400 cursor-not-allowed"
                       }`}
                       disabled={size.stock <= 0}
+                      aria-label={`${size.name} ${
+                        size.stock <= 0 ? t("outOfStock") : ""
+                      }`}
                     >
                       {size.name}
                     </button>
@@ -295,42 +316,76 @@ function ViewProductDetails() {
             )}
 
             {/* Action Buttons */}
-            <div className="flex gap-2 my-8">
+            <div className="flex items-center gap-2 mt-3 md:w-400 lg:w-400">
+              {productQuantity === 0 ? (
+                <button
+                  className={`flex-1 rounded-md border-2 border-primary py-2 text-17 font-bold transition-colors ${
+                    product.stock === 0
+                      ? "bg-gray-200 text-gray-500 border-gray-300 cursor-not-allowed"
+                      : "text-primary hover:bg-primary hover:text-white"
+                  }`}
+                  disabled={product.stock === 0}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    addToCart(product);
+                  }}
+                  aria-label={t("addToCart")}
+                >
+                  {t("addToCart")}
+                </button>
+              ) : (
+                <div className="flex flex-1 justify-between items-center border-2 border-primary rounded-md overflow-hidden">
+                  <button
+                    className="w-10 h-10 text-gray-500 font-bold text-xl hover:bg-primary-dark"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      cart.RemoveProductFromCart(product.id);
+                    }}
+                    aria-label={t("decreaseQuantity")}
+                  >
+                    −
+                  </button>
+                  <span className="flex-1 text-center text-17 font-bold">
+                    {productQuantity}
+                  </span>
+                  <button
+                    className="w-10 h-10 text-gray-500 font-bold text-xl hover:bg-primary-dark"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      cart.AddProductToCart(product);
+                    }}
+                    disabled={productQuantity >= product.stock}
+                    aria-label={t("increaseQuantity")}
+                  >
+                    +
+                  </button>
+                </div>
+              )}
+
               <button
-                className={`w-44 px-3 rounded-md border-2 border-primary text-primary py-4 text-17 font-bold transition-colors ${
-                  product.stock > 0
-                    ? "hover:bg-primary hover:text-white"
-                    : "bg-gray-200 text-gray-500 border-gray-300 cursor-not-allowed"
+                className={`flex-1 rounded-md border-2 py-2 text-17 font-bold transition-colors ${
+                  product.stock === 0
+                    ? "bg-gray-200 text-gray-500 border-gray-300 cursor-not-allowed"
+                    : "bg-primary text-white border-primary hover:bg-primary-dark"
                 }`}
-                disabled={product.stock <= 0}
+                disabled={product.stock === 0}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate("/Home/Checkout");
+                }}
+                aria-label={t("buyNow")}
               >
-                Add to cart
-              </button>
-              <button
-                className={`px-3 w-44 bg-primary text-white rounded-md py-4 border-2 border-primary text-17 font-bold transition-colors ${
-                  product.stock > 0
-                    ? "hover:bg-primary-dark"
-                    : "bg-gray-200 text-gray-500 border-gray-300 cursor-not-allowed"
-                }`}
-                disabled={product.stock <= 0}
-              >
-                Buy Now
+                {t("buyNow")}
               </button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Client opinion section */}
       <UserRating productId={id} />
-
-      {/* Related product */}
       <RelatedProduct currentProductId={id} categoryId={product.category?.id} />
-
-      {/* quality section */}
       <Quality />
     </div>
   );
 }
-
 export default ViewProductDetails;

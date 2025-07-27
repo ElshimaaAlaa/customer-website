@@ -83,14 +83,14 @@ function PersonalInformation() {
           <h1 className="font-bold text-xl">{t("personalInfo")}</h1>
           <button
             onClick={() => navigate("EditInfo", { state: personalInfo })}
-            className="text-white font-semibold flex items-center justify-center gap-3 bg-primary p-3 w-24 rounded-md"
+            className="text-white font-semibold flex items-center justify-center gap-3 bg-primary p-2 w-24 rounded-md"
             aria-label="Edit personal information"
           >
             <img src="/assets/svgs/edit.svg" alt="Edit icon" className="w-7" />
             {t("edit")}
           </button>
         </div>
-        <div className="bg-gray-50 flex flex-col md:flex-row items-center gap-5 my-3 border rounded-md p-3 w-full rtl:flex-row-reverse">
+        <div className="bg-gray-50 flex flex-col md:flex-row items-center gap-5 my-3 border rounded-md p-3 w-full ">
           <img
             src={personalInfo.image || "/assets/images/userPic.jpg"}
             alt="User profile"
@@ -103,7 +103,7 @@ function PersonalInformation() {
             <h2 className="font-semibold text-lg mt-3">
               {personalInfo?.name || "N/A"}
             </h2>
-            <p className="text-gray-400 text-15">
+            <p className="text-gray-400 text-15 rtl:text-right">
               {personalInfo?.role || "Customer"}
             </p>
           </div>

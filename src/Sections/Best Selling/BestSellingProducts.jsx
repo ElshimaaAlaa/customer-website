@@ -8,10 +8,10 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import { IoIosArrowRoundForward, IoIosArrowRoundBack } from "react-icons/io";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import SuccessModal from "../../Components/Modal/Success Modal/SuccessModal";
+import AuthModal from "../../Components/Modal/Success Modal/AuthModal";
 
 function BestSalesProducts() {
   const [isLoading, setIsLoading] = useState(false);
@@ -21,6 +21,8 @@ function BestSalesProducts() {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const [isRtl, setIsRtl] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const fetchBestProducts = async () => {
@@ -32,6 +34,8 @@ function BestSalesProducts() {
         if (storedWishlist) {
           setWishlistItems(JSON.parse(storedWishlist));
         }
+        const token = localStorage.getItem("user token");
+        setIsLoggedIn(!!token);
       } catch (error) {
         setError(error);
       } finally {
@@ -39,18 +43,18 @@ function BestSalesProducts() {
       }
     };
     fetchBestProducts();
-    setIsRtl(i18n.language === "ar");
-  }, [i18n.language]);
-
-  // تحديث حالة wishlist عند أي تغيير
-  useEffect(() => {
     const storedWishlist = localStorage.getItem("wishlistItems");
     if (storedWishlist) {
       setWishlistItems(JSON.parse(storedWishlist));
     }
-  }, [wishlistItems]);
+    setIsRtl(i18n.language === "ar");
+  }, [i18n.language]);
 
   const handleWishlistToggle = async (productId) => {
+    if (!isLoggedIn) {
+      setShowModal(true);
+      return;
+    }
     try {
       const stored = JSON.parse(localStorage.getItem("wishlistItems") || "[]");
       const isInWishlist = stored.includes(productId);
@@ -63,15 +67,10 @@ function BestSalesProducts() {
 
       const response = await toggleWishlist(productId);
       if (!response.success) throw new Error(response.message);
-
-      toast.success(
-        isInWishlist
-          ? t("productRemovedFromWishlist")
-          : t("productAddedToWishlist"),
-        { position: "top-right", autoClose: 3000 }
-      );
     } catch (error) {
       console.error("Wishlist toggle failed", error);
+      const stored = JSON.parse(localStorage.getItem("wishlistItems") || "[]");
+      setWishlistItems(stored);
     }
   };
 
@@ -82,7 +81,7 @@ function BestSalesProducts() {
   };
 
   return (
-    <div className="px-4 md:px-10 py-10 relative">
+    <div className="px-4 md:px-10 lg:px-20 py-10 relative">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold mb-6 rtl:text-[22px]">
           {t("bestSale")}
@@ -91,7 +90,7 @@ function BestSalesProducts() {
           className="text-primary w-32 flex items-center font-bold gap-2"
           onClick={() => navigate("/Home/Products")}
         >
-          {t("viewAll")}{" "}
+          {t("viewAll")}
           {isRtl ? (
             <IoIosArrowRoundBack size={25} />
           ) : (
@@ -207,7 +206,9 @@ function BestSalesProducts() {
           </div>
         </div>
       )}
-      <ToastContainer />
+      <SuccessModal isOpen={showModal} onClose={() => setShowModal(false)}>
+        <AuthModal initialMode="login" onClose={() => setShowModal(false)} />
+      </SuccessModal>
     </div>
   );
 }

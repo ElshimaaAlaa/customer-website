@@ -56,7 +56,7 @@ function EditAddress() {
   return (
     <div>
       <Helmet>
-        <title>Manage Address</title>
+        <title>{t("manageAddress")} | {t("vertex")}</title>
       </Helmet>
       <section>
         <h1 className="font-bold text-xl mb-2">{t("manageAddress")}</h1>
@@ -136,13 +136,13 @@ function EditAddress() {
             className="w-32 mt-6"
           />
           <p className="font-bold mt-5 text-center">
-            Address Data updated successfully!
+           {t("updateAdd")}
           </p>
           <button
-            className="bg-primary text-white rounded-md p-2 text-14 mt-4 w-60 "
+            className="bg-primary text-white rounded-md p-2 text-14 mt-4 w-36 "
             onClick={() => navigate("/Home/UserProfile/Address")}
           >
-            Done
+            {t("done")}
           </button>
         </div>
       </SuccessModal>

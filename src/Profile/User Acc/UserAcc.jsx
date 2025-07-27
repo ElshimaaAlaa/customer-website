@@ -23,7 +23,7 @@ function UserAcc() {
       <img
         src={data.image}
         alt="user profile"
-        className="rounded-full w-11 h-11 object-contain cursor-pointer"
+        className="rounded-full w-12 h-12 object-cover cursor-pointer"
       />
       <IoIosArrowDown color="#000" size={22}/>
     </div>

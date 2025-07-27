@@ -4,7 +4,6 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { ClipLoader } from "react-spinners";
-import "./login.scss";
 import OAuth from "../OAuth/OAuth";
 import MainBtn from "../../Components/Main Button/MainBtn";
 import { loginService } from "../../ApiServices/LoginService";
@@ -13,7 +12,7 @@ import PasswordInput from "../../Components/Password Input/PasswordInput";
 import { IoIosArrowDown } from "react-icons/io";
 import { useTranslation } from "react-i18next";
 
-function Login() {
+function ModalLogin({ onSwitchToRegister, onClose }) {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
@@ -47,7 +46,6 @@ function Login() {
       .required(t("passwordRequired")),
   });
 
-
   const handleSubmit = async (values) => {
     setLoading(true);
     setError(null);
@@ -60,11 +58,13 @@ function Login() {
         localStorage.removeItem("user password");
       }
       await loginService(values.email, values.password);
+      onClose?.();
       setTimeout(() => {
         navigate("/Home/HomePage");
       }, 1500);
     } catch (error) {
       console.error(error);
+      setError(t("loginFailed"));
     } finally {
       setLoading(false);
     }
@@ -75,12 +75,13 @@ function Login() {
     i18n.changeLanguage(savedLanguage);
     setIsRTL(savedLanguage === "ar");
   }, [i18n]);
-  // Update RTL state and localStorage when language changes
+  
   useEffect(() => {
     const currentLanguage = i18n.language;
     setIsRTL(currentLanguage === "ar");
     localStorage.setItem("selectedLanguage", currentLanguage);
   }, [i18n.language]);
+  
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
     setShowLanguageDropdown(false);
@@ -92,10 +93,12 @@ function Login() {
   }, []);
 
   return (
-    <div className="main-container" dir={isRTL ? "rtl" : "ltr"}>
+    <div className="" dir={isRTL ? "rtl" : "ltr"}>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>{t("login")} | {t("vertex")}</title>
+        <title>
+          {t("login")} | {t("vertex")}
+        </title>
         <html dir={isRTL ? "rtl" : "ltr"} lang={i18n.language} />
       </Helmet>
       <div
@@ -243,11 +246,18 @@ function Login() {
         <OAuth />
         <div>
           <p className="text-center text-gray-400 text-15 mt-3">
-           {t("noAccount")} <span className="font-bold text-primary text-16 cursor-pointer ms-1 rtl:text-[15px]`" onClick={()=>navigate('/Register')}>{t("signUp")}</span>
+            {t("noAccount")}{" "}
+            <span
+              className="font-bold text-primary text-16 cursor-pointer ms-1 rtl:text-[15px]`"
+              onClick={onSwitchToRegister}
+            >
+              {t("signUp")}
+            </span>
           </p>
         </div>
       </div>
     </div>
   );
 }
-export default Login;
+
+export default ModalLogin;

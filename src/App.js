@@ -1,62 +1,69 @@
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { PulseLoader } from "react-spinners";
+
+// Auth pages
 import Login from "./Auth/Login/Login";
 import ForgotPassword from "./Auth/Forgot Password/ForgotPassword";
 import VerifayPassword from "./Auth/Verivation Code/VerifayPassword";
 import CreateNewPassword from "./Auth/Create Password/CreateNewPassword";
 import Register from "./Auth/Register/Register";
+
+// Main layout
 import Main from "./Pages/Home Page/Main";
+import Home from "./Pages/Home Page/Home";
 import Faqs from "./Pages/Faqs/Faqs";
 import AboutUs from "./Pages/AboutUs/AboutUs";
 import ContactUs from "./Pages/ContactUs/ContactUs";
+import Products from "./Pages/Products/Products";
+import ViewProductDetails from "./Pages/Products/ViewProductDetails";
+
+// Checkout pages
+import WishList from "./Pages/Checkout/WishList/WishList";
+import Cart from "./Pages/Checkout/Cart/Cart";
+import Checkout from "./Pages/Checkout/Checkout/Checkout";
+
+// Profile pages
 import UserProfile from "./Profile/UserProfile/UserProfile";
-import Home from "./Pages/Home Page/Home";
 import PersonalInformation from "./Profile/UserProfile/PersonalInformation";
 import EditInfo from "./Profile/UserProfile/EditPersonalInfo";
 import ChangePassword from "./Profile/UserProfile/ChangePassword";
 import Address from "./Profile/Address/Address";
 import EditAddress from "./Profile/Address/EditAddress";
 import UserOrder from "./Profile/User Orders/UserOrder";
-import Payment from "./Profile/Payment/Payment";
 import OrderDetails from "./Profile/User Orders/OrderDetail";
-import WishList from "./Pages/WishList/WishList";
-import Products from "./Pages/Products/Products";
-import ViewProductDetails from "./Pages/Products/ViewProductDetails";
-//translation
+import Payment from "./Profile/Payment/Payment";
+
+// Context
+import { CartProvider } from "./Cart Context/CartContext";
+
+// i18n setup
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import enTranslation from "./Translation/en.json";
 import arTranslation from "./Translation/ar.json";
-import Cart from "./Pages/Cart/Cart";
-import { CartProvider } from "./Cart Context/CartContext";
-// Initialize i18n
+
 i18n
   .use(initReactI18next)
   .use(LanguageDetector)
   .init({
     lng: "en",
     resources: {
-      en: {
-        translation: enTranslation,
-      },
-      ar: {
-        translation: arTranslation,
-      },
+      en: { translation: enTranslation },
+      ar: { translation: arTranslation },
     },
     fallbackLng: "en",
-    debug: true,
-    interpolation: {
-      escapeValue: false,
-    },
+    interpolation: { escapeValue: false },
   });
+
 function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 2000);
     return () => clearTimeout(timer);
+    
   }, []);
 
   if (loading) {
@@ -73,6 +80,7 @@ function App() {
       </div>
     );
   }
+
 
   return (
     <CartProvider>
@@ -97,6 +105,8 @@ function App() {
             <Route path="Products/:id" element={<ViewProductDetails />} />
             <Route path="WishList" element={<WishList />} />
             <Route path="Cart" element={<Cart />} />
+            <Route path="Checkout" element={<Checkout />} />
+
             <Route path="UserProfile" element={<UserProfile />}>
               <Route index element={<PersonalInformation />} />
               <Route path="EditInfo" element={<EditInfo />} />
@@ -106,6 +116,7 @@ function App() {
               <Route path="UserOrder" element={<UserOrder />} />
               <Route path="Payment" element={<Payment />} />
             </Route>
+
             <Route path="UserOrder/:id" element={<OrderDetails />} />
           </Route>
         </Routes>

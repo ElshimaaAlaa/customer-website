@@ -108,7 +108,7 @@ function ContactUs() {
                   as="textarea"
                   placeholder={t("message")}
                   name="message"
-                  className={`w-full bg-white outline-none border-2 rounded-md p-2 h-24 block placeholder:text-14 
+                  className={`w-full bg-white outline-none border-2 rounded-md p-2 h-32 block placeholder:text-14 
                   ${
                     errors.message && touched.message
                       ? "border-red-500 focus:border-red-500"

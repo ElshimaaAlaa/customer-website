@@ -25,7 +25,7 @@ function UserProfile() {
         <title>{t("UserProfile")} | {t("vertex")}</title>
       </Helmet>
       <section className="userHeader w-full h-[65vh] flex flex-col justify-center items-center text-center text-white">
-        <h1 className="text-5xl font-bold mb-4">{t("myAcc")}</h1>
+        <h1 className="text-5xl font-bold mb-6">{t("myAcc")}</h1>
         <p className="text-17 font-light ">
           {t("accHead")}
         </p>
@@ -40,12 +40,12 @@ function UserProfile() {
             </span>
           </p>
         </div>
-        <p className="font-bold text-primary text-12 rtl:text-14  md:rtl:text-[20px] md:text-[20px] lg:text-lg flex items-center gap-1">
+        <p className="font-bold text-primary cursor-pointer text-12 rtl:text-14  md:rtl:text-[18px] md:text-[18px] lg:text-lg flex items-center gap-1">
           <TbCirclePlus size={23} />
           {t("addBalance")}
         </p>
       </section>
-      <section className="flex flex-col md:flex-row px-4 md:px-5 mt-10 gap-10">
+      <section className="flex flex-col md:flex-row px-4 lg:px-10 md:px-5 mt-10 gap-10">
         <div className="md:w-1/4">
           <InfoSideBar />
         </div>

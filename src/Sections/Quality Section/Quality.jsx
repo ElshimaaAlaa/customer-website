@@ -2,10 +2,11 @@ import Delivary from "../../Svgs/delivary";
 import Pay from "../../Svgs/pay";
 import Qualityicon from "../../Svgs/quality";
 import { useTranslation } from "react-i18next";
+
 function Quality() {
   const { t } = useTranslation();
   return (
-    <section className="flex flex-col md:gap-3  gap-6 px-5 lg:flex-row md:flex-row lg:px-20 py-6">
+    <section className="grid grid-cols-1 px-4 lg:grid-cols-3 gap-3 md:grid-cols-2 md:px-10 lg:px-20 py-6">
       <div className="flex gap-3 bg-customOrange-lightOrange rounded-xl py-7  px-8 w-full ">
         <Delivary />
         <div className="flex flex-col gap-2">

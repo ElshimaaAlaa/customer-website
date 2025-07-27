@@ -1,24 +1,21 @@
-import React from "react";
 import { Helmet } from "react-helmet";
-import TopSection from "../../Components/Navbar/TopSection";
 import { Outlet } from "react-router-dom";
-import BottomSection from "../../Components/Navbar/BottomSection";
 import Footer from "../../Components/Footer/Footer";
 import Navbar from "../../Components/Navbar/Navbar";
+import { useTranslation } from "react-i18next";
 
 function Main() {
+  const { t } = useTranslation();
   return (
     <div>
       <Helmet>
-        <title>Home Page | Vertex</title>
+        <title>
+          {t("homePage")} | {t("vertex")}
+        </title>
       </Helmet>
-      <div>
-        {/* <TopSection />
-        <BottomSection /> */}
-        <Navbar />
-        <Outlet />
-        <Footer />
-      </div>
+      <Navbar />
+      <Outlet />
+      <Footer />
     </div>
   );
 }

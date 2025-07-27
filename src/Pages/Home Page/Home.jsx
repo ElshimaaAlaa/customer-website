@@ -12,7 +12,7 @@ function Home() {
     <div>
       <Header />
       <FeaturedCategories />
-      <AboutExpiredPromo/>
+      <AboutExpiredPromo />
       <LatestProducts />
       <Promotions />
       <BestSalesProducts />

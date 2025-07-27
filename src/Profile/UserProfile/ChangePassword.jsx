@@ -84,7 +84,7 @@ function ChangePassword() {
           <div className="flex justify-start mt-4">
             <button
               type="submit"
-              className="flex items-center gap-2 font-bold rounded-md w-48  p-3 text-17 justify-center bg-primary text-white"
+              className="flex items-center gap-2 font-bold rounded-md w-52  p-3 text-17 justify-center bg-primary text-white"
               disabled={isLoading}
             >
               {isLoading ? (
@@ -107,7 +107,7 @@ function ChangePassword() {
             alt="success"
             className="w-32 mt-6"
           />
-          <h1 className="font-bold">{t("successChangePass")}</h1>
+          <h1 className="font-bold rtl:text-[18px]">{t("successChangePass")}</h1>
         </div>
       </SuccessModal>
     </div>

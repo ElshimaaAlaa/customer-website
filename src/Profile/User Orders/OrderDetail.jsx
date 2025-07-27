@@ -11,6 +11,7 @@ import { TbCirclePlus } from "react-icons/tb";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { ClipLoader } from "react-spinners";
 import { useTranslation } from "react-i18next";
+import CancelOrder from "./CancelOrder";
 function OrderDetails() {
   const [orderDetail, setOrderDetails] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -72,33 +73,33 @@ function OrderDetails() {
   return (
     <div className="bg-white pb-10">
       <Helmet>
-        <title>Order Details | VERTEX</title>
+        <title>
+          {t("orderDetail")} | {t("vertex")}
+        </title>
       </Helmet>
 
       <section className="userHeader w-full h-[65vh] flex flex-col justify-center items-center text-center text-white">
         <h1 className="text-5xl font-bold mb-4">{t("myAcc")}</h1>
-        <p className="text-17 font-light">
-          {t("accHead")}
-        </p>
+        <p className="text-17 font-light">{t("accHead")}</p>
       </section>
 
-      <section className="p-8 bg-customOrange-lightOrange flex items-center justify-between px-20">
+      <section className="py-8 px-3 md:p-8 lg:p-8 bg-customOrange-lightOrange flex items-center justify-between md:px-14 lg:px-28">
         <div className="flex items-center gap-2">
           <FaCircleDollarToSlot color="#E0A75E" size={22} />
-          <p className="text-gray-600 text-16">
+          <p className="text-gray-600 text-14 md:text-[20px] lg:text-16">
             {t("currentBalance")}
-            <span className="text-black text-xl font-bold ms-2">
+            <span className="text-black text-12 rtl:text-14 md:rtl:text-[20px] md:text-[20px] lg:text-xl font-bold ms-2">
               $ {orderDetail.balance}
             </span>
           </p>
         </div>
-        <p className="font-bold text-primary flex items-center gap-1 text-lg">
+        <p className="font-bold text-primary cursor-pointer text-12 rtl:text-14  md:rtl:text-[18px] rtl:lg:text-[18px] lg:text-lg flex items-center gap-1">
           <TbCirclePlus size={23} />
           {t("addBalance")}
         </p>
       </section>
 
-      <div className="px-20 py-10">
+      <div className="px-5 lg:px-20 py-10">
         <button
           className="text-primary text-15 underline flex items-center rounded-md -ms-4 mb-2 p-3 gap-2"
           onClick={() => navigate("/Home/UserProfile/UserOrder")}
@@ -106,8 +107,10 @@ function OrderDetails() {
           <IoIosArrowRoundBack size={25} /> {t("backToOrders")}
         </button>
 
-        <h3 className="font-bold text-xl mb-3">{t("viewOrder")}</h3>
-
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="font-bold text-xl">{t("viewOrder")}</h3>
+          <CancelOrder />
+        </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
           <div className="lg:col-span-2 space-y-5">
             <section className="border border-gray-200 rounded-md p-4 bg-white">
@@ -309,7 +312,9 @@ function OrderDetails() {
 
               {/* Customer Details */}
               <section className="border border-gray-200 rounded-lg p-4 bg-white">
-                <h2 className="font-bold text-15 mb-4">{t("customerDetails")}</h2>
+                <h2 className="font-bold text-15 mb-4">
+                  {t("customerDetails")}
+                </h2>
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center gap-2 text-14 font-bold underline">
                     <span className="text-gray-500">{icons[2]?.icon}</span>
@@ -357,9 +362,7 @@ function OrderDetails() {
                   <div className="mt-5 flex justify-between">
                     <div>
                       <p>{t("balance")}</p>
-                      <span className="text-gray-500 text-13">
-                        {t("own")}
-                      </span>
+                      <span className="text-gray-500 text-13">{t("own")}</span>
                     </div>
                     <p className="text-gray-400 text-15">
                       $ {orderDetail.balance || 0}

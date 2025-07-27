@@ -7,6 +7,7 @@ import { CiLocationOn } from "react-icons/ci";
 import { MdOutlineLocalGroceryStore } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { useTranslation } from "react-i18next";
+import LogOut from "../../Auth/LogOut/LogOut";
 function InfoSideBar() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -29,7 +30,7 @@ function InfoSideBar() {
     {
       IconComponent: MdOutlineLocalGroceryStore,
       alt: "",
-      label:t("myOrders"),
+      label: t("myOrders"),
       path: "UserOrder",
     },
     {
@@ -62,37 +63,37 @@ function InfoSideBar() {
   return (
     <aside className="w-full">
       <div className="flex flex-col gap-7 border-r rtl:border-l rtl:border-r-0 p-4 md:p-4">
-        {menuItems.map(
-          ({ IconComponent, label, path, exactMatch }, index) => (
-            <button
-              key={index}
-              className={`flex items-center gap-1 ${
+        {menuItems.map(({ IconComponent, label, path, exactMatch }, index) => (
+          <button
+            key={index}
+            className={`flex items-center gap-1 ${
+              isActive(path, exactMatch) ? "text-primary" : ""
+            }`}
+            aria-label={label}
+            onClick={() => handleItemClick(path)}
+          >
+            <div
+              className={`w-6 h-6 me-3 ${
+                isActive(path, exactMatch) ? "text-primary" : "text-gray-600"
+              }`}
+            >
+              <IconComponent
+                className="w-full h-full"
+                stroke={isActive(path, exactMatch) ? "#E0A75E" : "#000"}
+              />
+            </div>
+            <p
+              className={`font-semibold text-16 md:text-11 lg:text-16  mt-1 ${
                 isActive(path, exactMatch) ? "text-primary" : ""
               }`}
-              aria-label={label}
-              onClick={() => handleItemClick(path)}
             >
-              <div
-                className={`w-6 h-6 me-3 ${
-                  isActive(path, exactMatch) ? "text-primary" : "text-gray-600"
-                }`}
-              >
-                <IconComponent
-                  className="w-full h-full"
-                  stroke={isActive(path, exactMatch) ? "#E0A75E" : "#000"}
-                />
-              </div>
-              <p
-                className={`font-semibold text-16 md:text-11 lg:text-16  mt-1 ${
-                  isActive(path, exactMatch) ? "text-primary" : ""
-                }`}
-              >
-                {label}
-              </p>
-            </button>
-          )
-        )}
+              {label}
+            </p>
+          </button>
+        ))}
         <DeleteAccount />
+        {/* logout */}
+        <LogOut />
       </div>
     </aside>
   );

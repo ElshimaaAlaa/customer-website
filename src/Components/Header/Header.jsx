@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, useMemo } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import "swiper/css";
@@ -15,8 +15,9 @@ const Header = () => {
   const [activeSlide, setActiveSlide] = useState(0);
   const [swiperInstance, setSwiperInstance] = useState(null);
   const { t, i18n } = useTranslation();
-  const [isRtl, setIsRtl] = useState(false);
-  const headerImages = [
+  const isRtl = i18n.language === "ar";
+
+  const headerImages = useMemo(() => [
     {
       id: 1,
       src: headerImage1,
@@ -35,7 +36,7 @@ const Header = () => {
       alt: "Winter Collection 3",
       title: t("headerP3"),
     },
-  ];
+  ], [t]);
 
   const handleExploreClick = () => {
     const nextSection = document.getElementById("next-section");
@@ -43,13 +44,10 @@ const Header = () => {
       nextSection.scrollIntoView({ behavior: "smooth" });
     }
   };
-  useEffect(() => {
-    setIsRtl(i18n.language === "ar");
-  }, [i18n.language]);
 
   return (
     <>
-      <header className="header">
+      <header className="header" key={`header-${i18n.language}`}>
         <Swiper
           modules={[Autoplay, Pagination, Navigation]}
           spaceBetween={0}
@@ -58,9 +56,11 @@ const Header = () => {
           loop={true}
           onSlideChange={(swiper) => setActiveSlide(swiper.realIndex)}
           onSwiper={setSwiperInstance}
+          dir={isRtl ? "rtl" : "ltr"} // إضافة dir للسيطرة على الاتجاه
+          key={`swiper-${i18n.language}`} // إضافة key لتجنب مشاكل التحميل
         >
           {headerImages.map((image) => (
-            <SwiperSlide key={image.id}>
+            <SwiperSlide key={`${image.id}-${i18n.language}`}>
               <div
                 className="slide-image"
                 style={{ backgroundImage: `url(${image.src})` }}
@@ -94,7 +94,7 @@ const Header = () => {
         <div className="tabs-container">
           {headerImages.map((image, index) => (
             <button
-              key={image.id}
+              key={`tab-${image.id}-${i18n.language}`}
               className={`tab ${activeSlide === index ? "active" : ""}`}
               onClick={() => swiperInstance?.slideTo(index)}
             />
@@ -106,4 +106,5 @@ const Header = () => {
     </>
   );
 };
+
 export default Header;

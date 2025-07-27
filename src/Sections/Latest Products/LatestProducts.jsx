@@ -8,10 +8,10 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import { IoIosArrowRoundForward, IoIosArrowRoundBack } from "react-icons/io";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import SuccessModal from "../../Components/Modal/Success Modal/SuccessModal";
+import AuthModal from "../../Components/Modal/Success Modal/AuthModal";
 
 function LatestProducts() {
   const [isLoading, setIsLoading] = useState(false);
@@ -21,7 +21,9 @@ function LatestProducts() {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const [isRtl, setIsRtl] = useState(false);
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const token = localStorage.getItem("user token");
+  const [showModal, setShowModal] = useState(false);
   useEffect(() => {
     const fetchProducts = async () => {
       setIsLoading(true);
@@ -33,6 +35,7 @@ function LatestProducts() {
         if (storedWishlist) {
           setWishlistItems(JSON.parse(storedWishlist));
         }
+        setIsLoggedIn(!!token);
       } catch (error) {
         setError(error);
       } finally {
@@ -41,9 +44,12 @@ function LatestProducts() {
     };
     fetchProducts();
     setIsRtl(i18n.language === "ar");
-  }, [i18n.language]);
+  }, [i18n.language, token]);
 
   const handleWishlistToggle = async (productId) => {
+    if (!isLoggedIn) {
+      setShowModal(true);
+    }
     try {
       const isInWishlist = wishlistItems.includes(productId);
       const updatedWishlist = isInWishlist
@@ -57,26 +63,12 @@ function LatestProducts() {
       if (!response.success) {
         throw new Error(response.message || t("wishlistUpdateError"));
       }
-
-      toast.success(
-        isInWishlist
-          ? t("productRemovedFromWishlist")
-          : t("productAddedToWishlist"),
-        {
-          position: "top-right",
-          autoClose: 3000,
-        }
-      );
     } catch (error) {
       setWishlistItems((prev) =>
         prev.includes(productId)
           ? prev.filter((id) => id !== productId)
           : [...prev, productId]
       );
-      toast.error(error.message || t("wishlistUpdateError"), {
-        position: "top-right",
-        autoClose: 3000,
-      });
     }
   };
 
@@ -153,7 +145,7 @@ function LatestProducts() {
   };
 
   return (
-    <div className="px-4 md:px-10 py-10 relative">
+    <div className="px-4 md:px-10 lg:px-20 py-10 relative">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold mb-6 rtl:text-[22px]">
           {t("latestProducts")}
@@ -162,7 +154,12 @@ function LatestProducts() {
           className="text-primary w-32 flex items-center rounded-md justify-center font-bold p-3 gap-2"
           onClick={() => navigate("/Home/Products")}
         >
-          {t("viewAll")}  {isRtl ?<IoIosArrowRoundBack size={25} /> : <IoIosArrowRoundForward size={25} /> }
+          {t("viewAll")}{" "}
+          {isRtl ? (
+            <IoIosArrowRoundBack size={25} />
+          ) : (
+            <IoIosArrowRoundForward size={25} />
+          )}
         </button>
       </div>
 
@@ -295,6 +292,9 @@ function LatestProducts() {
           </div>
         </div>
       )}
+      <SuccessModal isOpen={showModal} onClose={() => setShowModal(false)}>
+        <AuthModal initialMode="login" onClose={() => setShowModal(false)} />
+      </SuccessModal>
     </div>
   );
 }

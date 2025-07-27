@@ -1,45 +1,62 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import TopSection from "./TopSection";
 import BottomSection from "./BottomSection";
 import { useTranslation } from "react-i18next";
 
 function Navbar() {
-  const { t, i18n } = useTranslation();
-  const [isRTL, setIsRTL] = useState(false);
+  const { i18n } = useTranslation();
+  const [isRTL, setIsRTL] = useState(i18n.language === "ar");
 
-  // Set initial language from localStorage or default to 'en'
-  useEffect(() => {
-    const savedLanguage = localStorage.getItem("selectedLanguage") || "en";
-    const applyLanguageSettings = (lng) => {
-      document.documentElement.dir = lng === "ar" ? "rtl" : "ltr";
-      document.documentElement.lang = lng;
-      setIsRTL(lng === "ar");
-    };
-
-    if (savedLanguage !== i18n.language) {
-      i18n.changeLanguage(savedLanguage).then(() => {
-        applyLanguageSettings(savedLanguage);
-      });
-    } else {
-      applyLanguageSettings(savedLanguage);
+  const handleLanguageChange = async (lng) => {
+    try {
+      localStorage.setItem("selectedLanguage", lng);
+      await i18n.changeLanguage(lng);
+      applyLanguageSettings(lng);
+    } catch (error) {
+      console.error("Failed to change language:", error);
+      localStorage.setItem("selectedLanguage", "en");
+      await i18n.changeLanguage("en");
+      applyLanguageSettings("en");
     }
-  }, [i18n]);
-
-  const handleLanguageChange = (lng) => {
-    localStorage.setItem("selectedLanguage", lng);
-    i18n.changeLanguage(lng).then(() => {
-      document.documentElement.dir = lng === "ar" ? "rtl" : "ltr";
-      document.documentElement.lang = lng;
-      setIsRTL(lng === "ar");
-    });
   };
 
+  const applyLanguageSettings = (lng) => {
+    document.documentElement.dir = lng === "ar" ? "rtl" : "ltr";
+    document.documentElement.lang = lng;
+    setIsRTL(lng === "ar");
+  };
+
+  useEffect(() => {
+    const initializeLanguage = async () => {
+      const savedLanguage = localStorage.getItem("selectedLanguage");
+      const languageToUse = savedLanguage || i18n.language;
+      
+      try {
+        if (savedLanguage && savedLanguage !== i18n.language) {
+          await i18n.changeLanguage(savedLanguage);
+        }
+        applyLanguageSettings(languageToUse);
+      } catch (error) {
+        console.error("Language initialization failed:", error);
+        // Fallback to English
+        localStorage.setItem("selectedLanguage", "en");
+        await i18n.changeLanguage("en");
+        applyLanguageSettings("en");
+      }
+    };
+
+    initializeLanguage();
+  }, [i18n]);
+
   return (
-    <div className={isRTL ? "rtl" : "ltr"}>
-      <TopSection />
-      <BottomSection onLanguageChange={handleLanguageChange} currentLanguage={i18n.language} />
+    <div className={`navbar-container ${isRTL ? "rtl" : "ltr"}`}>
+      <TopSection isRTL={isRTL} />
+      <BottomSection
+        onLanguageChange={handleLanguageChange}
+        currentLanguage={i18n.language}
+        isRTL={isRTL}
+      />
     </div>
   );
 }
-
 export default Navbar;

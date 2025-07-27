@@ -72,8 +72,10 @@ function OpinionSection() {
 
   return (
     <section className="px-4 md:px-8 lg:px-10 mt-6 mb-10">
-      <h2 className="font-bold text-2xl mb-6 rtl:text-[22px]">{t("clientOpnion")}</h2>
-      <div className="carousel-container mt-3 relative">
+      <h2 className="font-bold text-2xl mb-6 rtl:text-[22px] ps-10">
+        {t("clientOpnion")}
+      </h2>
+      <div className={`carousel-container mt-3 relative ${isRtl? "rtl" : "ltr"}`}>
         <Carousel
           responsive={responsive}
           infinite={true}
@@ -84,6 +86,7 @@ function OpinionSection() {
           containerClass="carousel"
           itemClass="px-2 lg:mx-10"
           partialVisible={false}
+          rtl={isRtl}
         >
           {clientData.map((opinion, index) => (
             <div

@@ -207,5 +207,4 @@ function AboutExpiredPromo() {
     </div>
   );
 }
-
 export default AboutExpiredPromo;

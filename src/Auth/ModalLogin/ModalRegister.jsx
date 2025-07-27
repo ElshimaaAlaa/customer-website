@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import "./Register.scss";
 import OAuth from "../OAuth/OAuth";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -13,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { IoIosArrowDown } from "react-icons/io";
 
-function Register() {
+function ModalRegister({ onSwitchToLogin, onClose }) {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
@@ -60,34 +59,40 @@ function Register() {
         values.agreeToTerms
       );
       console.log("Registration Successful:", registerData);
+      onClose?.();
       navigate("/Login");
     } catch (error) {
       setLoading(false);
       console.error(error.message);
-      setError("Failed to register. Please try again.");
+      setError(t("registrationFailed"));
     }
   };
+
   useEffect(() => {
     const savedLanguage = localStorage.getItem("selectedLanguage") || "en";
     i18n.changeLanguage(savedLanguage);
     setIsRTL(savedLanguage === "ar");
   }, [i18n]);
-  // Update RTL state and localStorage when language changes
+
   useEffect(() => {
     const currentLanguage = i18n.language;
     setIsRTL(currentLanguage === "ar");
     localStorage.setItem("selectedLanguage", currentLanguage);
   }, [i18n.language]);
+
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
     setShowLanguageDropdown(false);
     localStorage.setItem("selectedLanguage", lng);
   };
+
   return (
-    <div className="maincontainer" dir={isRTL ? "rtl" : "ltr"}>
+    <div className="p-4" dir={isRTL ? "rtl" : "ltr"}>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>{t("createAccount")} | {t("vertex")}</title>
+        <title>
+          {t("createAccount")} | {t("vertex")}
+        </title>
         <html dir={isRTL ? "rtl" : "ltr"} lang={i18n.language} />{" "}
       </Helmet>
       <div className="registerContainer lg:w-450 md:w-450 sm:w-450 xs:w-450 s:w-450 bg-gray-50">
@@ -141,10 +146,18 @@ function Register() {
           {({ values, errors, touched }) => (
             <Form className="flex flex-col">
               <div className="relative mt-3">
-                <AuthInputField placeholder={t("name")} name="name" dir={isRTL?"rtl":"ltr"}/>
+                <AuthInputField
+                  placeholder={t("name")}
+                  name="name"
+                  dir={isRTL ? "rtl" : "ltr"}
+                />
               </div>
               <div className="relative mt-3">
-                <AuthInputField placeholder={t("email")} name="email" dir={isRTL?"rtl":"ltr"} />
+                <AuthInputField
+                  placeholder={t("email")}
+                  name="email"
+                  dir={isRTL ? "rtl" : "ltr"}
+                />
               </div>
               <PasswordInput
                 name="password"
@@ -194,7 +207,11 @@ function Register() {
               <div className="mt-3 mb-3">
                 <MainBtn
                   text={
-                    loading ? <ClipLoader color="#fff" size={22} /> : t("signUp")
+                    loading ? (
+                      <ClipLoader color="#fff" size={22} />
+                    ) : (
+                      t("signUp")
+                    )
                   }
                   btnType="submit"
                   disabled={loading}
@@ -207,7 +224,9 @@ function Register() {
 
               <div className="flex items-center justify-center w-full">
                 <div className="border-t border-gray-300 flex-grow"></div>
-                <span className="mx-4 text-gray-400 text-13 font-bold">{t("or")}</span>
+                <span className="mx-4 text-gray-400 text-13 font-bold">
+                  {t("or")}
+                </span>
                 <div className="border-t border-gray-300 flex-grow"></div>
               </div>
 
@@ -216,7 +235,7 @@ function Register() {
               <p className="text-center text-gray-400 mt-3 text-15">
                 {t("haveAcc")}
                 <span
-                  onClick={() => navigate("/Login")}
+                  onClick={onSwitchToLogin}
                   className="ms-2 text-primary font-bold text-17 cursor-pointer rtl:text-[16px]"
                 >
                   {t("logIn")}
@@ -229,4 +248,4 @@ function Register() {
     </div>
   );
 }
-export default Register;
+export default ModalRegister;

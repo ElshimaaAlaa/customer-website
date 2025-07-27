@@ -1,10 +1,9 @@
-import React from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useShoppingCart } from "../../Cart Context/CartContext";
 import { useTranslation } from "react-i18next";
+import { useShoppingCart } from "../../../Cart Context/CartContext";
 const Cart = () => {
   const {
     cartItems,

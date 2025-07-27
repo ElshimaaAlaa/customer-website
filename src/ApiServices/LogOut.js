@@ -1,5 +1,5 @@
 import axios from "axios";
-export const logOut = async () => {
+export const handleLogOut = async () => {
   try {
     const response = await axios({
       url: `https://demo.vrtex.duckdns.org/api/logout`,
@@ -7,7 +7,7 @@ export const logOut = async () => {
     });
     if (response.status === 200) {
       console.log("Logged out successfully");
-      localStorage.removeItem("token");
+      localStorage.clear();
       return true;
     } else {
       console.error("Failed to log out");

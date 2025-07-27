@@ -203,7 +203,7 @@ function UserOrder() {
                     </td>
                     <td className="px-3 py-3 border">
                       <span
-                        className={`px-2 py-2 rounded-md text-14 text-center ${
+                        className={`px-2 rounded-md text-14 text-center ${
                           order.payment_status === "unpaid" || "غير مدفوع"
                             ? "bg-gray-100 text-gray-400"
                             : order.payment_status === "paid" || "مدفوع"
@@ -218,7 +218,7 @@ function UserOrder() {
                     </td>
                     <td className="px-3 py-3 border-t">
                       <span
-                        className={`px-2 py-2 rounded-md text-14 text-center  ${
+                        className={`px-2 rounded-md text-14 text-center  ${
                           order.status === 8
                             ? "bg-red-50 text-red-600"
                             : order.status === 2

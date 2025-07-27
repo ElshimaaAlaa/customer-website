@@ -27,7 +27,7 @@ function Address() {
         <h1 className="font-bold text-xl">{t("address")}</h1>
         <button
           onClick={handleEditClick}
-          className="text-white font-semibold flex items-center justify-center gap-3 bg-primary p-3 w-24 rounded-md"
+          className="text-white font-semibold flex items-center justify-center gap-3 bg-primary p-2 w-24 rounded-md"
           aria-label="Edit personal information"
         >
           <img src="/assets/svgs/edit.svg" alt="Edit" className="w-7" />

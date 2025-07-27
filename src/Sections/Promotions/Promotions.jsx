@@ -8,8 +8,10 @@ import "swiper/css/navigation";
 import "./Promotions.scss";
 import { useTranslation } from "react-i18next";
 import { useShoppingCart } from "../../Cart Context/CartContext";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { IoIosCart } from "react-icons/io";
+import SuccessModal from "../../Components/Modal/Success Modal/SuccessModal";
+import AuthModal from "../../Components/Modal/Success Modal/AuthModal";
 
 function Promotions() {
   const [isLoading, setIsLoading] = useState(false);
@@ -19,7 +21,9 @@ function Promotions() {
   const { t, i18n } = useTranslation();
   const [isRtl, setIsRtl] = useState(false);
   const { AddProductToCart } = useShoppingCart();
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const token = localStorage.getItem("user token");
   useEffect(() => {
     const fetchProducts = async () => {
       setIsLoading(true);
@@ -33,10 +37,15 @@ function Promotions() {
       }
     };
     fetchProducts();
+    setIsLoading(!!token);
     setIsRtl(i18n.language === "ar");
-  }, [i18n.language]);
+  }, [i18n.language, token]);
 
   const handleAddPromotionToCart = (promotion) => {
+    if (!isLoggedIn) {
+      setShowModal(true);
+      return
+    }
     const packageItem = {
       id: `promo-${promotion.id}`,
       title: getTranslatedField(promotion, "title") || t("promotionPackage"),
@@ -72,7 +81,12 @@ function Promotions() {
       return (
         <div className="flex items-center">
           {[...Array(5)].map((_, i) => (
-            <svg key={`empty-${i}`} className="w-5 h-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+            <svg
+              key={`empty-${i}`}
+              className="w-5 h-5 text-gray-300"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
               <path d={starPath} />
             </svg>
           ))}
@@ -87,12 +101,21 @@ function Promotions() {
     return (
       <div className="flex items-center">
         {[...Array(fullStars)].map((_, i) => (
-          <svg key={`full-${i}`} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+          <svg
+            key={`full-${i}`}
+            className="w-5 h-5 text-yellow-400"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
             <path d={starPath} />
           </svg>
         ))}
         {hasHalfStar && (
-          <svg className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+          <svg
+            className="w-5 h-5 text-yellow-400"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
             <defs>
               <linearGradient id="half-star" x1="0" x2="100%" y1="0" y2="0">
                 <stop offset="50%" stopColor="currentColor" />
@@ -103,7 +126,12 @@ function Promotions() {
           </svg>
         )}
         {[...Array(emptyStars)].map((_, i) => (
-          <svg key={`empty-${i}`} className="w-5 h-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+          <svg
+            key={`empty-${i}`}
+            className="w-5 h-5 text-gray-300"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
             <path d={starPath} />
           </svg>
         ))}
@@ -112,25 +140,38 @@ function Promotions() {
   };
 
   return (
-    <div className="px-4 md:px-10 py-5 relative">
-      <h1 className="text-2xl font-bold mb-6 rtl:text-[22px]">{t("promotions")}</h1>
+    <div className="px-4 md:px-10 lg:px-20 py-5 relative">
+      <h1 className="text-2xl font-bold mb-6 rtl:text-[22px]">
+        {t("promotions")}
+      </h1>
       {error ? (
-        <div className="text-red-500 text-15 text-center mt-10 rtl:text-[18px]">{t("error")}</div>
+        <div className="text-red-500 text-15 text-center mt-10 rtl:text-[18px]">
+          {t("error")}
+        </div>
       ) : isLoading ? (
         <div className="text-gray-400 text-center mt-10">
           <ClipLoader color="#E0A75E" />
         </div>
       ) : promotions.length === 0 ? (
-        <div className="text-gray-400 text-15 text-center mt-10">{t("noPromo")}</div>
+        <div className="text-gray-400 text-15 text-center mt-10">
+          {t("noPromo")}
+        </div>
       ) : (
         <div className="relative">
           <Swiper
             modules={[Navigation, Autoplay]}
             spaceBetween={20}
             slidesPerView={1}
-            navigation={{ nextEl: ".custom-swiper-button-next", prevEl: ".custom-swiper-button-prev" }}
+            navigation={{
+              nextEl: ".custom-swiper-button-next",
+              prevEl: ".custom-swiper-button-prev",
+            }}
             autoplay={{ delay: 3000 }}
-            breakpoints={{ 640: { slidesPerView: 2 }, 768: { slidesPerView: 2 }, 1024: { slidesPerView: 3 } }}
+            breakpoints={{
+              640: { slidesPerView: 2 },
+              768: { slidesPerView: 2 },
+              1024: { slidesPerView: 3 },
+            }}
           >
             {promotions.flatMap((promotion) =>
               promotion.promotion_items?.map((item) => (
@@ -140,13 +181,23 @@ function Promotions() {
                     onMouseEnter={() => setHoveredItem(item.id)}
                     onMouseLeave={() => setHoveredItem(null)}
                   >
-                    <div className={`absolute inset-0 bg-black bg-opacity-30 transition-opacity duration-300 ${hoveredItem === item.id ? "opacity-100" : "opacity-0"}`}></div>
+                    <div
+                      className={`absolute inset-0 bg-black bg-opacity-30 transition-opacity duration-300 ${
+                        hoveredItem === item.id ? "opacity-100" : "opacity-0"
+                      }`}
+                    ></div>
 
                     <div className="relative bg-gray-50 border rounded-md flex justify-center">
                       <div className="absolute rounded-md overlay-div">
                         <div className="flex justify-end mx-2 my-2">
                           <p className="bg-red-600 text-14 text-white rounded-full p-2 text-center">
-                            {isRtl ? `${t("offer")} ${item.product.discount_percentage}% -` : `${t("offer")} - ${item.product.discount_percentage}%`}
+                            {isRtl
+                              ? `${t("offer")} ${
+                                  item.product.discount_percentage
+                                }% -`
+                              : `${t("offer")} - ${
+                                  item.product.discount_percentage
+                                }%`}
                           </p>
                         </div>
                         <div className="flex h-56 mx-3 items-end">
@@ -154,22 +205,36 @@ function Promotions() {
                             <h3 className="font-bold text-white text-xl mt-3">
                               {getTranslatedField(item.product, "name")}
                             </h3>
-                            <div className="flex items-center gap-3">{renderRating(item.product.rate)}</div>
+                            <div className="flex items-center gap-3">
+                              {renderRating(item.product.rate)}
+                            </div>
                             <div className="flex items-center gap-2 mt-1">
-                              {item.product.price_after_discount && item.product.price_after_discount !== item.product.price ? (
+                              {item.product.price_after_discount &&
+                              item.product.price_after_discount !==
+                                item.product.price ? (
                                 isRtl ? (
                                   <>
-                                    <span className="text-gray-300 mt-1 text-15 line-through">${item.product.price}</span>
-                                    <span className="text-white text-lg font-bold">${item.product.price_after_discount}</span>
+                                    <span className="text-gray-300 mt-1 text-15 line-through">
+                                      ${item.product.price}
+                                    </span>
+                                    <span className="text-white text-lg font-bold">
+                                      ${item.product.price_after_discount}
+                                    </span>
                                   </>
                                 ) : (
                                   <>
-                                    <span className="text-white text-lg font-bold">${item.product.price_after_discount}</span>
-                                    <span className="text-gray-300 mt-1 text-15 line-through">${item.product.price}</span>
+                                    <span className="text-white text-lg font-bold">
+                                      ${item.product.price_after_discount}
+                                    </span>
+                                    <span className="text-gray-300 mt-1 text-15 line-through">
+                                      ${item.product.price}
+                                    </span>
                                   </>
                                 )
                               ) : (
-                                <span className="text-white text-lg font-bold">${item.product.price}</span>
+                                <span className="text-white text-lg font-bold">
+                                  ${item.product.price}
+                                </span>
                               )}
                             </div>
                           </div>
@@ -190,7 +255,11 @@ function Promotions() {
 
                     {/* Add to Cart Button - Large Screens */}
                     <div
-                      className={`absolute bottom-4 hidden lg:flex left-4 transition-all duration-300 transform ${hoveredItem === item.id ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"}`}
+                      className={`absolute bottom-4 hidden lg:flex transition-all duration-300 transform ${
+                        hoveredItem === item.id
+                          ? "translate-y-0 opacity-100"
+                          : "translate-y-4 opacity-0"
+                      } lg:right-4 lg:rtl:right-auto lg:rtl:left-4`}
                     >
                       <button
                         onClick={() => handleAddPromotionToCart(promotion)}
@@ -202,7 +271,11 @@ function Promotions() {
 
                     {/* Add to Cart Button - Small & Medium Screens */}
                     <div
-                      className={`absolute top-4 right-4 flex lg:hidden transition-all duration-300 transform ${hoveredItem === item.id ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"}`}
+                      className={`absolute top-4 right-4 flex lg:hidden transition-all duration-300 transform ${
+                        hoveredItem === item.id
+                          ? "translate-y-0 opacity-100"
+                          : "translate-y-4 opacity-0"
+                      }`}
                     >
                       <button
                         onClick={() => handleAddPromotionToCart(promotion)}
@@ -219,8 +292,11 @@ function Promotions() {
           </Swiper>
         </div>
       )}
+      <ToastContainer />
+      <SuccessModal isOpen={showModal} onClose={() => setShowModal(false)}>
+        <AuthModal initialMode="login" onClose={() => setShowModal(false)} />
+      </SuccessModal>
     </div>
   );
 }
-
 export default Promotions;

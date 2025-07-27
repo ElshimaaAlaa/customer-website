@@ -11,6 +11,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import SuccessModal from "../../Components/Modal/Success Modal/SuccessModal";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import DeletePayment from "./DeletePayment";
 function Payment() {
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -76,7 +77,7 @@ function Payment() {
             <GooglePay />
             Google Pay
           </p>
-          <button className="text-red-600 text-16 font-bold">{t("delete")}</button>
+          <DeletePayment/>
         </div>
       </section>
       <section className="border border-gray-200 p-4 rounded-lg bg-gray-50 mt-3">
@@ -108,7 +109,6 @@ function Payment() {
               <InputField
                 name="card_number"
                 placeholder={t("cardNumber")}
-                type="tel"
                 inputMode="numeric"
               />
             </div>
@@ -137,13 +137,13 @@ function Payment() {
             className="w-32 mt-6"
           />
           <p className="font-bold mt-5 text-center">
-            Payment Data updated successfully!
+            {t("successAddPayment")}
           </p>
           <button
             className="bg-primary text-white rounded-md p-2 text-14 mt-4 w-32 "
             onClick={() => navigate("/Home/UserProfile")}
           >
-            Done
+            {t("done")}
           </button>
         </div>
       </SuccessModal>
