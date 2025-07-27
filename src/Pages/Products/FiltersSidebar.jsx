@@ -36,7 +36,7 @@ export default function FiltersSidebar({
               setSearchTerm(e.target.value);
               setCurrentPage(1);
             }}
-            className="w-full h-12 pl- rtl:pr-10 rtl:text-[16px] pr-4 py-5 bg-muted/50 rounded-lg text-sm focus:outline-none border-2 border-gray-200 bg-gray-50 placeholder:text-13 focus:border-primary"
+            className="w-full h-12 pl-10 rtl:pr-10 rtl:text-[16px] pr-4 py-5 bg-muted/50 rounded-lg text-sm focus:outline-none border-2 border-gray-200 bg-gray-50 placeholder:text-13 focus:border-primary"
           />
         </div>
       </div>

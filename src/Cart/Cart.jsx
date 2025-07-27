@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useTranslation } from "react-i18next";
-import { useShoppingCart } from "../../../Cart Context/CartContext";
+import { useShoppingCart } from "../Context/CartContext";
+// import { useShoppingCart } from "../../../Cart Context/CartContext";
 const Cart = () => {
   const {
     cartItems,

@@ -1,6 +1,6 @@
 import Quality from "../../Sections/Quality Section/Quality";
 import OpinionSection from "../../Sections/Opnion Section/ClientOpinion";
-import Header from "../../Components/Header/Header";
+import Header from "../../Layout/Header/Header";
 import FeaturedCategories from "../../Sections/Featured Categories/FeaturedCategories";
 import LatestProducts from "../../Sections/Latest Products/LatestProducts";
 import BestSalesProducts from "../../Sections/Best Selling/BestSellingProducts";

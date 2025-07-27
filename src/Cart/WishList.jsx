@@ -4,10 +4,9 @@ import { IoIosArrowRoundForward, IoIosHeart } from "react-icons/io";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { getWishListData } from "../../../ApiServices/Wishlist";
-import { toggleWishlist } from "../../../ApiServices/ToggleWishlist";
-import { CartContext } from "../../../Cart Context/CartContext";
-
+import { getWishListData } from "../ApiServices/Wishlist";
+import { toggleWishlist } from "../ApiServices/ToggleWishlist";
+import { CartContext } from "../Context/CartContext";
 function WishList() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);

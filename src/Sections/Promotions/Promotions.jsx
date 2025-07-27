@@ -7,7 +7,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "./Promotions.scss";
 import { useTranslation } from "react-i18next";
-import { useShoppingCart } from "../../Cart Context/CartContext";
+import { useShoppingCart } from "../../Context/CartContext";
 import { toast, ToastContainer } from "react-toastify";
 import { IoIosCart } from "react-icons/io";
 import SuccessModal from "../../Components/Modal/Success Modal/SuccessModal";
@@ -37,14 +37,14 @@ function Promotions() {
       }
     };
     fetchProducts();
-    setIsLoading(!!token);
+    setIsLoggedIn(!!token);
     setIsRtl(i18n.language === "ar");
   }, [i18n.language, token]);
 
   const handleAddPromotionToCart = (promotion) => {
     if (!isLoggedIn) {
       setShowModal(true);
-      return
+      return;
     }
     const packageItem = {
       id: `promo-${promotion.id}`,
@@ -62,7 +62,6 @@ function Promotions() {
         image: item.product.images?.[0]?.src,
       })),
     };
-
     AddProductToCart(packageItem);
     toast.success(t("successAdded"));
   };

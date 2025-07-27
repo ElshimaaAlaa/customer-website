@@ -1,11 +1,11 @@
-import Header from "../../Components/Header/Header";
+import Header from "../../Layout/Header/Header";
 import { useEffect, useState, useMemo, useContext } from "react";
 import { getProducts } from "../../ApiServices/Products";
 import { ClipLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
 import { toggleWishlist } from "../../ApiServices/ToggleWishlist";
 import { useTranslation } from "react-i18next";
-import { CartContext } from "../../Cart Context/CartContext";
+import { CartContext } from "../../Context/CartContext";
 import FiltersSidebar from "./FiltersSidebar";
 import ProductCard from "./ProductCard";
 import ActiveFilters from "./ActiveFilters";
@@ -22,7 +22,7 @@ function Products() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [priceRange, setPriceRange] = useState([0, 1000]);
-  const [minRating, setMinRating] = useState(0);
+  const [selectedRatings, setSelectedRatings] = useState([]);
   const [sortOption, setSortOption] = useState("recent");
   const [currentPage, setCurrentPage] = useState(1);
   const [wishlistItems, setWishlistItems] = useState([]);
@@ -34,6 +34,7 @@ function Products() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const token = localStorage.getItem("user token");
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
@@ -42,9 +43,13 @@ function Products() {
           getProducts(),
           getCategories(),
         ]);
+        
+        console.log("Products:", productData);
+        console.log("Categories:", categoriesData);
+        
         setProducts(productData);
 
-        const maxPrice = Math.max(...productData.map((p) => p.price));
+        const maxPrice = Math.max(...productData.map((p) => p.price), 1000);
         setPriceRange([0, Math.ceil(maxPrice)]);
         setCategories(categoriesData);
 
@@ -111,7 +116,9 @@ function Products() {
     if (selectedCategories.length > 0) {
       result = result.filter(
         (product) =>
-          product.category && selectedCategories.includes(product.category.id)
+          product.category && 
+          product.category.id && 
+          selectedCategories.includes(product.category.id)
       );
     }
 
@@ -120,8 +127,11 @@ function Products() {
         product.price >= priceRange[0] && product.price <= priceRange[1]
     );
 
-    if (minRating > 0) {
-      result = result.filter((product) => (product.rate || 0) >= minRating);
+    if (selectedRatings.length > 0) {
+      result = result.filter((product) => {
+        const productRating = Math.floor(product.rate || 0);
+        return selectedRatings.includes(productRating);
+      });
     }
 
     switch (sortOption) {
@@ -142,14 +152,7 @@ function Products() {
     }
 
     return result;
-  }, [
-    products,
-    searchTerm,
-    selectedCategories,
-    priceRange,
-    minRating,
-    sortOption,
-  ]);
+  }, [products, searchTerm, selectedCategories, priceRange, selectedRatings, sortOption]);
 
   const handleCategoryToggle = (categoryId) => {
     setSelectedCategories((prev) =>
@@ -166,7 +169,11 @@ function Products() {
   };
 
   const handleRatingChange = (rating) => {
-    setMinRating(rating === minRating ? 0 : rating);
+    setSelectedRatings((prev) =>
+      prev.includes(rating)
+        ? prev.filter((r) => r !== rating)
+        : [...prev, rating]
+    );
     setCurrentPage(1);
   };
 
@@ -174,9 +181,10 @@ function Products() {
     setSearchTerm("");
     setSelectedCategories([]);
     if (products.length > 0) {
-      setPriceRange([0, Math.max(...products.map((p) => p.price))]);
+      const maxPrice = Math.max(...products.map((p) => p.price), 1000);
+      setPriceRange([0, Math.ceil(maxPrice)]);
     }
-    setMinRating(0);
+    setSelectedRatings([]);
     setSortOption("recent");
     setCurrentPage(1);
   };
@@ -195,7 +203,7 @@ function Products() {
     priceRange[0] > 0 ||
     (products.length > 0 &&
       priceRange[1] < Math.max(...products.map((p) => p.price))) ||
-    minRating > 0;
+    selectedRatings.length > 0;
 
   const getTranslatedField = (product, field) => {
     const language = i18n.language;
@@ -219,13 +227,13 @@ function Products() {
           handleCategoryToggle={handleCategoryToggle}
           priceRange={priceRange}
           handlePriceChange={handlePriceChange}
-          minRating={minRating}
+          selectedRatings={selectedRatings}
           handleRatingChange={handleRatingChange}
         />
 
         <section className="flex-1">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-bold text-2xl mt-5">{t("products")}</h3>
+            <h3 className="font-bold text-2xl mt-5 rtl:text-[22px]">{t("products")}</h3>
             <p className="text-sm text-gray-600">
               {t("showing")} {indexOfFirstProduct + 1}-
               {Math.min(indexOfLastProduct, filteredProducts.length)} {t("of")}{" "}
@@ -241,8 +249,8 @@ function Products() {
             priceRange={priceRange}
             setPriceRange={setPriceRange}
             products={products}
-            minRating={minRating}
-            setMinRating={setMinRating}
+            selectedRatings={selectedRatings}
+            setSelectedRatings={setSelectedRatings}
             hasActiveFilters={hasActiveFilters}
             clearAllFilters={clearAllFilters}
             t={t}
@@ -303,4 +311,5 @@ function Products() {
     </div>
   );
 }
+
 export default Products;

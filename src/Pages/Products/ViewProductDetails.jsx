@@ -13,8 +13,7 @@ import axios from "axios";
 import { toggleWishlist } from "../../ApiServices/ToggleWishlist";
 import { ClipLoader } from "react-spinners";
 import { useTranslation } from "react-i18next";
-import { CartContext } from "../../Cart Context/CartContext";
-
+import { CartContext } from "../../Context/CartContext";
 function ViewProductDetails() {
   const navigate = useNavigate();
   const { id } = useParams();

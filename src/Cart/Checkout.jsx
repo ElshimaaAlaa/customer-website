@@ -1,11 +1,11 @@
 import { Field, Form, Formik } from "formik";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import * as Yup from "yup";
-import InputField from "../../../Components/InputFields/InputField";
-import CreditCard from "../../../Svgs/CreditCard";
-import GooglePay from "../../../Svgs/GooglePay";
-import Paypal from "../../../Svgs/Paypal";
-import Visa from "../../../Svgs/Visa";
+import InputField from "../Components/InputFields/InputField";
+import CreditCard from "../Svgs/CreditCard";
+import GooglePay from "../Svgs/GooglePay";
+import Paypal from "../Svgs/Paypal";
+import Visa from "../Svgs/Visa";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { IoIosArrowRoundForward } from "react-icons/io";
 import { useTranslation } from "react-i18next";

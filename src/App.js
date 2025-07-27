@@ -19,10 +19,9 @@ import Products from "./Pages/Products/Products";
 import ViewProductDetails from "./Pages/Products/ViewProductDetails";
 
 // Checkout pages
-import WishList from "./Pages/Checkout/WishList/WishList";
-import Cart from "./Pages/Checkout/Cart/Cart";
-import Checkout from "./Pages/Checkout/Checkout/Checkout";
-
+import WishList from "./Cart/WishList";
+import Cart from "./Cart/Cart";
+import Checkout from "./Cart/Checkout";
 // Profile pages
 import UserProfile from "./Profile/UserProfile/UserProfile";
 import PersonalInformation from "./Profile/UserProfile/PersonalInformation";
@@ -35,8 +34,7 @@ import OrderDetails from "./Profile/User Orders/OrderDetail";
 import Payment from "./Profile/Payment/Payment";
 
 // Context
-import { CartProvider } from "./Cart Context/CartContext";
-
+import { CartProvider } from "./Context/CartContext";
 // i18n setup
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
