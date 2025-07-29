@@ -12,12 +12,15 @@ import { IoIosArrowRoundBack } from "react-icons/io";
 import { ClipLoader } from "react-spinners";
 import { useTranslation } from "react-i18next";
 import CancelOrder from "./CancelOrder";
+import RefundOrder from "./RefundOrder";
+
 function OrderDetails() {
   const [orderDetail, setOrderDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
   const navigate = useNavigate();
   const { t } = useTranslation();
+
   useEffect(() => {
     const fetchOrderDetails = async () => {
       try {
@@ -109,17 +112,24 @@ function OrderDetails() {
 
         <div className="flex items-center justify-between mb-3">
           <h3 className="font-bold text-xl">{t("viewOrder")}</h3>
-          <CancelOrder />
+          <div className="flex gap-2">
+            {orderDetail.status_name !== "Cancelled" && (
+              <CancelOrder order_id={orderDetail.id} />
+            )}
+            {orderDetail.status_name !== "Refunded" &&
+              orderDetail.status_name !== "Cancelled" && (
+                <RefundOrder order_id={orderDetail.id} />
+              )}
+          </div>
         </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
           <div className="lg:col-span-2 space-y-5">
             <section className="border border-gray-200 rounded-md p-4 bg-white">
               <div className="flex justify-between">
                 <h2 className="font-bold text-15">
-                  {t("orderId")}
-                  <span className="text-12 ms-2">
-                    #{orderDetail.order_number.split("-")[1]}
-                  </span>
+                  {t("orderId")} :
+                  <span className=" ms-2">{orderDetail.order_number}</span>
                 </h2>
                 <p
                   className={`px-2 py-2 rounded-md text-13 ${
@@ -127,6 +137,8 @@ function OrderDetails() {
                       ? "bg-customOrange-mediumOrange text-primary"
                       : orderDetail.status_name === "Refunded"
                       ? "bg-red-50 text-red-600"
+                      : orderDetail.status_name === "Cancelled"
+                      ? "bg-gray-100 text-gray-600"
                       : ""
                   }`}
                 >
@@ -134,7 +146,6 @@ function OrderDetails() {
                 </p>
               </div>
               <div className="mt-4 mb-6">
-                <div className="flex justify-end text-xs text-gray-500 mb-1"></div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div
                     className="bg-primary h-2 rounded-full"
@@ -176,18 +187,13 @@ function OrderDetails() {
                 })}
               </div>
             </section>
-            {/* Order Details Section */}
+
             <section className="border border-gray-200 rounded-lg p-4 bg-white">
               <h2 className="font-bold text-15">{t("orderDetail")}</h2>
               <div className="flex gap-36 mt-4">
                 <div>
                   <h4 className="text-gray-400 text-15">{t("itemNo")}</h4>
-                  <p className="text-14">
-                    {orderDetail.products.reduce(
-                      (total, product) => total + product.quantity,
-                      0
-                    )}
-                  </p>
+                  <p className="text-14">{orderDetail.items_count}</p>
                 </div>
                 <div>
                   <h4 className="text-gray-400 text-15">{t("payment")}</h4>
@@ -208,10 +214,9 @@ function OrderDetails() {
               </div>
             </section>
 
-            {/* Products List Section */}
             <section className="border border-gray-200 rounded-lg p-4 bg-white">
               <h2 className="font-bold text-15 mb-4">{t("listItems")}</h2>
-              <div className=" rounded-md">
+              <div className="rounded-md">
                 <table className="w-full table">
                   <tbody>
                     {orderDetail.products?.map((item) => (
@@ -238,7 +243,7 @@ function OrderDetails() {
                             {item.quantity}
                           </span>
                         </td>
-                        <td className="px-3 py-3 text-13">
+                        <td className="px-3 py-3 text-13 border-r">
                           {item.color && (
                             <div
                               className="w-8 h-8 rounded-full border border-gray-200"
@@ -275,7 +280,6 @@ function OrderDetails() {
               </section>
             </section>
 
-            {/* Transactions Section */}
             <section className="border border-gray-200 rounded-lg p-4 bg-white">
               <h2 className="font-bold text-15">{t("transactions")}</h2>
               <div className="mt-2">
@@ -299,10 +303,8 @@ function OrderDetails() {
             </section>
           </div>
 
-          {/* Right Sidebar */}
           <div className="space-y-5">
             <div className="grid grid-cols-1 gap-5">
-              {/* Shipping Address */}
               <section className="border border-gray-200 rounded-lg p-4 bg-white">
                 <h2 className="font-bold text-15">{t("shippingAddress")}</h2>
                 <p className="text-13 mt-2">
@@ -310,7 +312,6 @@ function OrderDetails() {
                 </p>
               </section>
 
-              {/* Customer Details */}
               <section className="border border-gray-200 rounded-lg p-4 bg-white">
                 <h2 className="font-bold text-15 mb-4">
                   {t("customerDetails")}
@@ -335,7 +336,6 @@ function OrderDetails() {
                 </div>
               </section>
 
-              {/* Balance Section */}
               <section className="border border-gray-200 rounded-lg p-4 bg-white">
                 <h2 className="font-bold text-15 mb-3">{t("balance")}</h2>
                 <div className="bg-gray-50 border border-gray-200 rounded-md p-2">

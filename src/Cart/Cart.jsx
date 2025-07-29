@@ -4,6 +4,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useTranslation } from "react-i18next";
 import { useShoppingCart } from "../Context/CartContext";
+import { RiDeleteBinFill } from "react-icons/ri";
+
 // import { useShoppingCart } from "../../../Cart Context/CartContext";
 const Cart = () => {
   const {
@@ -34,31 +36,34 @@ const Cart = () => {
           <p className="text-center text-17 font-bold">{t("noCartItems")}</p>
         ) : (
           <>
-            <h3>{t("cart")}</h3>
-            <div>
-              <section>
-                <div>
-                  <table className="table-auto border-collapse border border-gray-300 w-full text-left">
+            <h3 className="text-[17px]">{t("cart")}</h3>
+            <div className="flex gap-10">
+              <section className="w-full">
+                <div className=" rounded-lg mt-2 overflow-y-scroll lg:overflow-hidden">
+                  <table className="bg-white min-w-full table">
                     <thead>
-                      <tr>
-                        <th className="border border-gray-300 px-4 py-2">
-                          Item
+                      <tr className="bg-gray-100 py-4">
+                        <th className="px-3 py-3  text-center cursor-pointer text-11 md:text-14 lg:text-14">
+                          {t("product")}
                         </th>
-                        <th className="border border-gray-300 px-4 py-2">
-                          Price
+                        <th className="px-3 py-3  text-center cursor-pointer text-11 md:text-14 lg:text-14">
+                          {t("qyt")}
                         </th>
-                        <th className="border border-gray-300 px-4 py-2">
-                          Quantity
+                        <th className="px-3 py-3  text-center cursor-pointer text-11 md:text-14 lg:text-14">
+                          {t("price")}
                         </th>
-                        <th className="border border-gray-300 px-4 py-2">
-                          Total
+                        <th className="px-3 py-3  text-center cursor-pointer text-11 md:text-14 lg:text-14">
+                          {t("total")}
+                        </th>
+                        <th className="px-3 py-3  text-center cursor-pointer text-11 md:text-14 lg:text-14">
+                          {t("actions")}
                         </th>
                       </tr>
                     </thead>
                     <tbody>
                       {cartItems.map((item) => (
-                        <tr key={item.id} className="hover:bg-gray-50">
-                          <td className="border border-gray-300 px-4 py-2">
+                        <tr key={item.id} >
+                          <td className="px-3 py-3 text-gray-600 text-13">
                             {item.isPromotion ? (
                               <div>
                                 <strong>{item.title}</strong>
@@ -71,35 +76,42 @@ const Cart = () => {
                                 </ul>
                               </div>
                             ) : (
-                              <img
-                                src={item.image}
-                                alt={item.title}
-                                className="w-24 h-24 p-3"
-                              />
+                              <div className="flex items-center">
+                                <img
+                                  src={item.images[0].src}
+                                  alt={item.title}
+                                  className="w-20 h-20 p-3 rounded-full"
+                                />
+                                <p className="font-bold text-black">{item.name}</p>
+                              </div>
                             )}
                           </td>
-                          <td className="border border-gray-300 px-4 py-2 font-bold">
-                            {item.price} $
-                          </td>
-                          <td className="border border-gray-300 px-4 py-2">
+                          <td className="px-3 py-3 ">
                             <div className="flex items-center justify-center gap-5">
                               <button
-                                className="font-bold bg-sky-400 p-3 w-12 rounded"
+                                className="font-bold text-primary "
                                 onClick={() => AddProductToCart(item)}
                               >
                                 +
                               </button>
                               <p className="font-bold">{item.quantity}</p>
                               <button
-                                className="font-bold p-3 w-12 bg-sky-400 rounded"
+                                className="font-bold text-primary"
                                 onClick={() => RemoveProductFromCart(item.id)}
                               >
                                 -
                               </button>
                             </div>
                           </td>
-                          <td className="border border-gray-300 px-4 py-2 font-bold">
-                            {(item.quantity * item.price).toFixed(2)} $
+                          <td className="px-3 py-3 text-center">{item.price} $</td>
+                          <td className="px-3 py-3 text-center">
+                            {item.price_after_discount} $
+                          </td>
+                          <td className="px-3 py-3 text-center cursor-pointer ">
+                            <RiDeleteBinFill
+                              className="text-red-600 text-center"
+                              size={23}
+                            />
                           </td>
                         </tr>
                       ))}
@@ -107,10 +119,42 @@ const Cart = () => {
                   </table>
                 </div>
               </section>
-              <section></section>
+              {/* cart summary */}
+              <div>
+                <section className="border-2 rounded-md p-4 border-primary w-400 h-80">
+                  <h3 className="p-3 bg-gray-100 text-primary text-lg rtl:text-[17px] font-bold rounded-lg">
+                    {t("cartSummary")}
+                  </h3>
+                  <div className="flex items-center justify-between mt-5">
+                    <h3 className="font-bold">{t("subTotal")}</h3>
+                    <p className="text-gray-500">$ 0</p>
+                  </div>
+                  <div className="flex items-center justify-between mt-7">
+                    <h3 className="font-bold">{t("shipping")}</h3>
+                    <p className="text-gray-500">$ 0</p>
+                  </div>
+                  <div className="flex items-center justify-between mt-7">
+                    <h3 className="font-bold">{t("tax")} (%) </h3>
+                    <p className="text-gray-500">$ 0</p>
+                  </div>
+                  <hr className="my-5" />
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-bold">{t("total")}</h3>
+                    <p className="text-gray-500">$ 0</p>
+                  </div>
+                </section>
+                {/* add coupon */}
+                <section className="border rounded-md my-4 p-4">
+                  <p>{t("haveCoupon")}</p>
+                  <p className="text-gray-400 text-13 my-2">{t("addCoupon")}</p>
+                </section>
+              </div>
             </div>
           </>
         )}
+      </div>
+      <div>
+        <button onClick={()=>navigate('/Home/OrderSubmitted')}>complete order</button>
       </div>
     </div>
   );

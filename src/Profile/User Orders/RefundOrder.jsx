@@ -5,17 +5,18 @@ import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { IoMdCloseCircle } from "react-icons/io";
 import { Field, Form, Formik } from "formik";
+import { RiArrowGoBackLine } from "react-icons/ri";
 
-function CancelOrder({ order_id }) {
+function RefundOrder({ order_id }) {
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation();
 
-  const handleCancelOrder = async (values) => {
+  const handleRefundOrder = async (values) => {
     setIsLoading(true);
     try {
       const response = await axios({
-        url: `https://demo.vrtex.duckdns.org/api/orders/cancel`,
+        url: `https://demo.vrtex.duckdns.org/api/orders/refund`,
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("user token")}`,
@@ -23,16 +24,16 @@ function CancelOrder({ order_id }) {
         },
         data: {
           reason: values.reason,
-          order_id: order_id, 
+          order_id: order_id,
         },
       });
 
       if (response.status === 200) {
         setShowModal(false);
-        console.log("success cancel oredr")
+        console.log("success refund oredr");
       }
     } catch (error) {
-      console.error("Failed to cancel order", error);
+      console.error("Failed to refund order", error);
     } finally {
       setIsLoading(false);
     }
@@ -44,32 +45,29 @@ function CancelOrder({ order_id }) {
         className="flex items-center gap-3 cursor-pointer"
         onClick={() => setShowModal(true)}
       >
-        <p className="flex items-center gap-2 bg-red-50 rounded-md px-6 py-2 border-1 border-red-600 font-bold text-6 mt-1 text-red-600">
-          <IoMdCloseCircle />
-          {t("cancel")}
+        <p className="flex items-center gap-2 bg-customOrange-lightOrange rounded-md px-6 py-2 border-1 border-primary font-bold text-6 mt-1 text-primary">
+          {t("requestRefund")}
+          <RiArrowGoBackLine />
         </p>
       </div>
 
       <FailedModal isOpen={showModal} onClose={() => setShowModal(false)}>
         <div className="p-5">
           <img
-            src="/assets/images/delete_svgrepo.com.png"
-            alt="delete-img"
-            className="h-14 w-14 p-1"
+            src="/assets/images/success.png"
+            alt="success"
+            className="w-24 mt-4"
           />
         </div>
-        <p className="font-bold w-72 text-center">{t("cancelOrder")}</p>
+        <p className="font-bold w-72 text-center">{t("refundOrder")}</p>
 
         <div className="mt-4">
-          <Formik
-            initialValues={{ reason: "" }}
-            onSubmit={handleCancelOrder}
-          >
+          <Formik initialValues={{ reason: "" }} onSubmit={handleRefundOrder}>
             {({ errors, touched }) => (
               <Form>
                 <Field
                   as="textarea"
-                  placeholder={t("reason")}
+                  placeholder={t("refundReason")}
                   name="reason"
                   className={`w-full bg-white outline-none border-2 rounded-md p-2 h-32 block placeholder:text-14 
                               ${
@@ -90,7 +88,7 @@ function CancelOrder({ order_id }) {
                   </button>
                   <button
                     type="submit"
-                    className="rounded text-white text-17 bg-customred font-bold p-3 w-32"
+                    className="rounded text-white text-17 bg-primary font-bold p-3 w-32"
                     disabled={isLoading}
                   >
                     {isLoading ? (
@@ -100,7 +98,7 @@ function CancelOrder({ order_id }) {
                         className="text-center"
                       />
                     ) : (
-                      t("yesCancel")
+                      t("yesRefund")
                     )}
                   </button>
                 </div>
@@ -113,4 +111,4 @@ function CancelOrder({ order_id }) {
   );
 }
 
-export default CancelOrder;
+export default RefundOrder;

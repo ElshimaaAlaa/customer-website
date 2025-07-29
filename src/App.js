@@ -41,6 +41,8 @@ import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import enTranslation from "./Translation/en.json";
 import arTranslation from "./Translation/ar.json";
+import OrderSubmitted from "./Cart/OrderSubmitted";
+import OrderRating from "./Cart/OrderRating";
 
 i18n
   .use(initReactI18next)
@@ -61,7 +63,6 @@ function App() {
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 2000);
     return () => clearTimeout(timer);
-    
   }, []);
 
   if (loading) {
@@ -78,7 +79,6 @@ function App() {
       </div>
     );
   }
-
 
   return (
     <CartProvider>
@@ -104,7 +104,8 @@ function App() {
             <Route path="WishList" element={<WishList />} />
             <Route path="Cart" element={<Cart />} />
             <Route path="Checkout" element={<Checkout />} />
-
+            <Route path="OrderSubmitted" element={<OrderSubmitted />} />
+            <Route path="OrderRating" element={<OrderRating />} />
             <Route path="UserProfile" element={<UserProfile />}>
               <Route index element={<PersonalInformation />} />
               <Route path="EditInfo" element={<EditInfo />} />

@@ -186,7 +186,8 @@ function Checkout() {
             )}
           </Formik>
         </section>
-        <section className="border-2 rounded-md p-4 border-primary w-300 h-72">
+        {/* cart summary */}
+        <section className="border-2 rounded-md p-4 border-primary w-400 h-80">
           <h3 className="p-4 bg-gray-100 text-primary text-lg font-bold rounded-lg">
             {t("cartSummary")}
           </h3>
@@ -202,7 +203,7 @@ function Checkout() {
             <h3 className="font-bold">{t("tax")} (%) </h3>
             <p className="text-gray-500">$ 0</p>
           </div>
-          <hr className="my-3" />
+          <hr className="my-5" />
           <div className="flex items-center justify-between">
             <h3 className="font-bold">{t("total")}</h3>
             <p className="text-gray-500">$ 0</p>
