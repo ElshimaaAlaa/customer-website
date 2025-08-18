@@ -56,11 +56,11 @@ const Header = () => {
           loop={true}
           onSlideChange={(swiper) => setActiveSlide(swiper.realIndex)}
           onSwiper={setSwiperInstance}
-          dir={isRtl ? "rtl" : "ltr"} // إضافة dir للسيطرة على الاتجاه
-          key={`swiper-${i18n.language}`} // إضافة key لتجنب مشاكل التحميل
+          dir={isRtl ? "rtl" : "ltr"} 
+          key={`swiper-${i18n.language}`} 
         >
           {headerImages.map((image) => (
-            <SwiperSlide key={`${image.id}-${i18n.language}`}>
+            <SwiperSlide >
               <div
                 className="slide-image"
                 style={{ backgroundImage: `url(${image.src})` }}
@@ -75,7 +75,7 @@ const Header = () => {
                         onClick={handleExploreClick}
                         className="text-white  justify-center bg-primary p-4 text-lg font-bold rounded-md flex items-center gap-2 mt-6 hover:bg-primary-dark transition-colors"
                       >
-                        {t("exploreNow")}{" "}
+                        {t("exploreNow")}
                         {isRtl ? (
                           <IoIosArrowRoundBack size={25} />
                         ) : (

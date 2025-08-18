@@ -91,7 +91,7 @@ function ViewProductDetails() {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <ClipLoader color="#E0A75E" size={50} />
+        <ClipLoader color="#E0A75E" size={25} />
       </div>
     );
   }
@@ -362,16 +362,12 @@ function ViewProductDetails() {
               )}
 
               <button
-                className={`flex-1 rounded-md border-2 py-2 text-17 font-bold transition-colors ${
+                className={`flex-1 rounded-md border-2 py-2 text-17 font-bold transition-colors disabled:opacity-30 ${
                   product.stock === 0
                     ? "bg-gray-200 text-gray-500 border-gray-300 cursor-not-allowed"
                     : "bg-primary text-white border-primary hover:bg-primary-dark"
                 }`}
-                disabled={product.stock === 0}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  navigate("/Home/Checkout");
-                }}
+                disabled
                 aria-label={t("buyNow")}
               >
                 {t("buyNow")}
@@ -380,7 +376,6 @@ function ViewProductDetails() {
           </div>
         </div>
       </section>
-
       <UserRating productId={id} />
       <RelatedProduct currentProductId={id} categoryId={product.category?.id} />
       <Quality />

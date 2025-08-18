@@ -9,15 +9,20 @@ import Visa from "../Svgs/Visa";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { IoIosArrowRoundForward } from "react-icons/io";
 import { useTranslation } from "react-i18next";
+import { checkoutOrder } from "../ApiServices/Checkout";
 function Checkout() {
   const { t, i18n } = useTranslation();
   const [isRTL, setIsRTL] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const initialValues = {
     payment_method: "",
     card_cvv: "",
     expiration_date: "",
     card_holder_name: "",
     card_number: "",
+    order_id: "",
+    transaction_id: "",
+    response: "",
   };
 
   const validationSchema = Yup.object({
@@ -25,7 +30,21 @@ function Checkout() {
   });
 
   const handleSubmit = async (values) => {
-    console.log(values);
+    setIsLoading(true);
+    try {
+      await checkoutOrder(
+        values.payment_method,
+        values.card_cvv,
+        values.card_holder_name,
+        values.card_number,
+        values.order_id,
+        values.transaction_id,
+        values.response
+      );
+      console.log("success checkout")
+    } catch (error) {
+      console.log("faild checkout",error)
+    }
   };
 
   const paymentMethods = [

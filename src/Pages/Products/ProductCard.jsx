@@ -159,16 +159,12 @@ export default function ProductCard({
           )}
 
           <button
-            className={`flex-1 rounded-md border-2 py-2 text-17 font-bold transition-colors ${
+            className={`flex-1 rounded-md border-2 py-2 text-17 font-bold transition-colors disabled:opacity-30 ${
               product.stock === 0
-                ? "bg-gray-200 text-gray-500 border-gray-300 cursor-not-allowed"
+                ? "bg-gray-200 text-gray-500 border-gray-300 "
                 : "bg-primary text-white border-primary hover:bg-primary-dark"
             }`}
-            disabled={product.stock === 0}
-            onClick={(e) => {
-              e.stopPropagation();
-              navigate("/Home/Checkout");
-            }}
+            disabled
           >
             {t("buyNow")}
           </button>

@@ -71,7 +71,7 @@ function OpinionSection() {
   };
 
   return (
-    <section className="px-4 md:px-8 lg:px-10 mt-6 mb-10">
+    <section className={`px-4 md:px-8 lg:px-10 mt-6 mb-10 ${isRtl?"rtl":"ltr"}`}>
       <h2 className="font-bold text-2xl mb-6 rtl:text-[22px] ps-10">
         {t("clientOpnion")}
       </h2>
@@ -128,8 +128,8 @@ function OpinionSection() {
                 <div className="flex flex-col text-xl">
                   <p className="flex">{renderStars(opinion.rate)}</p>
                 </div>
-                <p className="text-gray-600 text-13 md:text-16 lg:text-13 mt-1">
-                  By {opinion.user_name}
+                <p className="text-gray-600 text-13 lg:text-13 mt-1">
+                  {t("by")} : {opinion.user_name}
                 </p>
               </div>
             </div>

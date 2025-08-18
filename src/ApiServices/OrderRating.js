@@ -1,0 +1,33 @@
+import axios from "axios";
+export const RateOrder = async (
+  order_id,
+  product_quality,
+  shipping_speed,
+  customer_service,
+  comment
+) => {
+  try {
+    const response = await axios({
+      url: `https://demo.vrtex.duckdns.org/api/rate-order`,
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Accept-Language": "ar",
+      },
+      data: {
+        order_id,
+        product_quality,
+        shipping_speed,
+        customer_service,
+        comment,
+      },
+    });
+    if (response.status === 200) {
+      console.log("rate send successfully");
+      return true;
+    }
+  } catch (error) {
+    console.error("Failed to send rate  ", error);
+    return false;
+  }
+};

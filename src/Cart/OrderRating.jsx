@@ -10,21 +10,23 @@ function OrderRating() {
     t("poor"),
     t("veryPoor"),
   ];
+  const intialVlaues = {};
+  const handleSubmit = async () => {};
   return (
     <section className="px-20 my-10">
       <div className="border rounded-md p-5 shadow-md shadow-gray-100 bg-gray-50">
-        <h1 className="font-bold text-2xl text-center">{t("rateOrder")}</h1>
+        <h1 className="font-bold text-xl text-center mt-5">{t("rateOrder")}</h1>
         <p className="text-gray-400 text-14 text-center my-3">
           {t("rateRecentOrder")}
         </p>
-        <Formik>
+        <Formik initialValues={intialVlaues} onSubmit={handleSubmit}>
           {({ errors, touched }) => (
-            <Form>
+            <Form className="mt-8">
               <div>
-                <h3 className="font-bold my-3">{t("productQuality")}</h3>
+                <h3 className="my-6">{t("productQuality")}</h3>
                 <div className="flex gap-5">
                   {rates.map((item) => (
-                    <p className="flex items-center gap-2">
+                    <p className="flex items-center gap-2 text-14 text-gray-400">
                       <input type="checkbox" />
                       {item}
                     </p>
@@ -33,10 +35,10 @@ function OrderRating() {
               </div>
               {/* 2 */}
               <div className="border-t my-5">
-                <h3 className="font-bold my-3">{t("shippingSpeed")}</h3>
+                <h3 className="my-6">{t("shippingSpeed")}</h3>
                 <div className="flex gap-5">
                   {rates.map((item) => (
-                    <p className="flex items-center gap-2">
+                    <p className="flex items-center gap-2 text-14 text-gray-400">
                       <input type="checkbox" />
                       {item}
                     </p>
@@ -45,10 +47,10 @@ function OrderRating() {
               </div>
               {/* 3 */}
               <div className="border-t border-b my-5">
-                <h3 className="font-bold my-3">{t("customerService")}</h3>
+                <h3 className="my-6">{t("customerService")}</h3>
                 <div className="flex gap-5 mb-5">
                   {rates.map((item) => (
-                    <p className="flex items-center gap-2">
+                    <p className="flex items-center gap-2 text-14 text-gray-400">
                       <Field type="checkbox" />
                       {item}
                     </p>
@@ -57,12 +59,12 @@ function OrderRating() {
               </div>
               {/* comments */}
               <div>
-                <h3 className="font-bold my-3">{t("additionalComment")}</h3>
+                <h3 className="mt-10 mb-4">{t("additionalComment")}</h3>
                 <Field
                   as="textarea"
                   placeholder={t("comment")}
                   name="message"
-                  className={`w-[640px] bg-white outline-none border-2 rounded-md p-2 h-32 block placeholder:text-14 
+                  className={`w-[640px] bg-white outline-none border-2 rounded-md p-2 h-24 block placeholder:text-14 
                               ${
                                 errors.message && touched.message
                                   ? "border-red-500 focus:border-red-500"
@@ -76,8 +78,8 @@ function OrderRating() {
                 className="flex items-center gap-3 bg-primary text-white rounded-md py-3 px-6 mt-8"
                 // onClick={() => navigate("/Home/OrderRating")}
               >
-                <IoArrowForward size={22} />
                 {t("sendFeedback")}
+                <IoArrowForward size={22} />
               </button>
             </Form>
           )}

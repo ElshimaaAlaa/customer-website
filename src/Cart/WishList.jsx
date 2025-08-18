@@ -241,16 +241,16 @@ function WishList() {
                   )}
 
                   <button
-                    className={`flex-1 rtl:text-13 rtl:lg:text-16 rounded-md border-2 py-2 text-17 font-bold transition-colors ${
+                    className={`flex-1 rtl:text-13 rtl:lg:text-16 rounded-md border-2 py-2 text-17 font-bold transition-colors disabled:opacity-30 ${
                       product.stock === 0
                         ? "bg-gray-200 text-gray-500 border-gray-300 cursor-not-allowed"
                         : "bg-primary text-white border-primary hover:bg-primary-dark"
                     }`}
-                    disabled={product.stock === 0}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate("/Home/Checkout");
-                    }}
+                    disabled
+                    // onClick={(e) => {
+                    //   e.stopPropagation();
+                    //   navigate("/Home/Checkout");
+                    // }}
                     aria-label={t("buyNow")}
                   >
                     {t("buyNow")}

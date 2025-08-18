@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { IoIosArrowDown } from "react-icons/io";
 
 function UserAcc() {
-  //on navbar to go to user profile.
   const navigate = useNavigate();
   const [data, setData] = useState([]);
+  
   useEffect(() => {
     const getUserData = async () => {
       try {
@@ -18,10 +18,20 @@ function UserAcc() {
     };
     getUserData();
   }, []);
+
+  const handleNavigate = (e) => {
+    e.preventDefault();
+    navigate("/Home/UserProfile");
+  };
+
   return (
-    <div className="flex items-center gap-2" onClick={() => navigate("/Home/UserProfile")}>
+    <div 
+      className="flex items-center gap-2" 
+      onClick={handleNavigate}
+      dir="auto" // للحفاظ على اتجاه النص
+    >
       <img
-        src={data.image}
+        src={data.image || "/assets/images/userPic.jpg"}
         alt="user profile"
         className="rounded-full w-12 h-12 object-cover cursor-pointer"
       />
@@ -29,4 +39,5 @@ function UserAcc() {
     </div>
   );
 }
+
 export default UserAcc;

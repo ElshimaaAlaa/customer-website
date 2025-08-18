@@ -21,6 +21,12 @@ function BottomSection({ onLanguageChange, currentLanguage }) {
   const isActive = (path) => location.pathname === path;
 
   useEffect(() => {
+    // استعادة اللغة المحفوظة عند التحميل
+    const savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
+    if (savedLanguage !== currentLanguage) {
+      handleLanguageChange(savedLanguage);
+    }
+
     const fetchProductNumInWishlist = async () => {
       try {
         const response = await getWishListData();
@@ -29,10 +35,23 @@ function BottomSection({ onLanguageChange, currentLanguage }) {
         console.error("Error fetching wishlist:", error);
       }
     };
+    
     fetchProductNumInWishlist();
     const token = localStorage.getItem("user token");
     setIsLoggedIn(!!token);
   }, []);
+
+  const handleLanguageChange = (lang) => {
+    localStorage.setItem('selectedLanguage', lang);
+    onLanguageChange(lang);
+    setLanguageDropdownOpen(false);
+    setMobileLanguageDropdownOpen(false);
+    setMobileMenuOpen(false);
+    
+    // تغيير اتجاه الصفحة حسب اللغة
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = lang;
+  };
 
   const navItems = [
     { path: "/Home/Homepage", name: t("home") },
@@ -43,7 +62,10 @@ function BottomSection({ onLanguageChange, currentLanguage }) {
   ];
 
   return (
-    <div className="px-4 sm:px-6 lg:px-20 sm:py-5 relative bg-white border-b border-gray-100">
+    <div 
+      className="px-4 sm:px-6 lg:px-20 sm:py-5 relative bg-white border-b border-gray-100"
+      dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
+    >
       <div className="flex items-center justify-between">
         {/* Logo */}
         <div
@@ -57,7 +79,7 @@ function BottomSection({ onLanguageChange, currentLanguage }) {
           />
         </div>
 
-        {/* Desktop Navigation (only on lg and up) */}
+        {/* Desktop Navigation */}
         <nav className="hidden lg:block">
           <ul className="list-none flex items-center gap-4 lg:gap-6 text-sm lg:text-base">
             {navItems.map((item) => (
@@ -107,10 +129,7 @@ function BottomSection({ onLanguageChange, currentLanguage }) {
                         ? "bg-primary text-white"
                         : "text-gray-700 hover:bg-gray-100"
                     }`}
-                    onClick={() => {
-                      onLanguageChange("en");
-                      setLanguageDropdownOpen(false);
-                    }}
+                    onClick={() => handleLanguageChange("en")}
                   >
                     En
                   </button>
@@ -120,10 +139,7 @@ function BottomSection({ onLanguageChange, currentLanguage }) {
                         ? "bg-primary text-white"
                         : "text-gray-700 hover:bg-gray-100"
                     }`}
-                    onClick={() => {
-                      onLanguageChange("ar");
-                      setLanguageDropdownOpen(false);
-                    }}
+                    onClick={() => handleLanguageChange("ar")}
                   >
                     ع
                   </button>
@@ -133,7 +149,7 @@ function BottomSection({ onLanguageChange, currentLanguage }) {
           </ul>
         </nav>
 
-        {/* Mobile Controls (show on all except lg and up) */}
+        {/* Mobile Controls */}
         <div className="flex lg:hidden items-center gap-4">
           <CiSearch
             size={22}
@@ -147,7 +163,7 @@ function BottomSection({ onLanguageChange, currentLanguage }) {
           />
         </div>
 
-        {/* Desktop Icons (only on lg) */}
+        {/* Desktop Icons */}
         <div className="hidden lg:flex items-center gap-4 lg:gap-6">
           <div className="flex gap-3 items-center">
             <CiSearch size={25} className="cursor-pointer hover:text-primary" />
@@ -182,7 +198,7 @@ function BottomSection({ onLanguageChange, currentLanguage }) {
         )}
       </div>
 
-      {/* Mobile Menu (shown on < lg) */}
+      {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 lg:hidden">
           <div className="bg-white h-full w-4/5 max-w-sm ml-auto p-6 overflow-y-auto">
@@ -245,11 +261,7 @@ function BottomSection({ onLanguageChange, currentLanguage }) {
                           ? "bg-primary text-white"
                           : "bg-gray-100"
                       } rounded`}
-                      onClick={() => {
-                        onLanguageChange("en");
-                        setMobileLanguageDropdownOpen(false);
-                        setMobileMenuOpen(false);
-                      }}
+                      onClick={() => handleLanguageChange("en")}
                     >
                       English
                     </button>
@@ -259,11 +271,7 @@ function BottomSection({ onLanguageChange, currentLanguage }) {
                           ? "bg-primary text-white"
                           : "bg-gray-100"
                       } rounded`}
-                      onClick={() => {
-                        onLanguageChange("ar");
-                        setMobileLanguageDropdownOpen(false);
-                        setMobileMenuOpen(false);
-                      }}
+                      onClick={() => handleLanguageChange("ar")}
                     >
                       العربية
                     </button>

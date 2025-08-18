@@ -6,13 +6,13 @@ function OrderSubmitted() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   return (
-    <div className="border rounded-md shadow-sm shadow-primary bg-customOrange-lightOrange p-5 flex justify-center flex-col items-center w-600px mx-auto my-10">
+    <div className="border rounded-md shadow-sm shadow-primary bg-customOrange-lightOrange p-5 flex justify-center flex-col items-center w-550 mx-auto my-10">
       <img
         src="/assets/svgs/done-checkmark_svgrepo.com.svg"
         alt="check icon"
-        className="w-20 h-20 my-3"
+        className="w-16 h-1w-16 my-4"
       />
-      <h1 className="font-bold text-2xl">{t("orderSubmitted")}</h1>
+      <h1 className="font-bold text-xl">{t("orderSubmitted")}</h1>
       <section className=" flex flex-col gap-5 w-250 my-7">
         <div className="flex items-center justify-between">
           <p className="text-15 text-gray-500">{t("orderId")} :</p>
@@ -32,11 +32,11 @@ function OrderSubmitted() {
         </div>
       </section>
       <button
-        className="flex items-center gap-3 bg-primary text-white rounded-md py-3 px-6"
+        className="flex items-center gap-3 bg-primary text-white rounded-md py-3 px-6 my-5"
         onClick={() => navigate("/Home/OrderRating")}
       >
-        <IoArrowForward size={22} />
         {t("trackOrder")}
+        <IoArrowForward size={22} />
       </button>
     </div>
   );

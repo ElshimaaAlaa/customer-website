@@ -3,7 +3,6 @@ import FailedModal from "../../Components/Modal/Failed Modal/FailedModal";
 import { ClipLoader } from "react-spinners";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
-import { IoMdCloseCircle } from "react-icons/io";
 import { Field, Form, Formik } from "formik";
 import { RiArrowGoBackLine } from "react-icons/ri";
 

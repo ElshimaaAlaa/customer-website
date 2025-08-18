@@ -252,5 +252,8 @@
   "requestRefund":"Refund",
   "refundOrder":"Are You Sure You Want Refund This Order ?",
   "refundReason":"Reason",
-  "yesRefund":"Yes, Refund"
+  "yesRefund":"Yes, Refund",
+  "invalidEmail":"Invalid email format",
+  "registerError":"Failed to register. Please try again.",
+  "by":"By"
 }

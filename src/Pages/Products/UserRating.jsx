@@ -101,7 +101,7 @@ function UserRating() {
                   <p className="text-gray-500 text-12">{opinion.date}</p>
                 </div>
                 <div className="flex flex-col  sm:flex-row sm:items-center gap-2">
-                  <p className="text-13 text-gray-600 mt-2 ">By {opinion.user_name}</p>
+                  <p className="text-13 text-gray-600 mt-2 ">{t("by")} : {opinion.user_name}</p>
                 </div>
               </div>
             </div>

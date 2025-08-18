@@ -64,7 +64,7 @@ function Register() {
     } catch (error) {
       setLoading(false);
       console.error(error.message);
-      setError("Failed to register. Please try again.");
+      setError(t("registerError"));
     }
   };
   useEffect(() => {
