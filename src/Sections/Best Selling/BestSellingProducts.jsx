@@ -20,7 +20,7 @@ function BestSalesProducts() {
   const [wishlistItems, setWishlistItems] = useState([]);
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
-  const [isRtl, setIsRtl] = useState(false);
+  const isRtl = i18n.language === "ar";
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
@@ -47,7 +47,6 @@ function BestSalesProducts() {
     if (storedWishlist) {
       setWishlistItems(JSON.parse(storedWishlist));
     }
-    setIsRtl(i18n.language === "ar");
   }, [i18n.language]);
 
   const handleWishlistToggle = async (productId) => {

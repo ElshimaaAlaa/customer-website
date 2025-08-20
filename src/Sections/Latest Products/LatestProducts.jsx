@@ -20,7 +20,7 @@ function LatestProducts() {
   const [wishlistItems, setWishlistItems] = useState([]);
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
-  const [isRtl, setIsRtl] = useState(false);
+  const isRtl = i18n.language === "ar";
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const token = localStorage.getItem("user token");
   const [showModal, setShowModal] = useState(false);
@@ -43,7 +43,6 @@ function LatestProducts() {
       }
     };
     fetchProducts();
-    setIsRtl(i18n.language === "ar");
   }, [i18n.language, token]);
 
   const handleWishlistToggle = async (productId) => {

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Profile } from "../../ApiServices/Profile";
 import { useNavigate } from "react-router-dom";
-import { IoIosArrowDown } from "react-icons/io";
 
 function UserAcc() {
   const navigate = useNavigate();
@@ -28,14 +27,13 @@ function UserAcc() {
     <div 
       className="flex items-center gap-2" 
       onClick={handleNavigate}
-      dir="auto" // للحفاظ على اتجاه النص
+      dir="auto" 
     >
       <img
         src={data.image || "/assets/images/userPic.jpg"}
         alt="user profile"
         className="rounded-full w-12 h-12 object-cover cursor-pointer"
       />
-      <IoIosArrowDown color="#000" size={22}/>
     </div>
   );
 }

@@ -30,7 +30,7 @@ function Navbar() {
     const initializeLanguage = async () => {
       const savedLanguage = localStorage.getItem("selectedLanguage");
       const languageToUse = savedLanguage || i18n.language;
-      
+
       try {
         if (savedLanguage && savedLanguage !== i18n.language) {
           await i18n.changeLanguage(savedLanguage);
@@ -47,6 +47,15 @@ function Navbar() {
 
     initializeLanguage();
   }, [i18n]);
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem("selectedLanguage") || "en";
+    i18n.changeLanguage(savedLanguage);
+  }, [i18n]);
+  // Update RTL state and localStorage when language changes
+  useEffect(() => {
+    const currentLanguage = i18n.language;
+    localStorage.setItem("selectedLanguage", currentLanguage);
+  }, [i18n.language]);
 
   return (
     <div className={`navbar-container ${isRTL ? "rtl" : "ltr"}`}>

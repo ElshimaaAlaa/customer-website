@@ -64,5 +64,4 @@ function FeaturedCategories() {
     </div>
   );
 }
-
 export default FeaturedCategories;

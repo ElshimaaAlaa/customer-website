@@ -248,12 +248,13 @@
   "additionalComment": "Additional Comments (Optional)",
   "comment": "Additional Comments ",
   "sendFeedback": "Submit Feedback",
-  "reason":"Reason",
-  "requestRefund":"Refund",
-  "refundOrder":"Are You Sure You Want Refund This Order ?",
-  "refundReason":"Reason",
-  "yesRefund":"Yes, Refund",
-  "invalidEmail":"Invalid email format",
-  "registerError":"Failed to register. Please try again.",
-  "by":"By"
+  "reason": "Reason",
+  "requestRefund": "Refund",
+  "refundOrder": "Are You Sure You Want Refund This Order ?",
+  "refundReason": "Reason",
+  "yesRefund": "Yes, Refund",
+  "invalidEmail": "Invalid email format",
+  "registerError": "Failed to register. Please try again.",
+  "by": "By",
+  "loginError":"Failed to login , Please enter vaild email and password"
 }

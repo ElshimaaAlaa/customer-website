@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { settings } from "../../ApiServices/GeneralSettings";
 import EmailAddress from "../../Svgs/EmailAddress";
 import PhoneNum from "../../Svgs/PhoneNum";
-import { BsArrowRight } from "react-icons/bs";
+import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 import Facebook from "../../Svgs/facebook";
 import Instegram from "../../Svgs/instegram";
 import WhatsApp from "../../Svgs/WhatsApp";
@@ -10,7 +10,8 @@ import { FaSquareXTwitter } from "react-icons/fa6";
 import { useTranslation } from "react-i18next";
 function ContactInfo() {
   const [settingData, setSettingData] = useState([]);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === "ar";
   useEffect(() => {
     const getSettings = async () => {
       const data = await settings();
@@ -30,7 +31,11 @@ function ContactInfo() {
           </a>
         </div>
       </div>
-      <BsArrowRight size={25} color="#E0A75E" />
+      {isRTL ? (
+        <BsArrowLeft size={25} color="#E0A75E" />
+      ) : (
+        <BsArrowRight size={25} color="#E0A75E" />
+      )}
     </div>
   );
   return (

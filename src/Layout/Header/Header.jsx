@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import "swiper/css";
@@ -17,26 +17,29 @@ const Header = () => {
   const { t, i18n } = useTranslation();
   const isRtl = i18n.language === "ar";
 
-  const headerImages = useMemo(() => [
-    {
-      id: 1,
-      src: headerImage1,
-      alt: "Winter Collection 1",
-      title: t("headerP1"),
-    },
-    {
-      id: 2,
-      src: headerImage2,
-      alt: "Winter Collection 2",
-      title: t("headerP2"),
-    },
-    {
-      id: 3,
-      src: headerImage3,
-      alt: "Winter Collection 3",
-      title: t("headerP3"),
-    },
-  ], [t]);
+  const headerImages = useMemo(
+    () => [
+      {
+        id: 1,
+        src: headerImage1,
+        alt: "Winter Collection 1",
+        title: t("headerP1"),
+      },
+      {
+        id: 2,
+        src: headerImage2,
+        alt: "Winter Collection 2",
+        title: t("headerP2"),
+      },
+      {
+        id: 3,
+        src: headerImage3,
+        alt: "Winter Collection 3",
+        title: t("headerP3"),
+      },
+    ],
+    [t]
+  );
 
   const handleExploreClick = () => {
     const nextSection = document.getElementById("next-section");
@@ -44,10 +47,18 @@ const Header = () => {
       nextSection.scrollIntoView({ behavior: "smooth" });
     }
   };
-
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem("selectedLanguage") || "en";
+    i18n.changeLanguage(savedLanguage);
+  }, [i18n]);
+  // Update RTL state and localStorage when language changes
+  useEffect(() => {
+    const currentLanguage = i18n.language;
+    localStorage.setItem("selectedLanguage", currentLanguage);
+  }, [i18n.language]);
   return (
     <>
-      <header className="header" key={`header-${i18n.language}`}>
+      <header className="header">
         <Swiper
           modules={[Autoplay, Pagination, Navigation]}
           spaceBetween={0}
@@ -56,18 +67,25 @@ const Header = () => {
           loop={true}
           onSlideChange={(swiper) => setActiveSlide(swiper.realIndex)}
           onSwiper={setSwiperInstance}
-          dir={isRtl ? "rtl" : "ltr"} 
-          key={`swiper-${i18n.language}`} 
+          dir={isRtl ? "rtl" : "ltr"}
+          key={`swiper-${i18n.language}`}
         >
           {headerImages.map((image) => (
-            <SwiperSlide >
+            <SwiperSlide>
               <div
                 className="slide-image"
                 style={{ backgroundImage: `url(${image.src})` }}
               >
-                <div className="overlay">
+                <div
+                  className={`overlay ${isRtl ? "rtl" : "ltr"} `}
+                  dir={isRtl ? "rtl" : "ltr"}
+                >
                   <div className="content">
-                    <h1 className="text-white font-bold text-3xl leading-10 text-center">
+                    <h1
+                      className={`text-white font-bold text-3xl leading-10 text-center ${
+                        isRtl ? "rtl" : "ltr"
+                      }`}
+                    >
                       {image.title}
                     </h1>
                     <div className="flex justify-center">
@@ -89,7 +107,6 @@ const Header = () => {
             </SwiperSlide>
           ))}
         </Swiper>
-
         {/* Navigation tabs */}
         <div className="tabs-container">
           {headerImages.map((image, index) => (
@@ -106,5 +123,4 @@ const Header = () => {
     </>
   );
 };
-
 export default Header;

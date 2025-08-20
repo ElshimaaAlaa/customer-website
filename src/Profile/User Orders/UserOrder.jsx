@@ -17,7 +17,7 @@ function UserOrder() {
   const [isSearching, setIsSearching] = useState(false);
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
-  const [isRTL, setIsRtl] = useState(false);
+  const isRTL = i18n.language === "ar";
   const [pagination, setPagination] = useState({
     total: 0,
     count: 0,
@@ -67,7 +67,6 @@ function UserOrder() {
       }
     };
     fetchReceivedOrder();
-    setIsRtl(i18n.language === "ar");
   }, [pagination.current_page, i18n.language]);
 
   const filteredOrders = orders.filter((order) => {
@@ -94,11 +93,6 @@ function UserOrder() {
   return (
     <div>
       <h1 className="font-bold text-xl mb-2">{t("myOrders")}</h1>
-      {isSearching && debouncedSearchQuery !== searchQuery && (
-        <div className="text-center py-2">
-          <ClipLoader size={20} color="#E0A75E" />
-        </div>
-      )}
       <div className="relative w-full mt-3">
         <Search
           className="absolute left-3 rtl:right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5"
@@ -114,17 +108,7 @@ function UserOrder() {
           }}
           className="w-full h-12 pl-10 pr-10  py-4 bg-muted/50 rounded-md text-sm focus:outline-none border-1 border-gray-200 bg-gray-50 placeholder:text-15 focus:border-2 focus:border-primary"
         />
-        {searchQuery && (
-          <button
-            onClick={() => {
-              setSearchQuery("");
-              setIsSearching(false);
-            }}
-            className="absolute right-3  top-1/2 transform  -translate-y-1/2 text-gray-400 hover:text-gray-600"
-          >
-            ×
-          </button>
-        )}
+      
       </div>
       {error ? (
         <div className="text-red-500 text-15 text-center mt-10">
@@ -190,7 +174,7 @@ function UserOrder() {
                     </td>
                     <td className="flex items-center gap-2 px-6 py-3 border-t border-r text-gray-600 text-11 md:text-13 lg:text-13 ">
                       <IoCalendarNumberOutline color="#69ABB5" size={16} />
-                      {order.date || "N/A"}
+                      {order.date || t("notProvided")}
                     </td>
                     <td className="px-3 py-3 border-t border-r text-gray-600 text-14">
                       {order.total} $

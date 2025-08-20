@@ -1,5 +1,5 @@
 import { Form, Formik } from "formik";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import PasswordInput from "../../Components/Password Input/PasswordInput";
 import * as Yup from "yup";
 import SuccessModal from "../../Components/Modal/Success Modal/SuccessModal";
@@ -16,7 +16,7 @@ function ChangePassword() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { t, i18n } = useTranslation();
-  const [isRtl, setIsRtl] = useState(false);
+  const isRtl = i18n.language === "ar";
   const initialValues = {
     password: "",
     password_confirmation: "",
@@ -52,9 +52,7 @@ function ChangePassword() {
   } else {
     document.body.classList.remove("no-scroll");
   }
-  useEffect(() => {
-    setIsRtl(i18n.language === "ar");
-  }, [i18n.language]);
+
 
   return (
     <div>
@@ -92,7 +90,7 @@ function ChangePassword() {
               ) : (
                 <>
                   <FaCircleCheck size={19} />
-                 {t("changePassword")}
+                  {t("changePassword")}
                 </>
               )}
             </button>
@@ -107,7 +105,9 @@ function ChangePassword() {
             alt="success"
             className="w-32 mt-6"
           />
-          <h1 className="font-bold rtl:text-[18px]">{t("successChangePass")}</h1>
+          <h1 className="font-bold rtl:text-[18px]">
+            {t("successChangePass")}
+          </h1>
         </div>
       </SuccessModal>
     </div>

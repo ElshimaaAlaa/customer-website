@@ -19,11 +19,12 @@ function Promotions() {
   const [promotions, setPromotions] = useState([]);
   const [hoveredItem, setHoveredItem] = useState(null);
   const { t, i18n } = useTranslation();
-  const [isRtl, setIsRtl] = useState(false);
+  const isRtl = i18n.language === "ar";
   const { AddProductToCart } = useShoppingCart();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const token = localStorage.getItem("user token");
+
   useEffect(() => {
     const fetchProducts = async () => {
       setIsLoading(true);
@@ -38,7 +39,6 @@ function Promotions() {
     };
     fetchProducts();
     setIsLoggedIn(!!token);
-    setIsRtl(i18n.language === "ar");
   }, [i18n.language, token]);
 
   const handleAddPromotionToCart = (promotion) => {
@@ -291,11 +291,12 @@ function Promotions() {
           </Swiper>
         </div>
       )}
-      <ToastContainer />
+      <ToastContainer closeButton={false} />
       <SuccessModal isOpen={showModal} onClose={() => setShowModal(false)}>
         <AuthModal initialMode="login" onClose={() => setShowModal(false)} />
       </SuccessModal>
     </div>
   );
 }
+
 export default Promotions;

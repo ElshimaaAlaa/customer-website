@@ -1,5 +1,5 @@
 import { Form, Formik } from "formik";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Helmet } from "react-helmet";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
@@ -19,7 +19,7 @@ function EditInfo() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const { t, i18n } = useTranslation();
-  const [isRtl, setIsRtl] = useState(false);
+  const isRtl = i18n.language === "ar";
   const personalInfo = state || {};
 
   const initialValues = {
@@ -65,10 +65,6 @@ function EditInfo() {
   } else {
     document.body.classList.remove("no-scroll");
   }
-
-  useEffect(() => {
-    setIsRtl(i18n.language === "ar");
-  }, [i18n.language]);
 
   return (
     <div>

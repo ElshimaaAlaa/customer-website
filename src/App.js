@@ -1,14 +1,12 @@
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { PulseLoader } from "react-spinners";
-
 // Auth pages
 import Login from "./Auth/Login/Login";
 import ForgotPassword from "./Auth/Forgot Password/ForgotPassword";
 import VerifayPassword from "./Auth/Verivation Code/VerifayPassword";
 import CreateNewPassword from "./Auth/Create Password/CreateNewPassword";
 import Register from "./Auth/Register/Register";
-
 // Main layout
 import Main from "./Pages/Home Page/Main";
 import Home from "./Pages/Home Page/Home";
@@ -17,7 +15,6 @@ import AboutUs from "./Pages/AboutUs/AboutUs";
 import ContactUs from "./Pages/ContactUs/ContactUs";
 import Products from "./Pages/Products/Products";
 import ViewProductDetails from "./Pages/Products/ViewProductDetails";
-
 // Checkout pages
 import WishList from "./Cart/WishList";
 import Cart from "./Cart/Cart";
@@ -32,7 +29,6 @@ import EditAddress from "./Profile/Address/EditAddress";
 import UserOrder from "./Profile/User Orders/UserOrder";
 import OrderDetails from "./Profile/User Orders/OrderDetail";
 import Payment from "./Profile/Payment/Payment";
-
 // Context
 import { CartProvider } from "./Context/CartContext";
 // i18n setup

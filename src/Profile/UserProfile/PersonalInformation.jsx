@@ -6,11 +6,12 @@ import { IoCopyOutline } from "react-icons/io5";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useTranslation } from "react-i18next";
+
 function PersonalInformation() {
   const navigate = useNavigate();
   const [personalInfo, setPersonalInfo] = useState({});
-  const [error, setError] = useState(null);
   const { t } = useTranslation();
+
   useEffect(() => {
     const getInfo = async () => {
       try {
@@ -18,9 +19,6 @@ function PersonalInformation() {
         setPersonalInfo(data);
       } catch (error) {
         console.error("Failed to fetch personal info:", error);
-        setError(
-          "Failed to load personal information. Please try again later."
-        );
       }
     };
     getInfo();
@@ -147,6 +145,7 @@ function PersonalInformation() {
         pauseOnFocusLoss
         draggable
         pauseOnHover
+        closeButton={false}
       />
     </div>
   );

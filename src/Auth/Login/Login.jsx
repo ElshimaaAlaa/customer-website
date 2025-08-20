@@ -20,7 +20,7 @@ function Login() {
   const navigate = useNavigate();
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
   const { t, i18n } = useTranslation();
-  const [isRTL, setIsRTL] = useState(false);
+  const isRTL = i18n.language === "ar";
   const [initialValues, setInitialValues] = useState({
     email: "",
     password: "",
@@ -37,7 +37,6 @@ function Login() {
         rememberMe: true,
       });
     }
-    setIsRTL(i18n.language === "ar");
   }, [i18n.language]);
 
   const validationSchema = Yup.object({
@@ -47,10 +46,9 @@ function Login() {
       .required(t("passwordRequired")),
   });
 
-
   const handleSubmit = async (values) => {
     setLoading(true);
-    setError(null);
+    setError(true);
     try {
       if (values.rememberMe) {
         localStorage.setItem("user email", values.email);
@@ -73,12 +71,10 @@ function Login() {
   useEffect(() => {
     const savedLanguage = localStorage.getItem("selectedLanguage") || "en";
     i18n.changeLanguage(savedLanguage);
-    setIsRTL(savedLanguage === "ar");
   }, [i18n]);
   // Update RTL state and localStorage when language changes
   useEffect(() => {
     const currentLanguage = i18n.language;
-    setIsRTL(currentLanguage === "ar");
     localStorage.setItem("selectedLanguage", currentLanguage);
   }, [i18n.language]);
   const changeLanguage = (lng) => {
@@ -95,7 +91,9 @@ function Login() {
     <div className="main-container" dir={isRTL ? "rtl" : "ltr"}>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>{t("login")} | {t("vertex")}</title>
+        <title>
+          {t("login")} | {t("vertex")}
+        </title>
         <html dir={isRTL ? "rtl" : "ltr"} lang={i18n.language} />
       </Helmet>
       <div
@@ -172,8 +170,11 @@ function Login() {
                 dir={isRTL ? "rtl" : "ltr"}
               />
               {error && (
-                <p className="text-red-500 text-sm mt-3 text-start">{error}</p>
+                <p className="text-red-500 text-sm mt-3 text-start">
+                  {t("loginError")}
+                </p>
               )}
+
               <div className="flex items-center justify-between mt-5">
                 <div className="flex items-center">
                   <label className="inline-flex items-center cursor-pointer">
@@ -243,7 +244,13 @@ function Login() {
         <OAuth />
         <div>
           <p className="text-center text-gray-400 text-15 mt-3">
-           {t("noAccount")} <span className="font-bold text-primary text-16 cursor-pointer ms-1 rtl:text-[15px]`" onClick={()=>navigate('/Register')}>{t("signUp")}</span>
+            {t("noAccount")}{" "}
+            <span
+              className="font-bold text-primary text-16 cursor-pointer ms-1 rtl:text-[15px]`"
+              onClick={() => navigate("/Register")}
+            >
+              {t("signUp")}
+            </span>
           </p>
         </div>
       </div>

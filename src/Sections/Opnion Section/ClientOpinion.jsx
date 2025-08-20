@@ -10,7 +10,7 @@ function OpinionSection() {
   const carouselRef = useRef();
   const [clientData, setClientData] = useState([]);
   const { t, i18n } = useTranslation();
-  const [isRtl, setIsRtl] = useState(false);
+  const isRtl = i18n.language === "ar"
   useEffect(() => {
     const fetchClientsOpinions = async () => {
       try {
@@ -21,7 +21,6 @@ function OpinionSection() {
       }
     };
     fetchClientsOpinions();
-    setIsRtl(i18n.language === "ar");
   }, [i18n.language]);
 
   const responsive = {
@@ -98,7 +97,7 @@ function OpinionSection() {
                   src={opinion.user_image || "/assets/images/user.png"}
                   alt={`${opinion.user_name}'s profile`}
                   loading="lazy"
-                  className="w-24 h-24 object-cover rounded-full lg:rounded-md md:rounded-md md:w-330 md:object-fill md:h-52 lg:w-48 lg:h-48"
+                  className="w-24 h-24 object-cover rounded-full lg:rounded-md md:rounded-md md:w-330 md:object-fill md:h-40 lg:w-48 lg:h-40"
                 />
               </div>
               <div className="flex-1">
@@ -120,10 +119,7 @@ function OpinionSection() {
                   />
                 </svg>
                 <h3 className="text-12 lg:text-12 md:text-[18px] font-medium w-full my-3">
-                  {opinion.comment} Lorem ipsum dolor sit amet consectetur
-                  adipisicing elit. Mollitia exercitationem sit repellat
-                  voluptatem rerum dolorem deserunt labore tempora dolores quas
-                  est animi nisi, beatae et suscipit ipsam magnam, a soluta.
+                  {opinion.comment}
                 </h3>
                 <div className="flex flex-col text-xl">
                   <p className="flex">{renderStars(opinion.rate)}</p>
