@@ -26,7 +26,27 @@ function Faqs() {
     };
     fetchFaqs();
   }, []);
+ // add animate
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + window.innerHeight;
+      const elements = document.querySelectorAll(".fade-in-element");
+      elements.forEach((element) => {
+        const elementPosition =
+          element.getBoundingClientRect().top + window.scrollY;
+        if (scrollPosition > elementPosition + 100) {
+          element.classList.add("visible");
+        }
+      });
+    };
 
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
   const toggleFaq = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
@@ -41,15 +61,19 @@ function Faqs() {
   return (
     <section>
       <Helmet>
-        <title>{t("faqs")} | {t("vertex")}</title>
+        <title>
+          {t("faqs")} | {t("vertex")}
+        </title>
       </Helmet>
-      <div className="faqHeader w-full h-[65vh] flex flex-col justify-center items-center text-center text-white">
-        <h1 className="text-5xl font-bold mb-4">{t("faqs")}</h1>
-        <p className="text-17 font-light leading-normal w-310 md:w-540 lg:w-500px ">
+      <div className="faqHeader w-full h-[65vh] flex flex-col justify-center items-center text-center text-white ">
+        <h1 className="text-5xl font-bold mb-4 fade-in-element ">
+          {t("faqs")}
+        </h1>
+        <p className="text-17 font-light leading-normal w-310 md:w-540 lg:w-500px fade-in-element ">
           {t("faqsP")}
         </p>
       </div>
-      <section className="px-5 md:px-10 lg:px-24 my-14">
+      <section className="px-5 md:px-10 lg:px-24 my-14 fade-in-element">
         <div>
           {faqsData.slice(0, displayCount).map((item, index) => (
             <div

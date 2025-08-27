@@ -56,6 +56,27 @@ const Header = () => {
     const currentLanguage = i18n.language;
     localStorage.setItem("selectedLanguage", currentLanguage);
   }, [i18n.language]);
+  //add animate 
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + window.innerHeight;
+      const elements = document.querySelectorAll(".fade-in-element");
+      elements.forEach((element) => {
+        const elementPosition =
+          element.getBoundingClientRect().top + window.scrollY;
+        if (scrollPosition > elementPosition + 100) {
+          element.classList.add("visible");
+        }
+      });
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
   return (
     <>
       <header className="header">
@@ -82,7 +103,7 @@ const Header = () => {
                 >
                   <div className="content">
                     <h1
-                      className={`text-white font-bold text-3xl leading-10 text-center ${
+                      className={`text-white font-bold text-3xl leading-10 text-center fade-in-element ${
                         isRtl ? "rtl" : "ltr"
                       }`}
                     >
@@ -91,7 +112,7 @@ const Header = () => {
                     <div className="flex justify-center">
                       <button
                         onClick={handleExploreClick}
-                        className="text-white  justify-center bg-primary p-4 text-lg font-bold rounded-md flex items-center gap-2 mt-6 hover:bg-primary-dark transition-colors"
+                        className="text-white  justify-center bg-primary p-4 text-lg font-bold rounded-md flex items-center gap-2 mt-6 hover:bg-primary-dark transition-colors fade-in-element"
                       >
                         {t("exploreNow")}
                         {isRtl ? (

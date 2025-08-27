@@ -94,7 +94,7 @@ function UserRating() {
                   />
                 </svg>
                 <h3 className="text-sm pt-2 md:text-[14.5px] font-medium w-full leading-6">
-                  {opinion.comment} Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia possimus ratione in unde recusandae, expedita eveniet dolorum sit debitis ab dolor ea illo veritatis fugit praesentium magnam non voluptate accusantium.
+                  {opinion.comment} 
                 </h3>
                 <div className="flex justify-between items-center gap-1">
                   <p>{renderStars(opinion.rate)}</p>

@@ -13,13 +13,15 @@ import { ClipLoader } from "react-spinners";
 import { useTranslation } from "react-i18next";
 import CancelOrder from "./CancelOrder";
 import RefundOrder from "./RefundOrder";
+import { IoIosArrowRoundForward } from "react-icons/io";
 
 function OrderDetails() {
   const [orderDetail, setOrderDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === "ar";
 
   useEffect(() => {
     const fetchOrderDetails = async () => {
@@ -51,9 +53,32 @@ function OrderDetails() {
     { icon: <Acc /> },
   ];
 
+  const getStatusDisplayName = (statusName) => {
+    switch (statusName) {
+      case "Preparing":
+        return t("Preparing");
+      case "Refunded":
+        return t("refund");
+      case "Pending":
+        return t("pending");
+      case "Shipped" || "تم الشحن":
+        return t("Shipped");
+      case "In Transit":
+      case "In-Transit":
+      case "On the way":
+        return t("inTransit");
+      case "Delivered":
+        return t("Delivered");
+      case "Cancelled":
+        return t("Cancelled");
+      default:
+        return statusName;
+    }
+  };
+
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex justify-center items-center min-h-[50vh]">
         <ClipLoader color="#E0A75E" size={50} />
       </div>
     );
@@ -61,13 +86,21 @@ function OrderDetails() {
 
   if (!orderDetail) {
     return (
-      <div className="text-center py-10">
+      <div className="text-center py-10 px-20">
         <p className="text-red-500">{t("error")}</p>
         <button
           onClick={() => navigate(-1)}
           className="mt-4 text-primary flex items-center gap-1"
         >
-          <IoIosArrowRoundBack size={20} /> {t("backToOrders")}
+          {isRTL ? (
+            <>
+              <IoIosArrowRoundForward size={25} /> {t("backToOrders")}
+            </>
+          ) : (
+            <>
+              <IoIosArrowRoundBack size={25} /> {t("backToOrders")}
+            </>
+          )}
         </button>
       </div>
     );
@@ -107,7 +140,15 @@ function OrderDetails() {
           className="text-primary text-15 underline flex items-center rounded-md -ms-4 mb-2 p-3 gap-2"
           onClick={() => navigate("/Home/UserProfile/UserOrder")}
         >
-          <IoIosArrowRoundBack size={25} /> {t("backToOrders")}
+          {isRTL ? (
+            <>
+              <IoIosArrowRoundForward size={25} /> {t("backToOrders")}
+            </>
+          ) : (
+            <>
+              <IoIosArrowRoundBack size={25} /> {t("backToOrders")}
+            </>
+          )}
         </button>
 
         <div className="flex items-center justify-between mb-3">
@@ -142,7 +183,7 @@ function OrderDetails() {
                       : ""
                   }`}
                 >
-                  {orderDetail.status_name}
+                  {getStatusDisplayName(orderDetail.status_name)}
                 </p>
               </div>
               <div className="mt-4 mb-6">
@@ -155,16 +196,9 @@ function OrderDetails() {
               </div>
               <div className="mt-5 space-y-4">
                 {orderDetail.history?.map((statusItem, index) => {
-                  const statusDisplayMap = {
-                    جارالتجهيز: "Checking",
-                    "تم الشحن": "Shipped",
-                    "في الطريق": "In Transit",
-                    "تم التوصيل": "Delivered",
-                  };
-
-                  const displayName =
-                    statusDisplayMap[statusItem.status_name] ||
-                    statusItem.status_name;
+                  const displayName = getStatusDisplayName(
+                    statusItem.status_name
+                  );
                   const dateToShow = statusItem.date || t("notProvided");
 
                   return (
@@ -179,7 +213,7 @@ function OrderDetails() {
                         />
                         {displayName}
                       </p>
-                      <span className="text-gray-400 text-12">
+                      <span className="text-gray-500 text-12">
                         {dateToShow}
                       </span>
                     </div>
@@ -192,24 +226,28 @@ function OrderDetails() {
               <h2 className="font-bold text-15">{t("orderDetail")}</h2>
               <div className="flex gap-36 mt-4">
                 <div>
-                  <h4 className="text-gray-400 text-15">{t("itemNo")}</h4>
+                  <h4 className="text-gray-500 text-15">{t("itemNo")}</h4>
                   <p className="text-14">{orderDetail.items_count}</p>
                 </div>
                 <div>
-                  <h4 className="text-gray-400 text-15">{t("payment")}</h4>
-                  <p
-                    className={`px-2 py-2 rounded-md text-13 mt-1 ${
-                      orderDetail.payment_status === "unpaid" || "غير مدفوع"
-                        ? "bg-gray-100 text-gray-400"
-                        : orderDetail.payment_status === "paid" || "مدفوع"
-                        ? "text-[#28A513] bg-[#E7F6E5]"
-                        : orderDetail.payment_status === "refund"
-                        ? "text-red-600 bg-red-50"
-                        : ""
-                    }`}
-                  >
-                    {orderDetail.payment_status}
-                  </p>
+                  <h4 className="text-gray-500 text-15">{t("payment")}</h4>
+                      <p
+                        className={`px-2 py-2 rounded-md text-13 mt-1 ${
+                          orderDetail.payment_status === "unpaid" || "غير مدفوع"
+                            ? "text-gray-400 bg-gray-100"
+                            : orderDetail.payment_status === "paid" || " مدفوع"
+                            ? "text-[#28A513] bg-[#E7F6E5]"
+                            : ""
+                        }`}
+                      >
+                        {orderDetail.payment_status === "paid" || "مدفوع"
+                          ? t("paid")
+                          : orderDetail.payment_status === "unpaid" ||
+                            "غير مدفوع"
+                          ? t("unpaid")
+                          : ""}
+                      </p>
+                
                 </div>
               </div>
             </section>
@@ -261,19 +299,19 @@ function OrderDetails() {
               <section className="bg-gray-50 rounded-lg px-3 py-5 mt-4 flex flex-col gap-7">
                 <div className="flex items-center justify-between">
                   <p className="text-15">{t("subTotal")}</p>
-                  <p className="text-gray-400 text-15">
+                  <p className="text-gray-500 text-15">
                     $ {orderDetail.sub_total || 0}
                   </p>
                 </div>
                 <div className="flex items-center justify-between">
                   <p className="text-15">{t("shipping")}</p>
-                  <p className="text-gray-400 text-15">
+                  <p className="text-gray-500 text-15">
                     $ {orderDetail.shipping_price || 0}
                   </p>
                 </div>
                 <div className="flex items-center justify-between border-t-2">
                   <p className="text-16 font-bold mt-5">{t("total")}</p>
-                  <p className="text-gray-400 text-15">
+                  <p className="text-gray-500 text-15">
                     $ {orderDetail.total || 0}
                   </p>
                 </div>
@@ -290,8 +328,8 @@ function OrderDetails() {
                       key={`transaction-${index}`}
                       className="flex justify-between"
                     >
-                      <span className="text-gray-400 text-13">
-                        {method.payment_method || "not provided"}
+                      <span className="text-gray-500 text-15">
+                        {method.payment_method || t("noMethod")}
                       </span>
                       <span className="text-gray-600 text-15">
                         $ {method.amount || 0}
@@ -308,7 +346,7 @@ function OrderDetails() {
               <section className="border border-gray-200 rounded-lg p-4 bg-white">
                 <h2 className="font-bold text-15">{t("shippingAddress")}</h2>
                 <p className="text-13 mt-2">
-                  {orderDetail.shipping_address || "Not Available"}
+                  {orderDetail.shipping_address || t("noAddress")}
                 </p>
               </section>
 
@@ -319,18 +357,16 @@ function OrderDetails() {
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center gap-2 text-14 font-bold underline">
                     <span className="text-gray-500">{icons[2]?.icon}</span>
-                    <span>{orderDetail.user?.name || "No name provided"}</span>
+                    <span>{orderDetail.user?.name || t("noName")}</span>
                   </div>
                   <div className="flex items-center gap-2 text-14 font-bold underline">
                     <span className="text-gray-500">{icons[1]?.icon}</span>
-                    <span>
-                      {orderDetail.user?.email || "No email provided"}
-                    </span>
+                    <span>{orderDetail.user?.email || t("noEmail")}</span>
                   </div>
                   <div className="flex items-center gap-2 text-14 font-bold underline">
                     <span className="text-gray-500">{icons[0]?.icon}</span>
                     <span>
-                      {orderDetail.user?.phone || "No phone provided"}
+                      {orderDetail.user?.phone || t("noPhoneProvided")}
                     </span>
                   </div>
                 </div>
@@ -341,22 +377,22 @@ function OrderDetails() {
                 <div className="bg-gray-50 border border-gray-200 rounded-md p-2">
                   <div className="flex justify-between items-center">
                     <p className="text-15">{t("orderTotal")}</p>
-                    <p className="text-gray-400 text-15">
+                    <p className="text-gray-500 text-15">
                       $ {orderDetail.total || 0}
                     </p>
                   </div>
                   <div className="flex justify-between items-center mt-5">
                     <p className="text-15">{t("returnTotal")}</p>
-                    <p className="text-gray-400 text-15">0</p>
+                    <p className="text-gray-500 text-15">0</p>
                   </div>
                   <hr className="border-gray-300 my-2" />
                   <div className="flex justify-between items-center mt-5">
                     <p className="text-15">{t("paidByCustomer")}</p>
-                    <p className="text-gray-400 text-15">0</p>
+                    <p className="text-gray-500 text-15">0</p>
                   </div>
                   <div className="flex items-center justify-between">
                     <p className="text-15 mt-5">{t("refund")}</p>
-                    <p className="text-gray-400 text-15">0</p>
+                    <p className="text-gray-500 text-15">0</p>
                   </div>
                   <hr className="border-gray-300 my-2" />
                   <div className="mt-5 flex justify-between">
@@ -364,7 +400,7 @@ function OrderDetails() {
                       <p>{t("balance")}</p>
                       <span className="text-gray-500 text-13">{t("own")}</span>
                     </div>
-                    <p className="text-gray-400 text-15">
+                    <p className="text-gray-500 text-15">
                       $ {orderDetail.balance || 0}
                     </p>
                   </div>

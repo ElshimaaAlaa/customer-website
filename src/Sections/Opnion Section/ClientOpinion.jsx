@@ -52,6 +52,7 @@ function OpinionSection() {
     carouselRef.current.next();
   };
 
+
   const renderStars = (rating) => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {

@@ -5,16 +5,19 @@ import { GrCart } from "react-icons/gr";
 import { MdClose } from "react-icons/md";
 import UserAcc from "../../Profile/User Acc/UserAcc";
 import { useEffect, useState } from "react";
-import { getWishListData } from "../../ApiServices/Wishlist";
 import { useTranslation } from "react-i18next";
+import { useWishlist } from "../../Context/WishlistContext";
 
 function BottomSection({ onLanguageChange, currentLanguage }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const [wishlistData, setWishlistData] = useState([]);
+  
+  // Add safety check for context
+  const wishlistContext = useWishlist();
+  const { wishlistCount = 0, isLoggedIn = false } = wishlistContext || {};
+  
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [languageDropdownOpen, setLanguageDropdownOpen] = useState(false);
   const [mobileLanguageDropdownOpen, setMobileLanguageDropdownOpen] = useState(false);
   const { t } = useTranslation();
@@ -26,19 +29,6 @@ function BottomSection({ onLanguageChange, currentLanguage }) {
     if (savedLanguage !== currentLanguage) {
       handleLanguageChange(savedLanguage);
     }
-
-    const fetchProductNumInWishlist = async () => {
-      try {
-        const response = await getWishListData();
-        setWishlistData(response);
-      } catch (error) {
-        console.error("Error fetching wishlist:", error);
-      }
-    };
-    
-    fetchProductNumInWishlist();
-    const token = localStorage.getItem("user token");
-    setIsLoggedIn(!!token);
   }, []);
 
   const handleLanguageChange = (lang) => {
@@ -166,10 +156,9 @@ function BottomSection({ onLanguageChange, currentLanguage }) {
         {/* Desktop Icons */}
         <div className="hidden lg:flex items-center gap-4 lg:gap-6">
           <div className="flex gap-3 items-center">
-            <CiSearch size={25} className="cursor-pointer hover:text-primary" />
             <div className="relative">
               <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs h-5 w-5 flex items-center justify-center rounded-full">
-                {wishlistData.length || 0}
+                {wishlistCount || 0}
               </span>
               <GoHeart
                 size={25}
@@ -185,17 +174,6 @@ function BottomSection({ onLanguageChange, currentLanguage }) {
           </div>
           {isLoggedIn && <UserAcc />}
         </div>
-
-        {/* Mobile Search Bar */}
-        {searchOpen && (
-          <div className="lg:hidden absolute top-full left-0 right-0 bg-white px-4 py-3 shadow-md z-10">
-            <input
-              type="text"
-              placeholder={t("navbar.search_placeholder")}
-              className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
-            />
-          </div>
-        )}
       </div>
 
       {/* Mobile Menu */}
@@ -283,9 +261,9 @@ function BottomSection({ onLanguageChange, currentLanguage }) {
             <div className="mt-8 pt-6 border-t border-gray-200">
               <div className="flex items-center gap-4">
                 <div className="relative">
-                  {wishlistData.length > 0 && (
+                  {wishlistCount > 0 && (
                     <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs h-5 w-5 flex items-center justify-center rounded-full">
-                      {wishlistData.length}
+                      {wishlistCount}
                     </span>
                   )}
                   <GoHeart

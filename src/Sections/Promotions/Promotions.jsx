@@ -12,6 +12,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { IoIosCart } from "react-icons/io";
 import SuccessModal from "../../Components/Modal/Success Modal/SuccessModal";
 import AuthModal from "../../Components/Modal/Success Modal/AuthModal";
+import "react-toastify/dist/ReactToastify.css";
 
 function Promotions() {
   const [isLoading, setIsLoading] = useState(false);
@@ -53,7 +54,7 @@ function Promotions() {
       quantity: 1,
       image:
         promotion.promotion_items?.[0]?.product?.images?.[0]?.src ||
-        "/placeholder.png",
+        "/assets/images/product.png",
       isPromotion: true,
       items: promotion.promotion_items.map((item) => ({
         id: item.product.id,
@@ -251,7 +252,6 @@ function Promotions() {
                         />
                       )}
                     </div>
-
                     {/* Add to Cart Button - Large Screens */}
                     <div
                       className={`absolute bottom-4 hidden lg:flex transition-all duration-300 transform ${
@@ -267,7 +267,6 @@ function Promotions() {
                         + {t("addToCart")}
                       </button>
                     </div>
-
                     {/* Add to Cart Button - Small & Medium Screens */}
                     <div
                       className={`absolute top-4 right-4 flex lg:hidden transition-all duration-300 transform ${
@@ -291,12 +290,19 @@ function Promotions() {
           </Swiper>
         </div>
       )}
-      <ToastContainer closeButton={false} />
+      <ToastContainer
+        closeButton={false}
+        toastClassName={() =>
+          `text-black flex items-center gap-3 p-4 h-48${
+            isRtl ? "toast-font-ar" : "toast-font-en"
+          }`
+        }
+      />
+
       <SuccessModal isOpen={showModal} onClose={() => setShowModal(false)}>
         <AuthModal initialMode="login" onClose={() => setShowModal(false)} />
       </SuccessModal>
     </div>
   );
 }
-
 export default Promotions;

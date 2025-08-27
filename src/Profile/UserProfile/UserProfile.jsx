@@ -5,7 +5,7 @@ import { TbCirclePlus } from "react-icons/tb";
 import InfoSideBar from "../MainInfo/InfoSideBar";
 import { Outlet } from "react-router-dom";
 import { Profile } from "../../ApiServices/Profile";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 function UserProfile() {
   const [data, setData] = useState([]);
@@ -19,16 +19,37 @@ function UserProfile() {
     }
   };
   getUserData();
+  // add animate 
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + window.innerHeight;
+      const elements = document.querySelectorAll(".fade-in-element");
+      elements.forEach((element) => {
+        const elementPosition =
+          element.getBoundingClientRect().top + window.scrollY;
+        if (scrollPosition > elementPosition + 100) {
+          element.classList.add("visible");
+        }
+      });
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
   return (
     <div className="bg-white pb-10">
       <Helmet>
-        <title>{t("UserProfile")} | {t("vertex")}</title>
+        <title>
+          {t("UserProfile")} | {t("vertex")}
+        </title>
       </Helmet>
       <section className="userHeader w-full h-[65vh] flex flex-col justify-center items-center text-center text-white">
-        <h1 className="text-5xl font-bold mb-6">{t("myAcc")}</h1>
-        <p className="text-17 font-light ">
-          {t("accHead")}
-        </p>
+        <h1 className="text-5xl font-bold mb-6 fade-in-element">{t("myAcc")}</h1>
+        <p className="text-17 font-light fade-in-element">{t("accHead")}</p>
       </section>
       <section className="py-8 px-3 md:p-8 lg:p-8 bg-customOrange-lightOrange flex items-center justify-between md:px-14 lg:px-28">
         <div className="flex items-center gap-2">

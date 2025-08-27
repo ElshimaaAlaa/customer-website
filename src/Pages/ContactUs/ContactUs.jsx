@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Helmet } from "react-helmet";
 import "./contactStyle.scss";
 import * as Yup from "yup";
@@ -11,24 +11,30 @@ import { LuSend } from "react-icons/lu";
 import { ClipLoader } from "react-spinners";
 import ContactInfo from "./ContactInfo";
 import { useTranslation } from "react-i18next";
+
 function ContactUs() {
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState(null);
   const { t, i18n } = useTranslation();
   const [isRTL, setIsRTL] = useState(false);
+  const formRef = useRef(null);
+  const headerRef = useRef(null);
+
   const initialValues = {
     name: "",
     email: "",
     phone: "",
     message: "",
   };
+
   const validationSchema = Yup.object({
     name: Yup.string().required(t("nameRequired")),
     email: Yup.string().email(t("invalidEmail")).required(t("emailRequired")),
     phone: Yup.string().required(t("phoneRequired")),
     message: Yup.string().required(t("messageRequired")),
   });
+
   useEffect(() => {
     if (showModal) {
       document.body.classList.add("no-scroll");
@@ -36,7 +42,24 @@ function ContactUs() {
       document.body.classList.remove("no-scroll");
     }
     setIsRTL(i18n.language === "ar");
+
+    const handleScroll = () => {
+      const elements = document.querySelectorAll(".fade-in-element");
+      elements.forEach((element) => {
+        const elementTop = element.getBoundingClientRect().top;
+        const elementVisible = 150;
+        if (elementTop < window.innerHeight - elementVisible) {
+          element.classList.add("active");
+        }
+      });
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); 
+
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [showModal, i18n.language]);
+
   const handleSubmit = async (values, { resetForm }) => {
     setIsLoading(true);
     setError(null);
@@ -55,20 +78,31 @@ function ContactUs() {
       setIsLoading(false);
     }
   };
+
   return (
     <section className="bg-white pb-10">
       <Helmet>
-        <title>{t("contactUs")} | {t("vertex")}</title>
+        <title>
+          {t("contactUs")} | {t("vertex")}
+        </title>
       </Helmet>
-      <div className="contactHeader w-full h-[65vh] flex flex-col justify-center items-center text-center text-white">
-        <h1 className="text-5xl font-bold mb-4">{t("contactUs")}</h1>
-        <p className="text-17 font-light  leading-normal w-300 lg:w-500px md:w-500px">
-         {t("contactDesc")}
+      <div
+        ref={headerRef}
+        className="contactHeader w-full h-[65vh] flex flex-col justify-center items-center text-center text-white"
+      >
+        <h1 className="text-5xl font-bold mb-4 fade-in-element">
+          {t("contactUs")}
+        </h1>
+        <p className="text-17 font-light leading-normal w-300 lg:w-500px md:w-500px fade-in-element">
+          {t("contactDesc")}
         </p>
       </div>
       <div className="flex items-center flex-col md:flex-row md:items-start lg:items-start px-5 lg:px-20 justify-center gap-4 md:rtl:flex-row-reverse lg:rtl:flex-row-reverse">
         <ContactInfo />
-        <section className="bg-customOrange-mediumOrange p-5 mt-10 w-[320px] md:w-[430px] lg:w-500 rounded-md">
+        <section
+          ref={formRef}
+          className="bg-customOrange-mediumOrange p-5 mt-10 w-[320px] md:w-[430px] lg:w-500 rounded-md fade-in-element form-container"
+        >
           <div className="flex justify-center">
             <img
               src="/assets/svgs/chats.svg"
@@ -76,10 +110,10 @@ function ContactUs() {
               className="w-14 mt-4 mb-2"
             />
           </div>
-          <h2 className="font-bold text-lg text-center mb-1">
+          <h2 className="font-bold text-lg text-center mb-1 form-title">
             {t("sendProblem")}
           </h2>
-          <p className="text-gray-400 text-14 text-center mb-3">
+          <p className="text-gray-400 text-14 text-center mb-3 form-subtitle">
             {t("helpYou")}
           </p>
           <Formik
@@ -109,16 +143,18 @@ function ContactUs() {
                   placeholder={t("message")}
                   name="message"
                   className={`w-full bg-white outline-none border-2 rounded-md p-2 h-32 block placeholder:text-14 
-                  ${
-                    errors.message && touched.message
-                      ? "border-red-500 focus:border-red-500"
-                      : touched.message
-                      ? "border-green-500 focus:border-green-500"
-                      : "border-gray-200 focus:border-primary"
-                  }`}
+                    ${
+                      errors.message && touched.message
+                        ? "border-red-500 focus:border-red-500"
+                        : touched.message
+                        ? "border-green-500 focus:border-green-500"
+                        : "border-gray-200 focus:border-primary"
+                    }`}
                 />
                 {error && (
-                  <p className="text-red-500 text-center mt-2">{error}</p>
+                  <p className="text-red-500 text-center mt-2 fade-in-element">
+                    {error}
+                  </p>
                 )}
                 <MainBtn
                   btnType={"submit"}
@@ -148,7 +184,7 @@ function ContactUs() {
           />
           <p className="font-bold mt-5 rtl:text-[19px]">{t("doneMessage")}</p>
           <button
-            className="bg-primary font-bold text-white p-2 w-40 mt-4 rounded-md rtl:text-[16px]"
+            className="bg-primary font-bold text-white p-2 w-32 mt-4 rounded-md rtl:text-[16px]"
             type="button"
             onClick={() => setShowModal(false)}
           >

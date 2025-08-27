@@ -60,7 +60,7 @@ function Payment() {
             Pay pal
           </p>
           <button className="text-primary text-16 font-bold">
-             {t("linkAccount")}
+            {t("linkAccount")}
           </button>
         </div>
         <div className="border border-gray-200 bg-gray-50 rounded-lg p-4 flex items-center justify-between">
@@ -69,7 +69,7 @@ function Payment() {
             Visa
           </p>
           <button className="text-primary text-16 font-bold">
-             {t("linkAccount")}
+            {t("linkAccount")}
           </button>
         </div>
         <div className="border border-gray-200 bg-gray-50 rounded-lg p-4 flex items-center justify-between">
@@ -77,7 +77,7 @@ function Payment() {
             <GooglePay />
             Google Pay
           </p>
-          <DeletePayment/>
+          <DeletePayment />
         </div>
       </section>
       <section className="border border-gray-200 p-4 rounded-lg bg-gray-50 mt-3">
@@ -92,12 +92,6 @@ function Payment() {
                   placeholder="MM/YY"
                   type="date"
                   className={`w-full h-14 p-3 border-2 rounded-md outline-none transition-all duration-200 placeholder:text-14 focus:border-primary`}
-                  onChange={(e) => {
-                    let value = e.target.value;
-                    if (value.length === 2 && !value.includes("/")) {
-                      value = value + "/";
-                    }
-                  }}
                 />
               </div>
             </div>
@@ -136,9 +130,7 @@ function Payment() {
             alt="Success"
             className="w-32 mt-6"
           />
-          <p className="font-bold mt-5 text-center">
-            {t("successAddPayment")}
-          </p>
+          <p className="font-bold mt-5 text-center">{t("successAddPayment")}</p>
           <button
             className="bg-primary text-white rounded-md p-2 text-14 mt-4 w-32 "
             onClick={() => navigate("/Home/UserProfile")}

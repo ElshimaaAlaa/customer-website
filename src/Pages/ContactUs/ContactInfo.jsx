@@ -39,7 +39,7 @@ function ContactInfo() {
     </div>
   );
   return (
-    <div>
+    <div className="fade-in-element">
       <section className="bg-white border rounded-md drop-shadow-lg w-[320px] md:w-[400px] lg:w-500 p-5 h-72 mt-10">
         <h2 className="font-bold text-lg mb-3 mt-2 relative pb-1 gradient-border-bottom rtl:text-[18px]">
           {t("contactInfo")}

@@ -62,7 +62,7 @@ function InfoSideBar() {
 
   return (
     <aside className="w-full">
-      <div className="flex flex-col gap-7 border-r rtl:border-l rtl:border-r-0 p-4 md:p-4">
+      <div className="flex flex-col gap-7 border-r rtl:border-l rtl:border-r-0 h-[600px] p-4 md:p-4">
         {menuItems.map(({ IconComponent, label, path, exactMatch }, index) => (
           <button
             key={index}

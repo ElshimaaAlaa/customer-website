@@ -157,12 +157,12 @@ function BestSalesProducts() {
                     <div className="h-56 flex justify-center py-5 flex-grow">
                       {product.images?.[0]?.src ? (
                         <img
-                          src={product.images[0].src}
+                          src={product.images[0].src || "/assets/images/product.png"}
                           alt={getTranslatedField(product, "name")}
                           className="max-h-full max-w-full object-contain"
                           onError={(e) => {
                             e.target.onerror = null;
-                            e.target.src = "/placeholder-product.png";
+                            e.target.src = "/assets/images/product.png";
                           }}
                         />
                       ) : (

@@ -48,21 +48,17 @@ export default function ProductCard({
           </p>
         )}
         <div className="h-full flex justify-center items-center p-7">
-          {product.images?.[0]?.src ? (
+          {product.images?.[0]?.src && (
             <img
-              src={product.images[0].src}
+              src={product.images[0].src || "/assets/images/product.png"}
               alt={product.name}
               className="max-h-full max-w-full object-contain"
               onError={(e) => {
                 e.target.onerror = null;
-                e.target.src = "/placeholder-product.png";
+                e.target.src = "/assets/images/product.png";
               }}
             />
-          ) : (
-            <div className="text-gray-400 flex items-center justify-center h-full">
-              {t("noImage")}
-            </div>
-          )}
+        )}
         </div>
       </div>
       <div className="p-3">

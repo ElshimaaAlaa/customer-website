@@ -22,6 +22,7 @@
     "lucide-react": "^0.503.0",
     "postcss-loader": "^8.1.1",
     "react": "^19.1.0",
+    "react-datepicker": "^8.7.0",
     "react-dom": "^19.1.0",
     "react-helmet": "^6.1.0",
     "react-i18next": "^15.5.3",
@@ -34,6 +35,7 @@
     "react-sweet-progress": "^1.1.2",
     "react-toastify": "^11.0.5",
     "sass-loader": "^16.0.5",
+    "sweetalert2": "^11.22.5",
     "swiper": "^11.2.7",
     "web-vitals": "^2.1.4",
     "yup": "^1.6.1"

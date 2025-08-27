@@ -14,6 +14,7 @@ import { toggleWishlist } from "../../ApiServices/ToggleWishlist";
 import { ClipLoader } from "react-spinners";
 import { useTranslation } from "react-i18next";
 import { CartContext } from "../../Context/CartContext";
+
 function ViewProductDetails() {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -24,6 +25,9 @@ function ViewProductDetails() {
   const { t, i18n } = useTranslation();
   const [isRTL, setIsRTL] = useState(false);
   const cart = useContext(CartContext);
+
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [selectedSize, setSelectedSize] = useState(null);
 
   const fetchProductDetail = useCallback(async () => {
     try {
@@ -38,6 +42,8 @@ function ViewProductDetails() {
 
       setProduct(response.data.data);
       setMainImage(response.data.data.images?.[0]?.src || "");
+      setSelectedColor(null);
+      setSelectedSize(null);
 
       const storedWishlist = localStorage.getItem("wishlistItems");
       if (storedWishlist) {
@@ -85,19 +91,54 @@ function ViewProductDetails() {
   };
 
   const addToCart = (product) => {
-    cart.AddProductToCart(product);
+    // Create a product object with selected options
+    const productWithOptions = {
+      ...product,
+      selectedColor,
+      selectedSize,
+    };
+
+    cart.AddProductToCart(productWithOptions);
+  };
+
+  // Function to handle color selection with toggle behavior
+  const handleColorSelect = (color) => {
+    if (selectedColor?.id === color.id) {
+      // If the same color is clicked again, deselect it
+      setSelectedColor(null);
+    } else {
+      // Otherwise select the new color
+      setSelectedColor(color);
+    }
+  };
+
+  // Function to handle size selection with toggle behavior
+  const handleSizeSelect = (size) => {
+    if (size.stock <= 0) return; // Don't allow selection if out of stock
+
+    if (selectedSize?.id === size.id) {
+      // If the same size is clicked again, deselect it
+      setSelectedSize(null);
+    } else {
+      // Otherwise select the new size
+      setSelectedSize(size);
+    }
   };
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <ClipLoader color="#E0A75E" size={25} />
+      <div className="flex justify-center items-center h-[50vh]">
+        <ClipLoader color="#E0A75E" size={35} />
       </div>
     );
   }
 
   if (!product) {
-    return <div className="text-center py-20 text-red-500">{t("error")}</div>;
+    return (
+      <div className="text-center py-20 text-red-500 h-[50vh]">
+        {t("error")}
+      </div>
+    );
   }
 
   const isWishlisted = wishlistItems.includes(product.id);
@@ -144,12 +185,12 @@ function ViewProductDetails() {
               )}
 
               <img
-                src={mainImage || "/placeholder-product.png"}
+                src={mainImage || "/assets/images/product.png"}
                 alt={product.name}
                 className="w-full h-auto lg:p-8 max-h-96 object-contain"
                 onError={(e) => {
                   e.target.onerror = null;
-                  e.target.src = "/placeholder-product.png";
+                  e.target.src = "/assests/images/product.png";
                 }}
               />
             </div>
@@ -208,40 +249,19 @@ function ViewProductDetails() {
                 <p className="text-gray-600 text-16 mt-6">
                   {product.category?.name || t("noCat")}
                 </p>
-                <h1 className="text-2xl font-bold mt-3">
+                <h1 className="text-xl font-bold mt-3">
                   {getTranslatedField(product, "name")}
                 </h1>
               </div>
             </div>
 
-            {/* Rating */}
-            <div className="flex items-center gap-2 mt-3">
-              <div className="flex">
-                {[...Array(5)].map((_, i) => (
-                  <svg
-                    key={i}
-                    className={`w-5 h-5 ${
-                      i < Math.floor(product.rate || 0)
-                        ? "text-yellow-400"
-                        : "text-gray-300"
-                    }`}
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
-              </div>
-            </div>
-
             {/* Price */}
             <div className="flex items-center gap-2 mt-6">
-              {product.price_after_discount &&
-              product.price_after_discount !== product.price ? (
+              {product.price_after_discount && (
                 <>
                   {isRTL ? (
                     <>
-                      <span className="text-gray-500 text-15 line-through">
+                      <span className="text-gray-500 text-15 mt-1 line-through">
                         ${product.price.toFixed(2)}
                       </span>
                       <span className="text-xl text-primary font-bold">
@@ -259,10 +279,6 @@ function ViewProductDetails() {
                     </>
                   )}
                 </>
-              ) : (
-                <span className="text-xl text-primary font-bold">
-                  ${product.price.toFixed(2)}
-                </span>
               )}
             </div>
 
@@ -274,16 +290,37 @@ function ViewProductDetails() {
             {/* Product Colors */}
             {product.colors?.length > 0 && (
               <div className="my-8">
-                <p className="text-lg mb-2">{t("selectColor")}</p>
+                <p className="text-17 mb-2">{t("selectColor")}</p>
                 <div className="flex gap-2">
                   {product.colors.map((color) => (
                     <button
                       key={color.id}
-                      className="w-8 h-8 rounded-full border-2 border-gray-200"
+                      className={`w-10 h-10 rounded-full border-2 flex items-center justify-center ${
+                        selectedColor?.id === color.id
+                          ? "border-primary border-2"
+                          : "border-gray-200"
+                      }`}
                       style={{ backgroundColor: color.hex_code }}
                       title={color.name}
                       aria-label={color.name}
-                    />
+                      onClick={() => handleColorSelect(color)}
+                    >
+                      {selectedColor?.id === color.id && (
+                        <svg
+                          className="w-4 h-4 text-white"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={3}
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                      )}
+                    </button>
                   ))}
                 </div>
               </div>
@@ -291,21 +328,24 @@ function ViewProductDetails() {
 
             {/* Product Sizes */}
             {product.sizes?.length > 0 && (
-              <div className="my-4">
-                <p className="text-lg mb-2">{t("selectSize")}</p>
+              <div className="my-8">
+                <p className="text-15 mb-2">{t("selectSize")}</p>
                 <div className="flex flex-wrap gap-2">
                   {product.sizes.map((size) => (
                     <button
                       key={size.id}
-                      className={`px-4 py-2 border rounded-md ${
+                      className={`px-4 py-2 border rounded-md font-medium transition-all ${
                         size.stock > 0
-                          ? "border-gray-300 hover:border-primary"
-                          : "border-gray-100 text-gray-400 cursor-not-allowed"
+                          ? selectedSize?.id === size.id
+                            ? " bg-gray-600 text-white shadow-md"
+                            : "border-gray-300 bg-gray-50 hover:border-primary hover:bg-gray-100"
+                          : "border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed"
                       }`}
                       disabled={size.stock <= 0}
                       aria-label={`${size.name} ${
                         size.stock <= 0 ? t("outOfStock") : ""
                       }`}
+                      onClick={() => handleSizeSelect(size)}
                     >
                       {size.name}
                     </button>
@@ -318,12 +358,9 @@ function ViewProductDetails() {
             <div className="flex items-center gap-2 mt-3 md:w-400 lg:w-400">
               {productQuantity === 0 ? (
                 <button
-                  className={`flex-1 rounded-md border-2 border-primary py-2 text-17 font-bold transition-colors ${
-                    product.stock === 0
-                      ? "bg-gray-200 text-gray-500 border-gray-300 cursor-not-allowed"
-                      : "text-primary hover:bg-primary hover:text-white"
-                  }`}
-                  disabled={product.stock === 0}
+                  className={`flex-1 rounded-md border-2 bg-primary text-white border-primary py-2 text-17 font-bold transition-colors 
+                   `}
+                  // disabled
                   onClick={(e) => {
                     e.stopPropagation();
                     addToCart(product);
@@ -335,7 +372,7 @@ function ViewProductDetails() {
               ) : (
                 <div className="flex flex-1 justify-between items-center border-2 border-primary rounded-md overflow-hidden">
                   <button
-                    className="w-10 h-10 text-gray-500 font-bold text-xl hover:bg-primary-dark"
+                    className="w-10 h-10 text-gray-500 font-bold text-xl hover:bg-primary-dark "
                     onClick={(e) => {
                       e.stopPropagation();
                       cart.RemoveProductFromCart(product.id);
@@ -348,12 +385,11 @@ function ViewProductDetails() {
                     {productQuantity}
                   </span>
                   <button
-                    className="w-10 h-10 text-gray-500 font-bold text-xl hover:bg-primary-dark"
+                    className="w-10 h-10 text-gray-500 font-bold text-xl hover:bg-primary-dark "
                     onClick={(e) => {
                       e.stopPropagation();
-                      cart.AddProductToCart(product);
+                      addToCart(product);
                     }}
-                    disabled={productQuantity >= product.stock}
                     aria-label={t("increaseQuantity")}
                   >
                     +
@@ -362,11 +398,7 @@ function ViewProductDetails() {
               )}
 
               <button
-                className={`flex-1 rounded-md border-2 py-2 text-17 font-bold transition-colors disabled:opacity-30 ${
-                  product.stock === 0
-                    ? "bg-gray-200 text-gray-500 border-gray-300 cursor-not-allowed"
-                    : "bg-primary text-white border-primary hover:bg-primary-dark"
-                }`}
+                className={`flex-1 rounded-md border-2 py-2 bg-primary text-white text-17 font-bold transition-colors  disabled:bg-primary disabled:opacity-30 disabled:text-white`}
                 disabled
                 aria-label={t("buyNow")}
               >

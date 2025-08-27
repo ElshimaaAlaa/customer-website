@@ -4,33 +4,26 @@ import { IoIosArrowRoundForward, IoIosHeart } from "react-icons/io";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { getWishListData } from "../ApiServices/Wishlist";
-import { toggleWishlist } from "../ApiServices/ToggleWishlist";
 import { CartContext } from "../Context/CartContext";
+import { useWishlist } from "../Context/WishlistContext"; // استيراد الـ context
+
 function WishList() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [wishlistData, setWishListData] = useState([]);
   const [isToggling, setIsToggling] = useState({});
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const [isRTL, setIsRTL] = useState(false);
   const cart = useContext(CartContext);
+  
+  // استخدام الـ context
+  const { 
+    wishlistItems: wishlistData, 
+    toggleWishlistItem,
+    fetchWishlist 
+  } = useWishlist();
 
   useEffect(() => {
-    const fetchWishListData = async () => {
-      setIsLoading(true);
-      try {
-        const response = await getWishListData();
-        setWishListData(response || []);
-      } catch (error) {
-        setError(true);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchWishListData();
     setIsRTL(i18n.language === "ar");
   }, [i18n.language]);
 
@@ -38,23 +31,14 @@ function WishList() {
     cart.AddProductToCart(product);
   };
 
-  const addAllToCart = () => {
-    wishlistData.forEach((product) => {
-      if (product.stock > 0) {
-        cart.AddProductToCart(product);
-      }
-    });
-  };
-
   const clearWishlist = async () => {
     try {
       setIsLoading(true);
-      // Remove all items from wishlist one by one
+      // إزالة جميع العناصر من الـ wishlist
       for (const product of wishlistData) {
-        await toggleWishlist(product.id);
+        await toggleWishlistItem(product.id);
       }
-      setWishListData([]);
-      localStorage.setItem("wishlistItems", JSON.stringify([]));
+      // سيتم التحديث التلقائي عبر الـ context
     } catch (error) {
       console.error("Error clearing wishlist:", error);
     } finally {
@@ -65,17 +49,8 @@ function WishList() {
   const handleToggleWishlist = async (productId) => {
     setIsToggling((prev) => ({ ...prev, [productId]: true }));
     try {
-      const result = await toggleWishlist(productId);
-      if (result.success) {
-        const updated = wishlistData.filter((item) => item.id !== productId);
-        setWishListData(updated);
-        localStorage.setItem(
-          "wishlistItems",
-          JSON.stringify(updated.map((item) => item.id))
-        );
-      } else {
-        console.error("Toggle failed:", result.message);
-      }
+      await toggleWishlistItem(productId);
+      // لا حاجة لتحديث الحالة يدوياً، لأن الـ context سيتكفل بذلك
     } catch (error) {
       console.error("Error toggling wishlist:", error);
     } finally {
@@ -146,20 +121,18 @@ function WishList() {
                     </button>
                   )}
 
-                  {product.images?.[0]?.src ? (
+                  {product.images?.[0]?.src && (
                     <img
-                      src={product.images[0].src}
+                      src={
+                        product.images[0].src || "/assets/images/product.png"
+                      }
                       alt={product.name}
                       className="h-full w-full p-6 object-contain"
                       onError={(e) => {
                         e.target.onerror = null;
-                        e.target.src = "/placeholder-product.png";
+                        e.target.src = "/assets/images/product.png";
                       }}
                     />
-                  ) : (
-                    <div className="text-gray-400 text-center">
-                      {t("noImageAvailable")}
-                    </div>
                   )}
                 </div>
 
@@ -247,10 +220,6 @@ function WishList() {
                         : "bg-primary text-white border-primary hover:bg-primary-dark"
                     }`}
                     disabled
-                    // onClick={(e) => {
-                    //   e.stopPropagation();
-                    //   navigate("/Home/Checkout");
-                    // }}
                     aria-label={t("buyNow")}
                   >
                     {t("buyNow")}
@@ -262,16 +231,10 @@ function WishList() {
         </div>
       )}
       {wishlistData.length > 0 && (
-        <div className="flex gap-4 mt-16">
-          <button
-            onClick={addAllToCart}
-            className="bg-primary rtl:text-12 rtl:lg:text-16 rtl:md:text-16 text-white px-4 py-3 rounded-md hover:bg-primary-dark transition-colors"
-          >
-            {t("addAllToCart")}
-          </button>
+        <div className="mt-16">
           <button
             onClick={clearWishlist}
-            className="bg-gray-200 rtl:text-12 rtl:lg:text-16 text-gray-500 px-4 py-3 rounded-md"
+            className="bg-gray-100 rtl:text-12 rtl:lg:text-16 text-gray-400 px-4 py-3 rounded-md"
           >
             {t("clearAll")}
           </button>

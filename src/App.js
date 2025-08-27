@@ -31,6 +31,7 @@ import OrderDetails from "./Profile/User Orders/OrderDetail";
 import Payment from "./Profile/Payment/Payment";
 // Context
 import { CartProvider } from "./Context/CartContext";
+import { WishlistProvider } from "./Context/WishlistContext";
 // i18n setup
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
@@ -75,48 +76,49 @@ function App() {
       </div>
     );
   }
-
   return (
-    <CartProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Navigate to="/Home/Homepage" />} />
-          <Route path="/Login" element={<Login />} />
-          <Route path="/Login/ForgotPassword" element={<ForgotPassword />} />
-          <Route path="/Login/VerifayPassword" element={<VerifayPassword />} />
-          <Route
-            path="/Login/CreateNewPassword"
-            element={<CreateNewPassword />}
-          />
-          <Route path="/Register" element={<Register />} />
+    <WishlistProvider>
+      <CartProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Navigate to="/Home/Homepage" />} />
+            <Route path="/Login" element={<Login />} />
+            <Route path="/Login/ForgotPassword" element={<ForgotPassword />} />
+            <Route path="/Login/VerifayPassword" element={<VerifayPassword />} />
+            <Route
+              path="/Login/CreateNewPassword"
+              element={<CreateNewPassword />}
+            />
+            <Route path="/Register" element={<Register />} />
 
-          <Route path="/Home" element={<Main />}>
-            <Route path="Homepage" element={<Home />} />
-            <Route path="Faqs" element={<Faqs />} />
-            <Route path="AboutUs" element={<AboutUs />} />
-            <Route path="ContactUs" element={<ContactUs />} />
-            <Route path="Products" element={<Products />} />
-            <Route path="Products/:id" element={<ViewProductDetails />} />
-            <Route path="WishList" element={<WishList />} />
-            <Route path="Cart" element={<Cart />} />
-            <Route path="Checkout" element={<Checkout />} />
-            <Route path="OrderSubmitted" element={<OrderSubmitted />} />
-            <Route path="OrderRating" element={<OrderRating />} />
-            <Route path="UserProfile" element={<UserProfile />}>
-              <Route index element={<PersonalInformation />} />
-              <Route path="EditInfo" element={<EditInfo />} />
-              <Route path="ChangePassword" element={<ChangePassword />} />
-              <Route path="Address" element={<Address />} />
-              <Route path="EditAddress" element={<EditAddress />} />
-              <Route path="UserOrder" element={<UserOrder />} />
-              <Route path="Payment" element={<Payment />} />
+            <Route path="/Home" element={<Main />}>
+              <Route path="Homepage" element={<Home />} />
+              <Route path="Faqs" element={<Faqs />} />
+              <Route path="AboutUs" element={<AboutUs />} />
+              <Route path="ContactUs" element={<ContactUs />} />
+              <Route path="Products" element={<Products />} />
+              <Route path="Products/:id" element={<ViewProductDetails />} />
+              <Route path="WishList" element={<WishList />} />
+              <Route path="Cart" element={<Cart />} />
+              <Route path="Checkout" element={<Checkout />} />
+              <Route path="OrderSubmitted" element={<OrderSubmitted />} />
+              <Route path="OrderRating" element={<OrderRating />} />
+              <Route path="UserProfile" element={<UserProfile />}>
+                <Route index element={<PersonalInformation />} />
+                <Route path="EditInfo" element={<EditInfo />} />
+                <Route path="ChangePassword" element={<ChangePassword />} />
+                <Route path="Address" element={<Address />} />
+                <Route path="EditAddress" element={<EditAddress />} />
+                <Route path="UserOrder" element={<UserOrder />} />
+                <Route path="Payment" element={<Payment />} />
+              </Route>
+
+              <Route path="UserOrder/:id" element={<OrderDetails />} />
             </Route>
-
-            <Route path="UserOrder/:id" element={<OrderDetails />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </CartProvider>
+          </Routes>
+        </BrowserRouter>
+      </CartProvider>
+    </WishlistProvider>
   );
 }
 export default App;
