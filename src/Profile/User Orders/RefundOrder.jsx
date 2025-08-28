@@ -53,9 +53,9 @@ function RefundOrder({ order_id }) {
       <FailedModal isOpen={showModal} onClose={() => setShowModal(false)}>
         <div className="p-5">
           <img
-            src="/assets/images/success.png"
+            src="/assets/images/11787455.png"
             alt="success"
-            className="w-24 mt-4"
+            className="w-14 mt-4"
           />
         </div>
         <p className="font-bold w-72 text-center">{t("refundOrder")}</p>
@@ -109,5 +109,4 @@ function RefundOrder({ order_id }) {
     </div>
   );
 }
-
 export default RefundOrder;

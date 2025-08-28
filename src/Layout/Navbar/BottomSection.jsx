@@ -20,16 +20,58 @@ function BottomSection({ onLanguageChange, currentLanguage }) {
   const [searchOpen, setSearchOpen] = useState(false);
   const [languageDropdownOpen, setLanguageDropdownOpen] = useState(false);
   const [mobileLanguageDropdownOpen, setMobileLanguageDropdownOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
   const { t } = useTranslation();
   const isActive = (path) => location.pathname === path;
 
   useEffect(() => {
-    // استعادة اللغة المحفوظة عند التحميل
     const savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
     if (savedLanguage !== currentLanguage) {
       handleLanguageChange(savedLanguage);
     }
+
+    // حساب عدد العناصر في السلة عند التحميل
+    calculateCartCount();
   }, []);
+
+  useEffect(() => {
+    // الاستماع للتغييرات في localStorage
+    const handleStorageChange = (e) => {
+      if (e.key === "cartContainer") {
+        calculateCartCount();
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    
+    // أيضًا نتحقق من التغييرات بشكل دوري (اختياري)
+    const interval = setInterval(calculateCartCount, 1000);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
+    };
+  }, []);
+
+  const calculateCartCount = () => {
+    try {
+      const cartData = localStorage.getItem("cartContainer");
+      if (cartData) {
+        const cartItems = JSON.parse(cartData);
+        
+        if (Array.isArray(cartItems) && cartItems.length > 0) {
+          // حساب عدد العناصر الفريدة بناءً على الـ ID
+          const uniqueItems = new Set(cartItems.map(item => item.id));
+          setCartCount(uniqueItems.size);
+          return;
+        }
+      }
+      setCartCount(0);
+    } catch (error) {
+      console.error("Error calculating cart count:", error);
+      setCartCount(0);
+    }
+  };
 
   const handleLanguageChange = (lang) => {
     localStorage.setItem('selectedLanguage', lang);
@@ -37,8 +79,6 @@ function BottomSection({ onLanguageChange, currentLanguage }) {
     setLanguageDropdownOpen(false);
     setMobileLanguageDropdownOpen(false);
     setMobileMenuOpen(false);
-    
-    // تغيير اتجاه الصفحة حسب اللغة
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
     document.documentElement.lang = lang;
   };
@@ -157,20 +197,30 @@ function BottomSection({ onLanguageChange, currentLanguage }) {
         <div className="hidden lg:flex items-center gap-4 lg:gap-6">
           <div className="flex gap-3 items-center">
             <div className="relative">
-              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs h-5 w-5 flex items-center justify-center rounded-full">
-                {wishlistCount || 0}
-              </span>
+              {wishlistCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs h-5 w-5 flex items-center justify-center rounded-full">
+                  {wishlistCount}
+                </span>
+              )}
               <GoHeart
                 size={25}
                 className="cursor-pointer hover:text-primary"
                 onClick={() => navigate("/Home/WishList")}
               />
             </div>
-            <GrCart
-              size={22}
-              className="cursor-pointer hover:text-primary"
-              onClick={() => navigate("Cart")}
-            />
+            
+            <div className="relative">
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs h-5 w-5 flex items-center justify-center rounded-full">
+                  {cartCount}
+                </span>
+              )}
+              <GrCart
+                size={22}
+                className="cursor-pointer hover:text-primary"
+                onClick={() => navigate("Cart")}
+              />
+            </div>
           </div>
           {isLoggedIn && <UserAcc />}
         </div>
@@ -275,14 +325,23 @@ function BottomSection({ onLanguageChange, currentLanguage }) {
                     }}
                   />
                 </div>
-                <GrCart
-                  size={20}
-                  className="cursor-pointer"
-                  onClick={() => {
-                    navigate("Cart");
-                    setMobileMenuOpen(false);
-                  }}
-                />
+
+                <div className="relative">
+                  {cartCount > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs h-5 w-5 flex items-center justify-center rounded-full">
+                      {cartCount}
+                    </span>
+                  )}
+                  <GrCart
+                    size={20}
+                    className="cursor-pointer"
+                    onClick={() => {
+                      navigate("Cart");
+                      setMobileMenuOpen(false);
+                    }}
+                  />
+                </div>
+
                 {isLoggedIn && <UserAcc />}
               </div>
             </div>

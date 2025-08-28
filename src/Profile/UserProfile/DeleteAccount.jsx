@@ -26,7 +26,6 @@ function DeleteAccount() {
       if (response.status === 200) {
         setShowModal(true);
         setIsLoading(false);
-        //clear all current user data saved in storage if user delete it's account
         localStorage.clear();
         console.log("Account deleted successfully");
         navigate("/Home/HomePage");

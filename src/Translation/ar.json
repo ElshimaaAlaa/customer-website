@@ -269,5 +269,9 @@
   "noMethod":"لا يوجد طريقة دفع متاحة",
   "Shipped":"تم الشحن",
   "inTransit":"في الطريق",
-  "Delivered":"تم التوصيل"
+  "Delivered":"تم التوصيل",
+  "continueShopping":"متابعة التسوق",
+  "processedCheckout":"اكمال عملية الدفع",
+  "couponCode":"كود الخصم",
+  "apply":"تطبيق"
 }

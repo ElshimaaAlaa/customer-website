@@ -271,5 +271,9 @@
   "noMethod":"No payment method available",
   "Shipped":"Shipped",
   "inTransit":"On the way",
-  "Delivered":"Delivered"
+  "Delivered":"Delivered",
+  "continueShopping":"Continue Shopping",
+  "processedCheckout":"Processed to Checkout",
+  "couponCode":"Coupon Code",
+  "apply":"Apply"
 }

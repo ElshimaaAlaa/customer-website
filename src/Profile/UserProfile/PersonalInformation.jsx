@@ -10,8 +10,8 @@ import { useTranslation } from "react-i18next";
 function PersonalInformation() {
   const navigate = useNavigate();
   const [personalInfo, setPersonalInfo] = useState({});
-  const { t } = useTranslation();
-
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === "ar";
   useEffect(() => {
     const getInfo = async () => {
       try {
@@ -66,7 +66,9 @@ function PersonalInformation() {
   return (
     <div>
       <Helmet>
-        <title>{t("personalInfo")} | {t("vertex")}</title>
+        <title>
+          {t("personalInfo")} | {t("vertex")}
+        </title>
         <meta name="description" content="Edit personal information" />
         <meta property="og:title" content="Edit Personal Information" />
         <meta property="og:description" content="Edit personal information" />
@@ -98,10 +100,10 @@ function PersonalInformation() {
             }}
           />
           <div className="text-center md:text-left">
-            <h2 className="font-semibold text-lg mt-3">
-              {personalInfo?.name || "N/A"}
+            <h2 className="font-semibold text-17 mt-3">
+              {personalInfo?.name || t("notProvided")}
             </h2>
-            <p className="text-gray-400 text-15 rtl:text-right">
+            <p className="text-gray-400 text-14 rtl:text-right">
               {personalInfo?.role || "Customer"}
             </p>
           </div>
@@ -111,26 +113,32 @@ function PersonalInformation() {
           <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-96">
             <div>
               <p className="text-gray-400 text-15">{t("name")}</p>
-              <p className="text-15">{personalInfo?.name || "N/A"}</p>
+              <p className="text-15">
+                {personalInfo?.name || t("notProvided")}
+              </p>
             </div>
             <div>
               <p className="text-gray-400 text-15">{t("email")}</p>
-              <p className="text-15">{personalInfo?.email || "N/A"}</p>
+              <p className="text-15">
+                {personalInfo?.email || t("notProvided")}
+              </p>
             </div>
           </div>
           <div className="mt-3">
             <p className="text-gray-400 text-15">{t("phone")}</p>
             <div className="flex items-center gap-3">
               <p className="font-medium text-13">
-                {personalInfo.phone || "not provided"}
+                {personalInfo.phone || t("notProvided")}
               </p>
-              <button
-                onClick={copyPhoneNumber}
-                className="text-blue-500 hover:text-blue-700 text-sm flex items-center gap-1"
-                title="Copy phone number"
-              >
-                <IoCopyOutline color="#E0A75E" size={16} />
-              </button>
+              {!!personalInfo.phone && (
+                <button
+                  onClick={copyPhoneNumber}
+                  className="text-blue-500 hover:text-blue-700 text-sm flex items-center gap-1"
+                  title="Copy phone number"
+                >
+                  <IoCopyOutline color="#E0A75E" size={16} />
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -146,6 +154,11 @@ function PersonalInformation() {
         draggable
         pauseOnHover
         closeButton={false}
+        toastClassName={() =>
+          `flex items-center gap-3 p-4 bg-white text-black  ${
+            isRTL ? "toast-font-ar" : "toast-font-en"
+          }`
+        }
       />
     </div>
   );

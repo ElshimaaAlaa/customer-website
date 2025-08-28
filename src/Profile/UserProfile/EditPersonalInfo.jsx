@@ -221,7 +221,6 @@ function EditInfo() {
           )}
         </Formik>
       </section>
-
       <SuccessModal isOpen={showModal}>
         <div className="flex flex-col w-370 items-center">
           <img
@@ -241,5 +240,4 @@ function EditInfo() {
     </div>
   );
 }
-
 export default EditInfo;

@@ -1,10 +1,13 @@
-import { IoIosArrowRoundBack } from "react-icons/io";
+import { IoIosArrowRoundBack, IoIosArrowRoundForward } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useTranslation } from "react-i18next";
 import { useShoppingCart } from "../Context/CartContext";
 import { RiDeleteBinFill } from "react-icons/ri";
+import { Field, Form, Formik } from "formik";
+import InputField from "../Components/InputFields/InputField";
+import { FaCheckCircle } from "react-icons/fa";
 
 // import { useShoppingCart } from "../../../Cart Context/CartContext";
 const Cart = () => {
@@ -20,7 +23,8 @@ const Cart = () => {
     toast.success(t("clearCart"));
   };
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === "ar";
   return (
     <div className="px-4 md:px-20 pt-5 pb-20 relative">
       <button
@@ -62,7 +66,7 @@ const Cart = () => {
                     </thead>
                     <tbody>
                       {cartItems.map((item) => (
-                        <tr key={item.id} >
+                        <tr key={item.id}>
                           <td className="px-3 py-3 text-gray-600 text-13">
                             {item.isPromotion ? (
                               <div>
@@ -82,7 +86,9 @@ const Cart = () => {
                                   alt={item.title}
                                   className="w-20 h-20 p-3 rounded-full"
                                 />
-                                <p className="font-bold text-black">{item.name}</p>
+                                <p className="font-bold text-black">
+                                  {item.name}
+                                </p>
                               </div>
                             )}
                           </td>
@@ -103,7 +109,9 @@ const Cart = () => {
                               </button>
                             </div>
                           </td>
-                          <td className="px-3 py-3 text-center">{item.price} $</td>
+                          <td className="px-3 py-3 text-center">
+                            {item.price} $
+                          </td>
                           <td className="px-3 py-3 text-center">
                             {item.price_after_discount} $
                           </td>
@@ -146,15 +154,61 @@ const Cart = () => {
                 {/* add coupon */}
                 <section className="border rounded-md my-4 p-4">
                   <p>{t("haveCoupon")}</p>
-                  <p className="text-gray-400 text-13 my-2">{t("addCoupon")}</p>
+                  <p className="text-gray-400 text-14 mt-2 mb-4">
+                    {t("addCoupon")}
+                  </p>
+                  <Formik>
+                    <Form>
+                      <div>
+                        <span className=" absolute z-10 bg-gray-100 rounded-md p-2 h-14 ">
+                          <img
+                            src="/assets/svgs/ticket-percent.svg"
+                            alt="coupon percent"
+                            className="w-6 mt-2"
+                          />
+                        </span>
+                        <div className="px-7">
+                          <InputField name={""} placeholder={t("couponCode")} />
+                        </div>
+                      </div>
+                      <button
+                        className="text-primary font-bold flex items-center gap-2 mt-4"
+                        type="submit"
+                      >
+                        <FaCheckCircle size={20} />
+                        {t("apply")}
+                      </button>
+                    </Form>
+                  </Formik>
                 </section>
               </div>
             </div>
           </>
         )}
       </div>
-      <div>
-        <button onClick={()=>navigate('/Home/OrderSubmitted')}>complete order</button>
+      <div className="flex items-center gap-4 mt-7 ltr:justify-end rtl:flex-row-reverse rtl:justify-end">
+        <button
+          className="bg-gray-100 text-gray-400 p-3 rounded-md font-bold w-48"
+          onClick={() => navigate("/Home/Products")}
+        >
+          {t("continueShopping")}
+        </button>
+        <button
+          className="bg-primary text-white p-3 rounded-md font-bold flex items-center gap-2"
+          onClick={() => navigate("/Home/Checkout")}
+        >
+          {isRTL ? (
+            <>
+              <IoIosArrowRoundForward size={25} />
+              {t("processedCheckout")}
+            </>
+          ) : (
+            <>
+              {t("processedCheckout")}
+              <IoIosArrowRoundForward size={25} />
+            </>
+          )}
+        </button>
       </div>
     </div>
   );
