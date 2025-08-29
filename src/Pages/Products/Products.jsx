@@ -3,7 +3,6 @@ import { useEffect, useState, useMemo, useContext } from "react";
 import { getProducts } from "../../ApiServices/Products";
 import { ClipLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
-import { toggleWishlist } from "../../ApiServices/ToggleWishlist";
 import { useTranslation } from "react-i18next";
 import { CartContext } from "../../Context/CartContext";
 import FiltersSidebar from "./FiltersSidebar";
@@ -13,7 +12,7 @@ import ProductsPagination from "./ProductsPagination";
 import { getCategories } from "../../ApiServices/Categories";
 import SuccessModal from "../../Components/Modal/Success Modal/SuccessModal";
 import AuthModal from "../../Components/Modal/Success Modal/AuthModal";
-
+import { useWishlist } from "../../Context/WishlistContext";
 function Products() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -25,15 +24,19 @@ function Products() {
   const [selectedRatings, setSelectedRatings] = useState([]);
   const [sortOption, setSortOption] = useState("recent");
   const [currentPage, setCurrentPage] = useState(1);
-  const [wishlistItems, setWishlistItems] = useState([]);
   const navigate = useNavigate();
   const productsPerPage = 6;
   const { t, i18n } = useTranslation();
   const [isRTL, setIsRTL] = useState(false);
   const cart = useContext(CartContext);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const token = localStorage.getItem("user token");
+  
+  // استخدام الـ context بدلاً من useState المحلي
+  const { 
+    wishlistItems, 
+    toggleWishlistItem, 
+    isLoggedIn 
+  } = useWishlist();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,11 +55,6 @@ function Products() {
         const maxPrice = Math.max(...productData.map((p) => p.price), 1000);
         setPriceRange([0, Math.ceil(maxPrice)]);
         setCategories(categoriesData);
-
-        const storedWishlist = localStorage.getItem("wishlistItems");
-        if (storedWishlist) {
-          setWishlistItems(JSON.parse(storedWishlist));
-        }
       } catch (error) {
         console.error(error);
         setError(true);
@@ -65,34 +63,19 @@ function Products() {
       }
     };
     fetchData();
-    setIsLoggedIn(!!token);
     setIsRTL(i18n.language === "ar");
-  }, [i18n.language, token]);
+  }, [i18n.language]);
 
   const handleWishlistToggle = async (productId) => {
     if (!isLoggedIn) {
       setShowModal(true);
       return;
     }
+    
     try {
-      const isInWishlist = wishlistItems.includes(productId);
-      const updatedWishlist = isInWishlist
-        ? wishlistItems.filter((id) => id !== productId)
-        : [...wishlistItems, productId];
-
-      setWishlistItems(updatedWishlist);
-      localStorage.setItem("wishlistItems", JSON.stringify(updatedWishlist));
-
-      const response = await toggleWishlist(productId);
-      if (!response.success) {
-        throw new Error(response.message || t("wishlistUpdateError"));
-      }
+      await toggleWishlistItem(productId);
     } catch (error) {
-      setWishlistItems((prev) =>
-        prev.includes(productId)
-          ? prev.filter((id) => id !== productId)
-          : [...prev, productId]
-      );
+      console.error("Wishlist toggle failed", error);
     }
   };
 

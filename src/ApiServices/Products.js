@@ -11,7 +11,6 @@ export const getProducts = async () => {
       },
     });
     if (response.status === 200) {
-      console.log("success get products");
       return response.data.data;
     }
   } catch (error) {

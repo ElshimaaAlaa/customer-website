@@ -23,7 +23,6 @@ export const RateOrder = async (
       },
     });
     if (response.status === 200) {
-      console.log("rate send successfully");
       return true;
     }
   } catch (error) {

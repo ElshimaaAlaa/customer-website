@@ -12,7 +12,6 @@ export const SendSupport = async (email, name, phone, message) => {
       },
     });
     if (response.status === 200) {
-      console.log("Support sent successfully");
       return response.data;
     }
   } catch (error) {

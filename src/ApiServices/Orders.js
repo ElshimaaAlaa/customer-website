@@ -12,7 +12,6 @@ export const Orders = async () => {
       }
     );
     if (response.status === 200) {
-      console.log("orders data",response.data.data);
       return response.data.data;
     }
   } catch (error) {

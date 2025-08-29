@@ -19,7 +19,6 @@ export const CreateNewPasswordService = async (
       },
     });
     if (response.status === 200) {
-      console.log("Password reset successfully");
       return true;
     }
   } catch (error) {

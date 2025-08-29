@@ -15,7 +15,6 @@ export const handleUpdatePassword = async (password, password_confirmation) => {
       },
     });
     if (response.status === 200) {
-      console.log("Password updated successfully");
       return response.data;
     } else {
       console.error("Failed to update password");

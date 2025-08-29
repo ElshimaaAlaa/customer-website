@@ -41,9 +41,9 @@ function Checkout() {
         values.transaction_id,
         values.response
       );
-      console.log("success checkout")
+      console.log("success checkout");
     } catch (error) {
-      console.log("faild checkout",error)
+      console.log("faild checkout", error);
     }
   };
 
@@ -68,8 +68,7 @@ function Checkout() {
     <div className="px-20 py-4">
       <h3 className="font-bold text-xl mb-4">{t("checkout")}</h3>
       <div className="flex gap-11">
-        <section className="border-2 border-gray-200 rounded-md p-5 w-760">
-          <h3 className="font-bold mb-3 text-lg">{t("contact")}</h3>
+        <section className="p-5 w-760">
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
@@ -78,100 +77,72 @@ function Checkout() {
             {({ values, setFieldValue }) => (
               <Form>
                 {/* 1- contact info */}
-                <div>
-                  <div className="flex items-center gap-3 mb-3">
-                    <InputField name="name" placeholder={t("name")} />
-                    <InputField name="email" placeholder={t("email")} />
-                  </div>
-                  <InputField name="phone" placeholder={t("phone")} />
-                </div>
+                <div className="border-2 border-gray-200 rounded-md p-5 w-760">
+                  <h3 className="font-bold mb-3 text-lg">{t("contact")}</h3>
 
-                {/* 2 - Shipping Address */}
-                <div className="my-3">
-                  <h3 className="font-bold text-lg mb-3">
-                    2 - {t("shippingAddress")}
-                  </h3>
-                  <div className="flex items-center gap-3">
-                    <InputField name="country" placeholder={t("country")} />
-                    <InputField
-                      name="address_line2"
-                      placeholder={t("government")}
-                    />
+                  <div>
+                    <div className="flex items-center gap-3 mb-3">
+                      <InputField name="name" placeholder={t("name")} />
+                      <InputField name="email" placeholder={t("email")} />
+                    </div>
+                    <InputField name="phone" placeholder={t("phone")} />
                   </div>
-                  <div className="flex items-center gap-3 mt-3">
-                    <InputField name="city" placeholder={t("city")} />
-                    <InputField name="zip_code" placeholder={t("streetName")} />
-                  </div>
-                </div>
 
-                {/* 3 - Payment Method */}
-                <div className="my-3">
-                  <h3 className="font-bold mb-3 text-lg">
-                    3 - {t("PaymentMethod")}
-                  </h3>
-                  <div className="grid grid-cols-3 gap-3">
-                    {paymentMethods.map((method) => (
-                      <label
-                        key={method.id}
-                        className={`rounded-lg p-2 flex items-center gap-2 font-bold text-14 cursor-pointer transition-colors ${
-                          values.payment_method === method.id
-                            ? "bg-primary-light border border-primary bg-customOrange-mediumOrange"
-                            : "bg-gray-50 hover:bg-gray-100"
-                        }`}
-                      >
-                        <Field
-                          type="radio"
-                          name="payment_method"
-                          value={method.id}
-                          className="hidden"
-                          onChange={() =>
-                            setFieldValue("payment_method", method.id)
-                          }
-                        />
-                        <span className="w-10 h-10 flex items-center justify-center">
-                          {method.icon}
-                        </span>
-                        {method.label}
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                {values.payment_method && (
-                  <section className="bg-gray-50 py-2 px-4 rounded-md">
-                    <h4 className="font-bold mt-4 mb-3">
-                      {t("enterPaymentData")}
-                    </h4>
-                    <div className="flex items-center gap-2">
+                  {/* 2 - Shipping Address */}
+                  <div className="my-3">
+                    <h3 className="font-bold text-lg mb-3">
+                      2 - {t("shippingAddress")}
+                    </h3>
+                    <div className="flex items-center gap-3">
+                      <InputField name="country" placeholder={t("country")} />
                       <InputField
-                        name="card_holder_name"
-                        placeholder={t("cardHolder")}
-                      />
-                      <InputField
-                        name="card_number"
-                        placeholder={t("cardNumber")}
+                        name="address_line2"
+                        placeholder={t("government")}
                       />
                     </div>
-                    <div className="flex items-center gap-2 mt-2">
-                      <InputField name="card_cvv" placeholder={t("cvv")} />
-                      <div className="w-full">
-                        <Field
-                          name="expiration_date"
-                          placeholder="MM/YY"
-                          type="text"
-                          className={`w-full h-14 p-3 border-2 rounded-md outline-none transition-all duration-200 placeholder:text-14 focus:border-primary`}
-                          onChange={(e) => {
-                            let value = e.target.value;
-                            if (value.length === 2 && !value.includes("/")) {
-                              value = value + "/";
+                    <div className="flex items-center gap-3 mt-3">
+                      <InputField name="city" placeholder={t("city")} />
+                      <InputField
+                        name="zip_code"
+                        placeholder={t("streetName")}
+                      />
+                    </div>
+                  </div>
+
+                  {/* 3 - Payment Method */}
+                  <div className="my-3">
+                    <h3 className="font-bold mb-3 text-lg">
+                      3 - {t("PaymentMethod")}
+                    </h3>
+                    <div className="grid grid-cols-3 gap-3">
+                      {paymentMethods.map((method) => (
+                        <label
+                          key={method.id}
+                          className={`rounded-lg p-2 flex items-center gap-2 font-bold text-14 cursor-pointer transition-colors ${
+                            values.payment_method === method.id
+                              ? "bg-primary-light border border-primary bg-customOrange-mediumOrange"
+                              : "bg-gray-50 hover:bg-gray-100"
+                          }`}
+                        >
+                          <Field
+                            type="radio"
+                            name="payment_method"
+                            value={method.id}
+                            className="hidden"
+                            onChange={() =>
+                              setFieldValue("payment_method", method.id)
                             }
-                            setFieldValue("expiration_date", value);
-                          }}
-                        />
-                      </div>
+                          />
+                          <span className="w-10 h-10 flex items-center justify-center">
+                            {method.icon}
+                          </span>
+                          {method.label}
+                        </label>
+                      ))}
                     </div>
-                  </section>
-                )}
+                  </div>
+                </div>
+
                 <div className="flex items-center justify-end gap-3 mt-7 rtl:flex-row-reverse ">
                   <button className="bg-gray-50 text-gray-400 p-3 w-32 rounded-md font-bold flex items-center justify-center gap-2">
                     {isRTL ? (

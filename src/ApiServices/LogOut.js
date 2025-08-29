@@ -6,7 +6,6 @@ export const handleLogOut = async () => {
       method: "POST",
     });
     if (response.status === 200) {
-      console.log("Logged out successfully");
       localStorage.clear();
       return true;
     } else {

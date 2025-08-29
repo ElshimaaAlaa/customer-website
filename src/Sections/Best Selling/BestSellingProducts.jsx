@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { getHomeData } from "../../ApiServices/Home";
-import { toggleWishlist } from "../../ApiServices/ToggleWishlist";
 import { ClipLoader } from "react-spinners";
 import { IoIosHeartEmpty, IoIosHeart } from "react-icons/io";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -12,17 +11,22 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import SuccessModal from "../../Components/Modal/Success Modal/SuccessModal";
 import AuthModal from "../../Components/Modal/Success Modal/AuthModal";
-
+import { useWishlist } from "../../Context/WishlistContext";
 function BestSalesProducts() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [bestProducts, setBestProducts] = useState([]);
-  const [wishlistItems, setWishlistItems] = useState([]);
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const isRtl = i18n.language === "ar";
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  
+  // استخدام الـ context بدلاً من useState المحلي
+  const { 
+    wishlistItems, 
+    toggleWishlistItem, 
+    isLoggedIn 
+  } = useWishlist();
 
   useEffect(() => {
     const fetchBestProducts = async () => {
@@ -30,12 +34,6 @@ function BestSalesProducts() {
       try {
         const response = await getHomeData();
         setBestProducts(response.best_selling_products || []);
-        const storedWishlist = localStorage.getItem("wishlistItems");
-        if (storedWishlist) {
-          setWishlistItems(JSON.parse(storedWishlist));
-        }
-        const token = localStorage.getItem("user token");
-        setIsLoggedIn(!!token);
       } catch (error) {
         setError(error);
       } finally {
@@ -43,10 +41,6 @@ function BestSalesProducts() {
       }
     };
     fetchBestProducts();
-    const storedWishlist = localStorage.getItem("wishlistItems");
-    if (storedWishlist) {
-      setWishlistItems(JSON.parse(storedWishlist));
-    }
   }, [i18n.language]);
 
   const handleWishlistToggle = async (productId) => {
@@ -54,22 +48,11 @@ function BestSalesProducts() {
       setShowModal(true);
       return;
     }
+    
     try {
-      const stored = JSON.parse(localStorage.getItem("wishlistItems") || "[]");
-      const isInWishlist = stored.includes(productId);
-      const updatedWishlist = isInWishlist
-        ? stored.filter((id) => id !== productId)
-        : [...stored, productId];
-
-      setWishlistItems(updatedWishlist);
-      localStorage.setItem("wishlistItems", JSON.stringify(updatedWishlist));
-
-      const response = await toggleWishlist(productId);
-      if (!response.success) throw new Error(response.message);
+      await toggleWishlistItem(productId);
     } catch (error) {
       console.error("Wishlist toggle failed", error);
-      const stored = JSON.parse(localStorage.getItem("wishlistItems") || "[]");
-      setWishlistItems(stored);
     }
   };
 
@@ -134,7 +117,7 @@ function BestSalesProducts() {
                       className="absolute top-1 right-1 p-2"
                       onClick={() => handleWishlistToggle(product.id)}
                     >
-                      {wishlistItems.includes(product.id) ? (
+                      {wishlistItems.some(item => item.id === product.id) ? (
                         <IoIosHeart size={27} className="text-red-500" />
                       ) : (
                         <IoIosHeartEmpty

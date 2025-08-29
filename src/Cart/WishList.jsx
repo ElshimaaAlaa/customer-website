@@ -5,7 +5,7 @@ import { IoIosArrowRoundBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { CartContext } from "../Context/CartContext";
-import { useWishlist } from "../Context/WishlistContext"; // استيراد الـ context
+import { useWishlist } from "../Context/WishlistContext";
 
 function WishList() {
   const [isLoading, setIsLoading] = useState(false);
@@ -16,7 +16,6 @@ function WishList() {
   const [isRTL, setIsRTL] = useState(false);
   const cart = useContext(CartContext);
   
-  // استخدام الـ context
   const { 
     wishlistItems: wishlistData, 
     toggleWishlistItem,
@@ -34,13 +33,19 @@ function WishList() {
   const clearWishlist = async () => {
     try {
       setIsLoading(true);
-      // إزالة جميع العناصر من الـ wishlist
-      for (const product of wishlistData) {
-        await toggleWishlistItem(product.id);
-      }
-      // سيتم التحديث التلقائي عبر الـ context
+      // إنشاء مصفوفة من وعود الحذف
+      const deletePromises = wishlistData.map(product => 
+        toggleWishlistItem(product.id)
+      );
+      
+      // انتظار اكتمال جميع عمليات الحذف
+      await Promise.all(deletePromises);
+      
+      // إعادة جلب البيانات للتأكد من التحديث
+      await fetchWishlist();
     } catch (error) {
       console.error("Error clearing wishlist:", error);
+      setError(true);
     } finally {
       setIsLoading(false);
     }
@@ -49,10 +54,18 @@ function WishList() {
   const handleToggleWishlist = async (productId) => {
     setIsToggling((prev) => ({ ...prev, [productId]: true }));
     try {
-      await toggleWishlistItem(productId);
-      // لا حاجة لتحديث الحالة يدوياً، لأن الـ context سيتكفل بذلك
+      // تحديث واجهة المستخدم فوراً بإزالة العنصر محلياً
+      const updated = await toggleWishlistItem(productId);
+      
+      if (!updated) {
+        // إذا فشلت العملية، نعيد جلب البيانات للحصول على الحالة الحقيقية
+        await fetchWishlist();
+      }
     } catch (error) {
       console.error("Error toggling wishlist:", error);
+      setError(true);
+      // في حالة الخطأ، نعيد جلب البيانات للتأكد من المزامنة
+      await fetchWishlist();
     } finally {
       setIsToggling((prev) => ({ ...prev, [productId]: false }));
     }
@@ -110,7 +123,11 @@ function WishList() {
                     disabled={isToggling[product.id]}
                     aria-label={t("removeFromWishlist")}
                   >
-                    <IoIosHeart size={27} className="text-red-500" />
+                    {isToggling[product.id] ? (
+                      <ClipLoader size={20} color="#E0A75E" />
+                    ) : (
+                      <IoIosHeart size={27} className="text-red-500" />
+                    )}
                   </button>
 
                   {product.discount_percentage > 0 && (
@@ -235,12 +252,14 @@ function WishList() {
           <button
             onClick={clearWishlist}
             className="bg-gray-100 rtl:text-12 rtl:lg:text-16 text-gray-400 px-4 py-3 rounded-md"
+            disabled={isLoading}
           >
-            {t("clearAll")}
+            {isLoading ? <ClipLoader size={20} color="#E0A75E" /> : t("clearAll")}
           </button>
         </div>
       )}
     </div>
   );
 }
+
 export default WishList;

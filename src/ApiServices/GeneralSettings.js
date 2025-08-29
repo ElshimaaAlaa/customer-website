@@ -11,7 +11,6 @@ export const settings = async () => {
       },
     });
     if (response.status === 200) {
-      console.log("get general settings success");
       return response.data.data;
     }
   } catch (error) {

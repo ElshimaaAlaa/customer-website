@@ -28,7 +28,6 @@ export const register = async (
 
     if (response.status === 200) {
       localStorage.setItem("register token", response.data.token);
-      console.log("register token", response.data.data.token);
       return response.data.data;
     }
   } catch (error) {

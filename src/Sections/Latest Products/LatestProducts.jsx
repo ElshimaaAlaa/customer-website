@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { getHomeData } from "../../ApiServices/Home";
-import { toggleWishlist } from "../../ApiServices/ToggleWishlist";
 import { ClipLoader } from "react-spinners";
 import { IoIosHeartEmpty, IoIosHeart } from "react-icons/io";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -12,30 +11,29 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import SuccessModal from "../../Components/Modal/Success Modal/SuccessModal";
 import AuthModal from "../../Components/Modal/Success Modal/AuthModal";
-
+import { useWishlist } from "../../Context/WishlistContext";
 function LatestProducts() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [latestProducts, setLatestProducts] = useState([]);
-  const [wishlistItems, setWishlistItems] = useState([]);
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const isRtl = i18n.language === "ar";
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const token = localStorage.getItem("user token");
   const [showModal, setShowModal] = useState(false);
+  
+  // استخدام الـ context بدلاً من useState المحلي
+  const { 
+    wishlistItems, 
+    toggleWishlistItem, 
+    isLoggedIn 
+  } = useWishlist();
+
   useEffect(() => {
     const fetchProducts = async () => {
       setIsLoading(true);
       try {
         const response = await getHomeData();
         setLatestProducts(response.latest_products || []);
-
-        const storedWishlist = localStorage.getItem("wishlistItems");
-        if (storedWishlist) {
-          setWishlistItems(JSON.parse(storedWishlist));
-        }
-        setIsLoggedIn(!!token);
       } catch (error) {
         setError(error);
       } finally {
@@ -43,31 +41,18 @@ function LatestProducts() {
       }
     };
     fetchProducts();
-  }, [i18n.language, token]);
+  }, [i18n.language]);
 
   const handleWishlistToggle = async (productId) => {
     if (!isLoggedIn) {
       setShowModal(true);
+      return;
     }
+    
     try {
-      const isInWishlist = wishlistItems.includes(productId);
-      const updatedWishlist = isInWishlist
-        ? wishlistItems.filter((id) => id !== productId)
-        : [...wishlistItems, productId];
-
-      setWishlistItems(updatedWishlist);
-      localStorage.setItem("wishlistItems", JSON.stringify(updatedWishlist));
-
-      const response = await toggleWishlist(productId);
-      if (!response.success) {
-        throw new Error(response.message || t("wishlistUpdateError"));
-      }
+      await toggleWishlistItem(productId);
     } catch (error) {
-      setWishlistItems((prev) =>
-        prev.includes(productId)
-          ? prev.filter((id) => id !== productId)
-          : [...prev, productId]
-      );
+      console.error("Wishlist toggle failed", error);
     }
   };
 
@@ -198,7 +183,7 @@ function LatestProducts() {
                       className="absolute top-1 right-1 p-2 rounded-full z-10"
                       onClick={() => handleWishlistToggle(product.id)}
                     >
-                      {wishlistItems.includes(product.id) ? (
+                      {wishlistItems.some(item => item.id === product.id) ? (
                         <IoIosHeart size={27} className="text-red-500" />
                       ) : (
                         <IoIosHeartEmpty
