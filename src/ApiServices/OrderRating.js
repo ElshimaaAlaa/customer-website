@@ -13,6 +13,7 @@ export const RateOrder = async (
       headers: {
         Accept: "application/json",
         "Accept-Language": "ar",
+        Authorization: `Bearer ${localStorage.getItem("user token")}`,
       },
       data: {
         order_id,

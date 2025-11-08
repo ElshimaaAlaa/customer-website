@@ -25,7 +25,6 @@ function TopSection() {
     };
     getVertexData();
 
-    // Check if user is logged in (example using localStorage)
     const token = localStorage.getItem("user token");
     setIsLoggedIn(!!token);
   }, []);

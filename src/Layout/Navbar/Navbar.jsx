@@ -38,7 +38,6 @@ function Navbar() {
         applyLanguageSettings(languageToUse);
       } catch (error) {
         console.error("Language initialization failed:", error);
-        // Fallback to English
         localStorage.setItem("selectedLanguage", "en");
         await i18n.changeLanguage("en");
         applyLanguageSettings("en");
@@ -51,7 +50,6 @@ function Navbar() {
     const savedLanguage = localStorage.getItem("selectedLanguage") || "en";
     i18n.changeLanguage(savedLanguage);
   }, [i18n]);
-  // Update RTL state and localStorage when language changes
   useEffect(() => {
     const currentLanguage = i18n.language;
     localStorage.setItem("selectedLanguage", currentLanguage);
